@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -10,25 +10,39 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\code\sources\main.cpp" />
+    <ClCompile Include="..\..\code\sources\Mesh.cpp" />
+    <ClCompile Include="..\..\code\sources\View.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\code\headers\Color_Buffer.hpp" />
+    <ClInclude Include="..\..\code\headers\Color_Buffer_Rgb565.hpp" />
+    <ClInclude Include="..\..\code\headers\Color_Buffer_Rgba8888.hpp" />
+    <ClInclude Include="..\..\code\headers\Mesh.hpp" />
+    <ClInclude Include="..\..\code\headers\Rasterizer.hpp" />
+    <ClInclude Include="..\..\code\headers\View.hpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{636EB426-ECAF-4E3F-ACE9-9DF1106AE01D}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>PixelBufferWindow</RootNamespace>
     <ProjectName>Z-Buffer</ProjectName>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -53,12 +67,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>SFML_STATIC;WIN32;_SCL_SECURE_NO_WARNINGS;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..\..\..\.libraries\cpp-toolkit\headers;$(SolutionDir)\..\..\..\.libraries\sfml-2.3-vs-2015\include;$(SolutionDir)\..\..\..\.libraries\gl\headers</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\..\..\code\headers;$(SolutionDir)\..\..\libraries\cpp-toolkit\headers;$(SolutionDir)\..\..\libraries\sfml-2.3-vs-2015\include;$(SolutionDir)\..\..\libraries\gl\headers;$(SolutionDir)\..\..\libraries\tinyobjloader-1.0\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\..\..\..\.libraries\sfml-2.3-vs-2015\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\..\..\libraries\sfml-2.3-vs-2015\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-main-d.lib;sfml-system-s-d.lib;sfml-window-s-d.lib;winmm.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -91,57 +105,6 @@
       <AdditionalDependencies>sfml-main.lib;sfml-system-s.lib;sfml-window-s.lib;winmm.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\..\.libraries\cpp-toolkit\headers\Algorithms.hpp" />
-    <ClInclude Include="..\..\..\.libraries\cpp-toolkit\headers\Array.hpp" />
-    <ClInclude Include="..\..\..\.libraries\cpp-toolkit\headers\Char.hpp" />
-    <ClInclude Include="..\..\..\.libraries\cpp-toolkit\headers\Cloneable.hpp" />
-    <ClInclude Include="..\..\..\.libraries\cpp-toolkit\headers\Coordinates.hpp" />
-    <ClInclude Include="..\..\..\.libraries\cpp-toolkit\headers\Decoder.hpp" />
-    <ClInclude Include="..\..\..\.libraries\cpp-toolkit\headers\Encoder.hpp" />
-    <ClInclude Include="..\..\..\.libraries\cpp-toolkit\headers\File_Reader.hpp" />
-    <ClInclude Include="..\..\..\.libraries\cpp-toolkit\headers\File_Writer.hpp" />
-    <ClInclude Include="..\..\..\.libraries\cpp-toolkit\headers\Input_Stream.hpp" />
-    <ClInclude Include="..\..\..\.libraries\cpp-toolkit\headers\macros.hpp" />
-    <ClInclude Include="..\..\..\.libraries\cpp-toolkit\headers\Matrix.hpp" />
-    <ClInclude Include="..\..\..\.libraries\cpp-toolkit\headers\Memory_Reader.hpp" />
-    <ClInclude Include="..\..\..\.libraries\cpp-toolkit\headers\Memory_Writer.hpp" />
-    <ClInclude Include="..\..\..\.libraries\cpp-toolkit\headers\Non_Copyable.hpp" />
-    <ClInclude Include="..\..\..\.libraries\cpp-toolkit\headers\Obfuscation_Decoder.hpp" />
-    <ClInclude Include="..\..\..\.libraries\cpp-toolkit\headers\Obfuscation_Encoder.hpp" />
-    <ClInclude Include="..\..\..\.libraries\cpp-toolkit\headers\Object_Pool.hpp" />
-    <ClInclude Include="..\..\..\.libraries\cpp-toolkit\headers\Output_Stream.hpp" />
-    <ClInclude Include="..\..\..\.libraries\cpp-toolkit\headers\Point.hpp" />
-    <ClInclude Include="..\..\..\.libraries\cpp-toolkit\headers\Pointer.hpp" />
-    <ClInclude Include="..\..\..\.libraries\cpp-toolkit\headers\Projection.hpp" />
-    <ClInclude Include="..\..\..\.libraries\cpp-toolkit\headers\Random_Generator.hpp" />
-    <ClInclude Include="..\..\..\.libraries\cpp-toolkit\headers\Reader.hpp" />
-    <ClInclude Include="..\..\..\.libraries\cpp-toolkit\headers\Rotation.hpp" />
-    <ClInclude Include="..\..\..\.libraries\cpp-toolkit\headers\Scaling.hpp" />
-    <ClInclude Include="..\..\..\.libraries\cpp-toolkit\headers\Seekable.hpp" />
-    <ClInclude Include="..\..\..\.libraries\cpp-toolkit\headers\Shared_Ptr.hpp" />
-    <ClInclude Include="..\..\..\.libraries\cpp-toolkit\headers\Stream.hpp" />
-    <ClInclude Include="..\..\..\.libraries\cpp-toolkit\headers\String.hpp" />
-    <ClInclude Include="..\..\..\.libraries\cpp-toolkit\headers\Transformation.hpp" />
-    <ClInclude Include="..\..\..\.libraries\cpp-toolkit\headers\Translation.hpp" />
-    <ClInclude Include="..\..\..\.libraries\cpp-toolkit\headers\types.hpp" />
-    <ClInclude Include="..\..\..\.libraries\cpp-toolkit\headers\Vector.hpp" />
-    <ClInclude Include="..\..\..\.libraries\cpp-toolkit\headers\Void_Decoder.hpp" />
-    <ClInclude Include="..\..\..\.libraries\cpp-toolkit\headers\Void_Encoder.hpp" />
-    <ClInclude Include="..\..\..\.libraries\cpp-toolkit\headers\Writer.hpp" />
-    <ClInclude Include="..\..\code\Color_Buffer.hpp" />
-    <ClInclude Include="..\..\code\Color_Buffer_Rgb565.hpp" />
-    <ClInclude Include="..\..\code\Color_Buffer_Rgba8888.hpp" />
-    <ClInclude Include="..\..\code\Rasterizer.hpp" />
-    <ClInclude Include="..\..\code\View.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\..\.libraries\cpp-toolkit\sources\Input_Stream.cpp" />
-    <ClCompile Include="..\..\..\.libraries\cpp-toolkit\sources\Output_Stream.cpp" />
-    <ClCompile Include="..\..\..\.libraries\cpp-toolkit\sources\String.cpp" />
-    <ClCompile Include="..\..\code\main.cpp" />
-    <ClCompile Include="..\..\code\View.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
