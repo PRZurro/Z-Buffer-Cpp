@@ -7,12 +7,12 @@ namespace przurro
 	{
 	}
 
-	Mesh::Mesh(String inputName)
+	Mesh::Mesh(String inputName = "undefined")
 		 : name(inputName) 
 	{
 	}
 
-	void Mesh::update(Projection_Matrix3f * projectionM)
+	void Mesh::update(Projection_Matrix3f & projectionM)
 	{
 		// Se crean las matrices de transformación:
 
@@ -26,7 +26,7 @@ namespace przurro
 
 		// Creación de la matriz de transformación unificada:
 
-		Transform_Matrix3f transformation = *projectionM * translation * rotationX * rotationY * rotationZ *  scaling;
+		Transform_Matrix3f transformation = projectionM * translation * rotationX * rotationY * rotationZ *  scaling;
 
 		// Se transforman todos los vértices usando la matriz de transformación resultante:
 
@@ -97,30 +97,5 @@ namespace przurro
 		// Se comprueba a qué lado de la línea que pasa por v0 y v1 queda el punto v2:
 
 		return ((v1[0] - v0[0]) * (v2[1] - v0[1]) - (v2[0] - v0[0]) * (v1[1] - v0[1]) > 0.f);
-	}
-
-	void Mesh::translate(const Vector3f & translationV)
-	{
-		position += translationV;
-	}
-
-	void Mesh::set_position(const Vector3f & positionV)
-	{
-		position = positionV;
-	}
-
-	void Mesh::rotate(const Vector3f & rotationV)
-	{
-		rotation += rotationV;
-	}
-
-	void Mesh::set_rotation(const Vector3f & rotationV)
-	{
-		rotation = rotationV;
-	}
-
-	void Mesh::set_scale(const float & scaleF)
-	{
-		scale = scaleF;
 	}
 }

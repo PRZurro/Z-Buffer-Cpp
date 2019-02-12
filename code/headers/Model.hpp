@@ -9,11 +9,20 @@ namespace przurro
 	{
 	private:
 
-		Mesh_List meshes;
+		Model_Map meshes;
 
 	private:
-
+		String name;
 		String error;
+
+		Transform_Matrix3f	transform;
+
+		Vector3f			position, rotation, constantRotation;
+		float				scale;
+
+		Vector3f color;
+
+		Model * parent;		
 
 	public:
 
@@ -36,5 +45,18 @@ namespace przurro
 		{
 			return error;
 		}
+
+	public:
+
+		void translate(const Vector3f & translationV);
+		void set_position(const Vector3f & positionV);
+
+		void rotate(const Vector3f & rotationV);
+		void set_rotation(const Vector3f & rotationV);
+		void set_constant_rotation(const Vector3f & rotationV);
+
+		void set_scale(const float & scaleF);
+
+		void set_color(String & meshName, const Vector3f & colorV);
 	};
 }

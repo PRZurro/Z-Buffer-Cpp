@@ -3,6 +3,7 @@
 #define TINYOBJLOADER_IMPLEMENTATION
 
 #include "Model.hpp"
+#include "Mesh.hpp"
 
 #include <tiny_obj_loader.h>
 
@@ -99,17 +100,52 @@ namespace przurro
 	}
 	void Model::update(Projection_Matrix3f & projectionM)
 	{
-		for (Model_sptr & model : meshes)
+		for (auto & mesh : meshes)
 		{
-			model->update(projectionM);
+			mesh.second->update(projectionM);
 		}
 	}
 
 	void Model::draw(Rasterizer<Color_Buff> & rasterizer)
 	{
-		for (Model_sptr & model : meshes)
+		for (auto & mesh : meshes)
 		{
-			model->draw(rasterizer);
+			mesh.second->draw(rasterizer);
 		}
+	}
+
+
+	void Model::translate(const Vector3f & translationV)
+	{
+		position += translationV;
+	}
+
+	void Model::set_position(const Vector3f & positionV)
+	{
+		position = positionV;
+	}
+
+	void Model::rotate(const Vector3f & rotationV)
+	{
+		rotation += rotationV;
+	}
+
+	void Model::set_rotation(const Vector3f & rotationV)
+	{
+		rotation = rotationV;
+	}
+
+	void Model::set_constant_rotation(const Vector3f & rotationV)
+	{
+		constantRotation = rotationV;
+	}
+
+	void Model::set_scale(const float & scaleF)
+	{
+		scale = scaleF;
+	}
+	void Model::set_color(String & meshName, const Vector3f & colorV)
+	{
+
 	}
 }

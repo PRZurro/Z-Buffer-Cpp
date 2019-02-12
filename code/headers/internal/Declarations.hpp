@@ -12,6 +12,7 @@
 #include <rapidxml.hpp>
 
 #include <vector>
+#include <unordered_map>
 #include <memory>
 #include <list>
 
@@ -38,8 +39,11 @@ namespace przurro
 
 	using Model_sptr = std::shared_ptr<Model>;
 	using Model_List = std::list<std::shared_ptr<Model>>;
-	using Mesh_stpr = std::shared_ptr<Mesh>;
+	using Model_Map = std::unordered_map<String, Model_sptr>;
+
+	using Mesh_sptr = std::shared_ptr<Mesh>;
 	using Mesh_List = std::list<std::shared_ptr<Mesh>>;
+	using Mesh_Map = std::unordered_map<String, Model_sptr>;
 
 	using Point4f_Buffer = std::vector<toolkit::Point4f>;
 	using Point4i_Buffer = std::vector <toolkit::Point4i>;
@@ -64,18 +68,52 @@ namespace przurro
 		Z
 	};
 
-	typedef struct Mesh_Attributes
+	typedef struct 
 	{
-		Point4f_Buffer		originalVertices;   // "ov"
+		Point4f_Buffer		originalVertices;
 		Vector3f_Buffer		originalNormals;
 		Color_Buff			originalColors;
 		
-		Int_Buffer			originalIndices; // 'oi'
+		Int_Buffer			originalIndices;
 
 		Point4f_Buffer		transformedVertices;
 		Vector3f_Buffer		transformedNormals;
 		Point4i_Buffer		displayVertices;
 
+		Color				color; // Main color of the vertices
+
 		//std::vector<toolkit::Point2f>			texcoords;  // 'vt'
+	}Mesh_Attributes;
+
+	class String_Utilities
+	{
+	public:
+
+		static std::vector<String> string_splitter(const String & _toSplit, char _delimitier)
+		{
+			std::vector<String> tempVector;
+
+			String tempstring = _toSplit;
+
+			String::size_type i = 0;
+			String::size_type j = tempstring.find(_delimitier);
+
+			if (j == String::npos)
+			{
+				tempVector.push_back(tempstring.substr(i, tempstring.length()));
+				return tempVector;
+			}
+
+			while (j != String::npos)
+			{
+				tempVector.push_back(tempstring.substr(i, j - i));
+				i = ++j;
+				j = tempstring.find(_delimitier, j);
+
+				if (j == String::npos)
+					tempVector.push_back(tempstring.substr(i, tempstring.length()));
+			}
+			return tempVector;
+		}
 	};
 }

@@ -26,5 +26,7 @@ namespace przurro
 
 		bool load_scene(String xmlFilePath);
 		bool load_models(XML_Node * modelNodeRoot);
+		bool load_model_attribute(XML_Node * attribute, Model & model);
 	};
+
 }
