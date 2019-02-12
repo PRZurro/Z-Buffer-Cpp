@@ -11,8 +11,7 @@ using namespace tinyobj;
 
 namespace przurro
 {
-
-	Model::Model(const std::string & modelFilePath)
+	Model::Model(const String & modelFilePath)
 	{
 		attrib_t             attributes;
 		vector< shape_t    > shapes;
@@ -27,9 +26,9 @@ namespace przurro
 
 		// Checking if the data is valid
 
-		if (shapes.size() == 0) { error = string("There're no shapes in ") + obj_file_path; return; }
-		if (attributes.vertices.size() == 0) { error = string("There're no vertices in ") + obj_file_path; return; }
-		if (attributes.normals.size() == 0) { error = string("There're no normals in ") + obj_file_path; return; }
+		if (shapes.size() == 0) { error = String("There're no shapes in ") + modelFilePath; return; }
+		if (attributes.vertices.size() == 0) { error = String("There're no vertices in ") + modelFilePath; return; }
+		if (attributes.normals.size() == 0) { error = String("There're no normals in ") + modelFilePath; return; }
 
 		// Creation of the meshes that compose the model:
 
@@ -61,41 +60,56 @@ namespace przurro
 					normal_components[dst + 2] = attributes.normals[normal_src + 2];
 				}
 
-				// Se crean los buffers de atributos de vértices:
+				//// Se crean los buffers de atributos de vértices:
 
-				shared_ptr< Vertex_Buffer_Object > vbo_coordinates
-				(
-					new Vertex_Buffer_Object(vertex_components.data(), vertex_components.size() * sizeof(float))
-				);
+				//shared_ptr< Vertex_Buffer_Object > vbo_coordinates
+				//(
+				//	new Vertex_Buffer_Object(vertex_components.data(), vertex_components.size() * sizeof(float))
+				//);
 
-				shared_ptr< Vertex_Buffer_Object > vbo_normals
-				(
-					new Vertex_Buffer_Object(normal_components.data(), normal_components.size() * sizeof(float))
-				);
+				//shared_ptr< Vertex_Buffer_Object > vbo_normals
+				//(
+				//	new Vertex_Buffer_Object(normal_components.data(), normal_components.size() * sizeof(float))
+				//);
 
-				// Se crea una mesh a partir de la shape de tinyobj:
+				//// Se crea una mesh a partir de la shape de tinyobj:
 
-				shared_ptr< Model > mesh(new Mesh);
+				//shared_ptr< Model > mesh(new Mesh);
 
-				shared_ptr< Vertex_Array_Object > vao
-				(
-					new Vertex_Array_Object
-					(
-						{
-							{ vbo_coordinates, Model::Vertex_Attribute::COORDINATES, 3, GL_FLOAT },
-							{ vbo_normals,     Model::Vertex_Attribute::NORMALS,     3, GL_FLOAT }
-						}
-					)
-				);
+				//shared_ptr< Vertex_Array_Object > vao
+				//(
+				//	new Vertex_Array_Object
+				//	(
+				//		{
+				//			{ vbo_coordinates, Model::Vertex_Attribute::COORDINATES, 3, GL_FLOAT },
+				//			{ vbo_normals,     Model::Vertex_Attribute::NORMALS,     3, GL_FLOAT }
+				//		}
+				//	)
+				//);
 
-				mesh->set_vao(vao);
-				mesh->set_primitive_type(GL_TRIANGLES);
-				mesh->set_vertices_count(nIndices);
+				//mesh->set_vao(vao);
+				//mesh->set_primitive_type(GL_TRIANGLES);
+				//mesh->set_vertices_count(nIndices);
 
-				// Se añade la nueva mesh al modelo:
+				//// Se añade la nueva mesh al modelo:
 
-				add(mesh, Material::default_material());
+				//add(mesh, Material::default_material());
 			}
+		}
+	}
+	void Model::update(Projection_Matrix3f & projectionM)
+	{
+		for (Model_sptr & model : meshes)
+		{
+			model->update(projectionM);
+		}
+	}
+
+	void Model::draw(Rasterizer<Color_Buff> & rasterizer)
+	{
+		for (Model_sptr & model : meshes)
+		{
+			model->draw(rasterizer);
 		}
 	}
 }

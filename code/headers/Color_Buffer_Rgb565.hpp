@@ -25,7 +25,7 @@
         {
         public:
 
-            struct Color
+            struct Color_Buffer
             {
                 uint16_t value;
 
@@ -34,19 +34,19 @@
                     value = (r >> 3 << 11) | (g >> 2 << 5) | (b >> 3);
                 }
 
-                Color & operator = (const uint16_t & new_value)
+                Color_Buffer & operator = (const uint16_t & new_value)
                 {
                     value = new_value;
                     return (*this);
                 }
             };
 
-            typedef std::vector< Color > Buffer;
+            typedef std::vector< Color_Buffer > Buffer;
 
         private:
 
             Buffer buffer;
-            Color  color;
+            Color_Buffer  color;
 
         public:
 
@@ -59,19 +59,19 @@
 
         public:
 
-            Color * colors ()
+            Color_Buffer * colorBuffer ()
             {
                 return (&buffer.front ());
             }
 
-            const Color * colors () const
+            const Color_Buffer * colorBuffer () const
             {
                 return (&buffer.front ());
             }
 
             int bits_per_color () const
             {
-                return (sizeof(Color) * 8);
+                return (sizeof(Color_Buffer) * 8);
             }
 
             size_t size () const
@@ -81,7 +81,7 @@
 
         public:
 
-            void set_color (const Color & new_color)
+            void set_color (const Color_Buffer & new_color)
             {
                 color = new_color;
             }
@@ -108,7 +108,7 @@
                 // within the context of this example.
 
                 glRasterPos2i (raster_x, raster_y);
-                glDrawPixels  (width, height, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, colors ());
+                glDrawPixels  (width, height, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, colorBuffer ());
             }
 
         };

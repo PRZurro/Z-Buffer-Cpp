@@ -13,14 +13,19 @@
   <ItemGroup>
     <ClCompile Include="..\..\code\sources\main.cpp" />
     <ClCompile Include="..\..\code\sources\Mesh.cpp" />
+    <ClCompile Include="..\..\code\sources\Model.cpp" />
+    <ClCompile Include="..\..\code\sources\Scene.cpp" />
     <ClCompile Include="..\..\code\sources\View.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\code\headers\Color_Buffer.hpp" />
     <ClInclude Include="..\..\code\headers\Color_Buffer_Rgb565.hpp" />
     <ClInclude Include="..\..\code\headers\Color_Buffer_Rgba8888.hpp" />
+    <ClInclude Include="..\..\code\headers\internal\Declarations.hpp" />
     <ClInclude Include="..\..\code\headers\Mesh.hpp" />
+    <ClInclude Include="..\..\code\headers\Model.hpp" />
     <ClInclude Include="..\..\code\headers\Rasterizer.hpp" />
+    <ClInclude Include="..\..\code\headers\Scene.hpp" />
     <ClInclude Include="..\..\code\headers\View.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -67,7 +72,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>SFML_STATIC;WIN32;_SCL_SECURE_NO_WARNINGS;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..\..\code\headers;$(SolutionDir)\..\..\libraries\cpp-toolkit\headers;$(SolutionDir)\..\..\libraries\sfml-2.3-vs-2015\include;$(SolutionDir)\..\..\libraries\gl\headers;$(SolutionDir)\..\..\libraries\tinyobjloader-1.0\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\..\..\code\headers\internal;$(SolutionDir)\..\..\code\headers;$(SolutionDir)\..\..\libraries\cpp-toolkit\headers;$(SolutionDir)\..\..\libraries\sfml-2.3-vs-2015\include;$(SolutionDir)\..\..\libraries\gl\headers;$(SolutionDir)\..\..\libraries\tinyobjloader-1.0\include;$(SolutionDir)\..\..\libraries\rapidxml\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

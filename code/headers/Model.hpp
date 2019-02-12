@@ -1,28 +1,29 @@
 #pragma once
 
-#include <vector>
-#include <string>
-
-#include "Color_Buffer_Rgba8888.hpp"
+#include "Declarations.hpp"
 #include "Rasterizer.hpp"
-
-#include "Projection.hpp"
-#include "Transformation.hpp"
-#include "Rotation.hpp"
-#include "Scaling.hpp"
 
 namespace przurro
 {
 	class Model
 	{
+	private:
+
+		Mesh_List meshes;
 
 	private:
 
-		std::string error;
+		String error;
 
 	public:
 
-		Model(const std::string & modelFilePath);
+		Model(const String & modelFilePath);
+
+	public:
+
+		void update(Projection_Matrix3f & projectionM);
+
+		void draw(Rasterizer<Color_Buff> & rasterizer);
 
 	public:
 
@@ -31,10 +32,9 @@ namespace przurro
 			return error.empty();
 		}
 
-		const std::string get_error() const
+		const String get_error() const
 		{
 			return error;
 		}
 	};
 }
-
