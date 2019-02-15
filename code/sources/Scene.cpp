@@ -128,7 +128,7 @@ namespace przurro
 				}
 				else if (name == "color")
 				{
-					model.set_color(values);
+					model.set_mesh_color(values);
 				}
 
 

@@ -12,28 +12,35 @@
 #ifndef VIEW_HEADER
 #define VIEW_HEADER
 
-	#include "Declarations.hpp"
-	#include "Rasterizer.hpp"	
-	#include "Vector.hpp"
+#include "declarations/Internal.hpp"
+#include "declarations/Math.hpp"
+	
+#include "Rasterizer.hpp"	
 
     namespace przurro
     {
         class View
         {
         private:
+
             size_t width;
             size_t height;
 
 		private:
 
 			Rasterizer<Color_Buff>	rasterizer;
-
 			Color_Buff	colorBuffer;
-			Projection_Matrix3f  projectionM; 
+
+			Camera_sptr * activeCamera;
 
         public:
 
-            View(float nearPlaneD, float farPlaneD, float fovDegrees, size_t width, size_t height);
+            View();
+
+			~View()
+			{
+				delete activeCamera;
+			}
 
 		public:
 
@@ -44,11 +51,6 @@
 			Rasterizer<Color_Buff> & get_rasterizer()
 			{
 				return rasterizer;
-			}
-
-			Projection_Matrix3f & get_projection_matrix()
-			{
-				return projectionM;
 			}
         };
     }

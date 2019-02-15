@@ -7,35 +7,73 @@
 
 #include <tiny_obj_loader.h>
 
-using namespace std;
-using namespace tinyobj;
-
 namespace przurro
 {
-	Model::Model(const String & modelFilePath)
+	Model::Model(const String & assetFolderPath, const String & assetName)
+		: name(assetName)
 	{
-		attrib_t             attributes;
-		vector< shape_t    > shapes;
-		vector< material_t > materials;
+		Attrib_t             attributes;
+		std::vector< Shape_t   > shapes;
+		std::vector< Material_t > materials;
+
+		String path = assetFolderPath + assetName;
 
 		// Attempt to load an object
 
-		if (!tinyobj::LoadObj(&attributes, &shapes, &materials, &error, modelFilePath.c_str()) || !error.empty())
+		if (!tinyobj::LoadObj(&attributes, &shapes, &materials, &error, path.c_str()) || !error.empty())
 		{
 			return;
 		}
 
 		// Checking if the data is valid
 
-		if (shapes.size() == 0) { error = String("There're no shapes in ") + modelFilePath; return; }
-		if (attributes.vertices.size() == 0) { error = String("There're no vertices in ") + modelFilePath; return; }
-		if (attributes.normals.size() == 0) { error = String("There're no normals in ") + modelFilePath; return; }
+		size_t vertexComponentsN = (size_t)attributes.vertices.size();
+		size_t normalComponentsN = (size_t)attributes.normals.size();
+		size_t shapesN = (size_t)shapes.size();
 
+		if (shapesN == 0) { error = String("There're no shapes in ") + path; return; }
+		if (vertexComponentsN == 0) { error = String("There're no vertices in ") + path; return; }
+		if (shapesN == 0) { error = String("There're no normals in ") + path; return; }
+
+		//Here is loaded the vertex and normal arrays 
+
+		for (Shape_t & shape : shapes)
+		{
+			const std::vector< Index_t > & indices = shape.mesh.indices;
+			const size_t             nIndices = (size_t)indices.size();
+
+			for (size_t i = 0; i < nIndices; i += 3)
+			{
+				originalVertices.push_back
+				(
+					Point4f
+					({
+						attributes.vertices[i + X],
+						attributes.vertices[i + Y],
+						attributes.vertices[i + Z],
+						1.f
+						})
+				);
+			}
+			for (size_t i = 0; i < normalComponentsN; i += 3)
+			{
+				originalVertices.push_back
+				(
+					Vector4f
+					({
+						attributes.normals[i + X],
+						attributes.normals[i + Y],
+						attributes.normals[i + Z],
+						0.f
+						})
+				);
+			}
+		}
 		// Creation of the meshes that compose the model:
 
 		for (auto & shape : shapes)
 		{
-			const vector< index_t > & indices = shape.mesh.indices;
+			const std::vector< Index_t > & indices = shape.mesh.indices;
 			const size_t             nIndices = (size_t)indices.size();
 
 			if (nIndices > 0)
@@ -44,8 +82,8 @@ namespace przurro
 
 				const size_t   vertices_count = nIndices;
 
-				vector< float > vertex_components(vertices_count * 3);
-				vector< float > normal_components(vertices_count * 3);
+				f_Buffer vertex_components(vertices_count * 3);
+				f_Buffer normal_components(vertices_count * 3);
 
 				for (size_t src = 0, dst = 0; src < nIndices; ++src, dst += 3)
 				{
@@ -61,48 +99,70 @@ namespace przurro
 					normal_components[dst + 2] = attributes.normals[normal_src + 2];
 				}
 
-				//// Se crean los buffers de atributos de vértices:
+				// Se crean los buffers de atributos de vértices:
 
-				//shared_ptr< Vertex_Buffer_Object > vbo_coordinates
-				//(
-				//	new Vertex_Buffer_Object(vertex_components.data(), vertex_components.size() * sizeof(float))
-				//);
+				// Se añade la nueva mesh al modelo:
 
-				//shared_ptr< Vertex_Buffer_Object > vbo_normals
-				//(
-				//	new Vertex_Buffer_Object(normal_components.data(), normal_components.size() * sizeof(float))
-				//);
+				// Loop over faces(polygon)
+				size_t index_offset = 0;
+				for (size_t f = 0; f < shape.mesh.num_face_vertices.size(); f++) {
+					int fv = shape.mesh.num_face_vertices[f];
 
-				//// Se crea una mesh a partir de la shape de tinyobj:
+					// Loop over vertices in the face.
+					for (size_t v = 0; v < fv; v++) {
+						// access to vertex
 
-				//shared_ptr< Model > mesh(new Mesh);
+						Point4f vertex;
+						Vector4f normal;
 
-				//shared_ptr< Vertex_Array_Object > vao
-				//(
-				//	new Vertex_Array_Object
-				//	(
-				//		{
-				//			{ vbo_coordinates, Model::Vertex_Attribute::COORDINATES, 3, GL_FLOAT },
-				//			{ vbo_normals,     Model::Vertex_Attribute::NORMALS,     3, GL_FLOAT }
-				//		}
-				//	)
-				//);
+						Index_t idx = shape.mesh.indices[index_offset + v];
 
-				//mesh->set_vao(vao);
-				//mesh->set_primitive_type(GL_TRIANGLES);
-				//mesh->set_vertices_count(nIndices);
+						for (int i = 0; i < 3; ++i)
+						{
+							vertex[i] = inputAttributes.vertices[3 * idx.vertex_index + i];
+							normal[i] = inputAttributes.vertices[3 * idx.normal_index + i];
+						}
 
-				//// Se añade la nueva mesh al modelo:
+						vertex[3] = 1.f;
+						normal[3] = 0.f;
 
-				//add(mesh, Material::default_material());
+						originalVertices.push_back(vertex);
+						ovNormals.push_back(normal);
+						//attributes->originalIndices.push_back(shape.mesh.indices[index_offset + v]); // ??????
+					}
+					index_offset += fv;
+				}
+
+					// Se crean los buffers de atributos de vértices:
+
 			}
 		}
 	}
-	void Model::update(Projection_Matrix3f & projectionM)
+	void Model::update(Camera * activeCamera)
 	{
+		rotation += constantRotation;
+
+		Translation_Matrix3f	translation(position);
+		Rotation_Matrix3f		rotationX, rotationY, rotationZ;
+		Scale_Matrix3f			scaling(scale);
+
+		// Creación de la matriz de transformación unificada:
+
+		rotationX.set< Rotation_Matrix3f::AROUND_THE_X_AXIS >(rotation[X]);
+		rotationY.set< Rotation_Matrix3f::AROUND_THE_Y_AXIS >(rotation[Y]);
+		rotationZ.set< Rotation_Matrix3f::AROUND_THE_Z_AXIS >(rotation[Z]);
+
+		localTransform = translation * rotationX * rotationY * rotationZ *  scaling;
+
+		assert(transformParent); //always should exist so this have to be not triggered
+		transform = localTransform * (*transformParent);
+
+		//transform global = transform_local * local scale 
+		Transform_Matrix3f projectedTransformation = projectionM * transform;
+
 		for (auto & mesh : meshes)
 		{
-			mesh.second->update(projectionM);
+			mesh.second->update(projectedTransformation);
 		}
 	}
 
@@ -144,8 +204,23 @@ namespace przurro
 	{
 		scale = scaleF;
 	}
-	void Model::set_color(String & meshName, const Vector3f & colorV)
+	bool Model::set_mesh_color(String & meshName, const Vector3f & colorV)
 	{
+		auto iterator = meshes.find(meshName);
 
+		if (iterator == meshes.end())
+			return false;
+
+		meshes[meshName]->set_color(colorV);
+
+		return true;
+	}
+	void Model::set_local_transform(const Transform_Matrix3f newTransform)
+	{
+		localTransform = newTransform;
+	}
+	void Model::set_transform(const Transform_Matrix3f newTransform)
+	{
+		transform = newTransform;
 	}
 }

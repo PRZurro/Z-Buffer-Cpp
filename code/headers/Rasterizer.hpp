@@ -59,14 +59,14 @@
 
         public:
 
-            void set_color (const Color_Buffer & new_color)
+            void set_mesh_color (const Color_Buffer & new_color)
             {
-                color_buffer.set_color (new_color);
+                color_buffer.set_mesh_color (new_color);
             }
 
-            void set_color (int r, int  g, int b)
+            void set_mesh_color (int r, int  g, int b)
             {
-                color_buffer.set_color (r, g, b);
+                color_buffer.set_mesh_color (r, g, b);
             }
 
             void clear ()

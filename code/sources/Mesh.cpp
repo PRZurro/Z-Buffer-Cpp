@@ -2,40 +2,24 @@
 
 namespace przurro
 {
-	Mesh::Mesh() 
-		: name("undefined") 
+	Mesh::Mesh(Point4f_Buffer * vertexBuffer, Vector4f_Buffer * normalBuffer, const Shape_t & shape)
+		: name(shape.name)
 	{
+		attributes->originalVertices = vertexBuffer;
+		attributes->ovNormals = normalBuffer;
+
+			// Se crean los buffers de atributos de vértices:
+
 	}
 
-	Mesh::Mesh(String inputName = "undefined")
-		 : name(inputName) 
+	void Mesh::update(Transform_Matrix3f modelTransform)
 	{
-	}
-
-	void Mesh::update(Projection_Matrix3f & projectionM)
-	{
-		// Se crean las matrices de transformación:
-
-		Scale_Matrix3f			scaling(scale);
-		Rotation_Matrix3f		rotationX, rotationY, rotationZ;
-		Translation_Matrix3f	translation(0, 0, -10);
-
-		rotationX.set< Rotation_Matrix3f::AROUND_THE_X_AXIS >(rotation[X]);
-		rotationY.set< Rotation_Matrix3f::AROUND_THE_Y_AXIS >(rotation[Y]);
-		rotationZ.set< Rotation_Matrix3f::AROUND_THE_Y_AXIS >(rotation[Z]);
-
-		// Creación de la matriz de transformación unificada:
-
-		Transform_Matrix3f transformation = projectionM * translation * rotationX * rotationY * rotationZ *  scaling;
-
-		// Se transforman todos los vértices usando la matriz de transformación resultante:
-
 		for (size_t index = 0, number_of_vertices = attributes.transformedVertices.size(); index < number_of_vertices; index++)
 		{
 			// Se multiplican todos los vértices originales con la matriz de transformación y
 			// se guarda el resultado en otro vertex buffer:
 
-			Point4f & vertex = attributes.transformedVertices[index] = Matrix44f(transformation) * Matrix41f(attributes.originalVertices[index]);
+			Point4f & vertex = attributes.transformedVertices[index] = Matrix44f(transformM) * Matrix41f(attributes.originalVertices[index]);
 
 			// La matriz de proyección en perspectiva hace que el último componente del vector
 			// transformado no tenga valor 1.0, por lo que hay que normalizarlo dividiendo:
@@ -78,7 +62,7 @@ namespace przurro
 			{
 				// Se establece el color del polígono a partir del color de su primer vértice:
 
-				rasterizer.set_color(attributes.originalColors[*indices]);
+				rasterizer.set_mesh_color(attributes.ovColors[*indices]);
 
 				// Se rellena el polígono:
 

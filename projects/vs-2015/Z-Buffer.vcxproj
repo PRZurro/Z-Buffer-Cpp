@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\code\sources\Camera.cpp" />
     <ClCompile Include="..\..\code\sources\main.cpp" />
     <ClCompile Include="..\..\code\sources\Mesh.cpp" />
     <ClCompile Include="..\..\code\sources\Model.cpp" />
@@ -18,10 +19,14 @@
     <ClCompile Include="..\..\code\sources\View.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\code\headers\Camera.hpp" />
     <ClInclude Include="..\..\code\headers\Color_Buffer.hpp" />
     <ClInclude Include="..\..\code\headers\Color_Buffer_Rgb565.hpp" />
     <ClInclude Include="..\..\code\headers\Color_Buffer_Rgba8888.hpp" />
-    <ClInclude Include="..\..\code\headers\internal\Declarations.hpp" />
+    <ClInclude Include="..\..\code\headers\internal\Declarations\Containers.hpp" />
+    <ClInclude Include="..\..\code\headers\internal\Declarations\External_Tools.hpp" />
+    <ClInclude Include="..\..\code\headers\internal\Declarations\Internal.hpp" />
+    <ClInclude Include="..\..\code\headers\internal\Declarations\Math.hpp" />
     <ClInclude Include="..\..\code\headers\Mesh.hpp" />
     <ClInclude Include="..\..\code\headers\Model.hpp" />
     <ClInclude Include="..\..\code\headers\Rasterizer.hpp" />

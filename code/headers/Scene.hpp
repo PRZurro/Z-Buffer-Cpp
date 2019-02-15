@@ -11,15 +11,22 @@ namespace przurro
 	{
 	private:
 
-		Model_List models;
+		Model_Map models;
+		
+		Camera_sptr activeCamera;
 
 	public:
 
 		Scene();
 
+		~Scene()
+		{
+			models.clear();
+		}
+
 	public:
 
-		void update(Projection_Matrix3f & projectionM);
+		void update(Camera * activeCamera);
 		void draw(Rasterizer<Color_Buff> & rasterizer);
 
 	public:

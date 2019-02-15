@@ -16,6 +16,9 @@
     <Filter Include="Header Files\Internal">
       <UniqueIdentifier>{5fc8b88f-d157-433a-b81b-b6bea94c54d0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Declarations">
+      <UniqueIdentifier>{c4d51c90-61d6-4ba6-a437-b2ec6c1de04f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\code\sources\main.cpp">
@@ -31,6 +34,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\code\sources\Mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\code\sources\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -59,8 +65,20 @@
     <ClInclude Include="..\..\code\headers\Mesh.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\code\headers\internal\Declarations.hpp">
-      <Filter>Header Files\Internal</Filter>
+    <ClInclude Include="..\..\code\headers\Camera.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\headers\internal\Declarations\Math.hpp">
+      <Filter>Header Files\Declarations</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\headers\internal\Declarations\Containers.hpp">
+      <Filter>Header Files\Declarations</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\headers\internal\Declarations\External_Tools.hpp">
+      <Filter>Header Files\Declarations</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\headers\internal\Declarations\Internal.hpp">
+      <Filter>Header Files\Declarations</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

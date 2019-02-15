@@ -95,7 +95,7 @@
 
 		public:
 
-			void set_color(int r, int g, int b)
+			void set_mesh_color(int r, int g, int b)
 			{
 				color.data.component.r = uint8_t(r < 0 ? 0 : r > 255 ? 255 : r);
 				color.data.component.g = uint8_t(g < 0 ? 0 : g > 255 ? 255 : g);
@@ -103,7 +103,7 @@
 				color.data.component.a = 0xFF;                                      // Set opaque alpha
 			}
 
-			void set_color(const Color & new_color)
+			void set_mesh_color(const Color & new_color)
 			{
 				color = new_color;
 			}
