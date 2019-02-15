@@ -2,7 +2,7 @@
 
 namespace przurro
 {
-	Mesh::Mesh(Point4f_Buffer * vertexBuffer, Vector4f_Buffer * normalBuffer, const Shape_t & shape)
+	Mesh::Mesh(Point4f_Buffer * vertexBuffer, Vector4f_Buffer * normalBuffer)
 		: name(shape.name)
 	{
 		attributes->originalVertices = vertexBuffer;

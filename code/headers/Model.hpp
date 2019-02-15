@@ -19,7 +19,7 @@ namespace przurro
 
 		Mesh_Map meshes;
 
-		Point4f_Buffer originalVertices;
+		Point4f_Buffer ovPositions;
 		Vector4f_Buffer	ovNormals; // original vertices normals, 4th component must be set to '0.f'
 
 		Color defaultColor;
