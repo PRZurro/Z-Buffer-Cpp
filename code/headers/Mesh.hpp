@@ -16,10 +16,9 @@ namespace przurro
 	{
 		typedef struct Mesh_Attributes
 		{
-			Point4f_Buffer  *	ovPositions;
+			Point4f_Buffer  *	originalVertices;
 			Vector4f_Buffer	*	ovNormals; // original vertices normals, 4th component must be set to '0.f'
 			Color_Buff			ovColors; // original vertices colors
-
 			i_Buffer			originalIndices;
 
 			Point4f_Buffer		transformedVertices;
@@ -47,7 +46,7 @@ namespace przurro
 
 	public:
 
-		Mesh(Point4f_Buffer * vertexBuffer, Vector4f_Buffer * normalBuffer);
+		Mesh(Point4f_Buffer * vertexBuffer, Vector4f_Buffer * normalBuffer, const Shape_t & shape);
 
 	public:
 
@@ -60,15 +59,7 @@ namespace przurro
 
 		void set_color(Vector3f colorV)
 		{
-			attributes->color.set(colorV[X], colorV[Y], colorV[Z]);
+			attributes.color.set(colorV[X], colorV[Y], colorV[Z]);
 		}
-
-	public:
-
-		i_Buffer & get_original_indices()
-		{
-			return attributes->originalIndices;
-		}
-		
 	};
 }

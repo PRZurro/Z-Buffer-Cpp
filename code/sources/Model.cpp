@@ -12,7 +12,7 @@ namespace przurro
 	Model::Model(const String & assetFolderPath, const String & assetName)
 		: name(assetName)
 	{
-		Attrib_t             attribs;
+		Attrib_t             attributes;
 		std::vector< Shape_t   > shapes;
 		std::vector< Material_t > materials;
 
@@ -20,15 +20,15 @@ namespace przurro
 
 		// Attempt to load an object
 
-		if (!tinyobj::LoadObj(&attribs, &shapes, &materials, &error, path.c_str()) || !error.empty())
+		if (!tinyobj::LoadObj(&attributes, &shapes, &materials, &error, path.c_str()) || !error.empty())
 		{
 			return;
 		}
 
 		// Checking if the data is valid
 
-		size_t vertexComponentsN = (size_t)attribs.vertices.size();
-		size_t normalComponentsN = (size_t)attribs.normals.size();
+		size_t vertexComponentsN = (size_t)attributes.vertices.size();
+		size_t normalComponentsN = (size_t)attributes.normals.size();
 		size_t shapesN = (size_t)shapes.size();
 
 		if (shapesN == 0) { error = String("There're no shapes in ") + path; return; }
@@ -37,51 +37,107 @@ namespace przurro
 
 		//Here is loaded the vertex and normal arrays 
 
-		size_t verticesProcessedN = 0, indicesProcessedN;
 		for (Shape_t & shape : shapes)
 		{
-			const std::vector< Index_t > &	indices = shape.mesh.indices;
-			const size_t					nIndices = (size_t) indices.size();
+			const std::vector< Index_t > & indices = shape.mesh.indices;
+			const size_t             nIndices = (size_t)indices.size();
 
-			Mesh_sptr tempMesh(new Mesh(&ovPositions, &ovNormals));
-			i_Buffer & tempMeshIndices = tempMesh->get_original_indices();
-			tempMeshIndices.resize(nIndices);
-
-			// We loop through the faces index array 
-			indicesProcessedN = 0;
-			for (const Index_t & index : indices)
+			for (size_t i = 0; i < nIndices; i += 3)
 			{
-				tempMeshIndices[indicesProcessedN] = verticesProcessedN;  // 
-
-				size_t vertexIndex = 3 * index.vertex_index; // Storing the index of the first component of the vertex (X)
-				size_t normalIndex = 3 * index.normal_index; // Storing the index of the first component of the normal (X)
-
-				ovPositions.push_back
-				(	
+				originalVertices.push_back
+				(
 					Point4f
 					({
-						attribs.vertices[vertexIndex + X],
-						attribs.vertices[vertexIndex + Y],
-						attribs.vertices[vertexIndex + Z],
+						attributes.vertices[i + X],
+						attributes.vertices[i + Y],
+						attributes.vertices[i + Z],
 						1.f
-					})
+						})
 				);
-				ovNormals.push_back
+			}
+			for (size_t i = 0; i < normalComponentsN; i += 3)
+			{
+				originalVertices.push_back
 				(
 					Vector4f
 					({
-						attribs.normals[normalIndex + X],
-						attribs.normals[normalIndex + Y],
-						attribs.normals[normalIndex + Z],
+						attributes.normals[i + X],
+						attributes.normals[i + Y],
+						attributes.normals[i + Z],
 						0.f
-					})
+						})
 				);
-				++indicesProcessedN;
 			}
-			++verticesProcessedN;
+		}
+		// Creation of the meshes that compose the model:
+
+		for (auto & shape : shapes)
+		{
+			const std::vector< Index_t > & indices = shape.mesh.indices;
+			const size_t             nIndices = (size_t)indices.size();
+
+			if (nIndices > 0)
+			{
+				// Se fusionan los índices de coordenadas y de normales y se ordenan secuencialmente los vértices:
+
+				const size_t   vertices_count = nIndices;
+
+				f_Buffer vertex_components(vertices_count * 3);
+				f_Buffer normal_components(vertices_count * 3);
+
+				for (size_t src = 0, dst = 0; src < nIndices; ++src, dst += 3)
+				{
+					int vertex_src = indices[src].vertex_index * 3;
+					int normal_src = indices[src].normal_index * 3;
+
+					vertex_components[dst + 0] = attributes.vertices[vertex_src + 0];
+					vertex_components[dst + 1] = attributes.vertices[vertex_src + 1];
+					vertex_components[dst + 2] = attributes.vertices[vertex_src + 2];
+
+					normal_components[dst + 0] = attributes.normals[normal_src + 0];
+					normal_components[dst + 1] = attributes.normals[normal_src + 1];
+					normal_components[dst + 2] = attributes.normals[normal_src + 2];
+				}
+
+				// Se crean los buffers de atributos de vértices:
+
+				// Se añade la nueva mesh al modelo:
+
+				// Loop over faces(polygon)
+				size_t index_offset = 0;
+				for (size_t f = 0; f < shape.mesh.num_face_vertices.size(); f++) {
+					int fv = shape.mesh.num_face_vertices[f];
+
+					// Loop over vertices in the face.
+					for (size_t v = 0; v < fv; v++) {
+						// access to vertex
+
+						Point4f vertex;
+						Vector4f normal;
+
+						Index_t idx = shape.mesh.indices[index_offset + v];
+
+						for (int i = 0; i < 3; ++i)
+						{
+							vertex[i] = inputAttributes.vertices[3 * idx.vertex_index + i];
+							normal[i] = inputAttributes.vertices[3 * idx.normal_index + i];
+						}
+
+						vertex[3] = 1.f;
+						normal[3] = 0.f;
+
+						originalVertices.push_back(vertex);
+						ovNormals.push_back(normal);
+						//attributes->originalIndices.push_back(shape.mesh.indices[index_offset + v]); // ??????
+					}
+					index_offset += fv;
+				}
+
+					// Se crean los buffers de atributos de vértices:
+
+			}
 		}
 	}
-
 	void Model::update(Camera * activeCamera)
 	{
 		rotation += constantRotation;
@@ -102,7 +158,7 @@ namespace przurro
 		transform = localTransform * (*transformParent);
 
 		//transform global = transform_local * local scale 
-		Transform_Matrix3f projectedTransformation = activeprojectionM * transform;
+		Transform_Matrix3f projectedTransformation = projectionM * transform;
 
 		for (auto & mesh : meshes)
 		{
