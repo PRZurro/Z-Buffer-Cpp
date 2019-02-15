@@ -5,7 +5,7 @@ namespace przurro
 	Mesh::Mesh(Point4f_Buffer * vertexBuffer, Vector4f_Buffer * normalBuffer, const Shape_t & shape)
 		: name(shape.name)
 	{
-		attributes->originalVertices = vertexBuffer;
+		attributes->ovPositions = vertexBuffer;
 		attributes->ovNormals = normalBuffer;
 
 			// Se crean los buffers de atributos de vértices:
@@ -19,7 +19,7 @@ namespace przurro
 			// Se multiplican todos los vértices originales con la matriz de transformación y
 			// se guarda el resultado en otro vertex buffer:
 
-			Point4f & vertex = attributes.transformedVertices[index] = Matrix44f(transformM) * Matrix41f(attributes.originalVertices[index]);
+			Point4f & vertex = attributes.transformedVertices[index] = Matrix44f(transformM) * Matrix41f(attributes.ovPositions[index]);
 
 			// La matriz de proyección en perspectiva hace que el último componente del vector
 			// transformado no tenga valor 1.0, por lo que hay que normalizarlo dividiendo:
