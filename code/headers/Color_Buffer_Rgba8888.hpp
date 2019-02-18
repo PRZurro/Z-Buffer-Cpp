@@ -19,117 +19,118 @@
 
     namespace przurro
     {
-		class Color_Buffer_Rgba8888 : public Color_Buffer
-		{
-		public:
 
-			struct Color
-			{
-				union
-				{
-					struct
-					{
-						uint8_t r;
-						uint8_t g;
-						uint8_t b;
-						uint8_t a;
-					}
-					component;
+        class Color_Buffer_Rgba8888 : public Color_Buffer
+        {
+        public:
 
-					uint32_t value;             // Beware of big/little endianness
-				}
-				data;
+            struct Color
+            {
+                union
+                {
+                    struct
+                    {
+                        uint8_t r;
+                        uint8_t g;
+                        uint8_t b;
+                        uint8_t a;
+                    }
+                    component;
 
-				void set(int r, int g, int b)
-				{
-					data.component.r = r;
-					data.component.g = g;
-					data.component.b = b;
-					data.component.a = 255;
-				}
+                    uint32_t value;             // Beware of big/little endianness
+                }
+                data;
 
-				Color & operator = (const int & value)
-				{
-					data.value = uint32_t(value);
-					return (*this);
-				}
-			};
+                void set (int r, int g, int b)
+                {
+                    data.component.r = r;
+                    data.component.g = g;
+                    data.component.b = b;
+                    data.component.a = 255;
+                }
 
-			typedef std::vector< Color > Buffer;
+                Color & operator = (const int & value)
+                {
+                    data.value = uint32_t(value);
+                    return (*this);
+                }
+            };
 
-		private:
+            typedef std::vector< Color > Buffer;
 
-			Buffer buffer;
-			Color  color;
+        private:
 
-		public:
+            Buffer buffer;
+            Color  color;
 
-			Color_Buffer_Rgba8888(size_t width, size_t height)
-				:
-				Color_Buffer(width, height),
-				buffer(width * height)
-			{
-			}
+        public:
 
-		public:
+            Color_Buffer_Rgba8888(size_t width, size_t height)
+            :
+                Color_Buffer(width,  height),
+                buffer      (width * height)
+            {
+            }
 
-			Color * colors()
-			{
-				return (&buffer.front());
-			}
+        public:
 
-			const Color * colors() const
-			{
-				return (&buffer.front());
-			}
+            Color * colors ()
+            {
+                return (&buffer.front ());
+            }
 
-			int bits_per_color() const
-			{
-				return (sizeof(Color) * 8);
-			}
+            const Color * colors () const
+            {
+                return (&buffer.front ());
+            }
 
-			size_t size() const
-			{
-				return (buffer.size());
-			}
+            int bits_per_color () const
+            {
+                return (sizeof(Color) * 8);
+            }
 
-		public:
+            size_t size () const
+            {
+                return (buffer.size ());
+            }
 
-			void set_mesh_color(int r, int g, int b)
-			{
-				color.data.component.r = uint8_t(r < 0 ? 0 : r > 255 ? 255 : r);
-				color.data.component.g = uint8_t(g < 0 ? 0 : g > 255 ? 255 : g);
-				color.data.component.b = uint8_t(b < 0 ? 0 : b > 255 ? 255 : b);
-				color.data.component.a = 0xFF;                                      // Set opaque alpha
-			}
+        public:
 
-			void set_mesh_color(const Color & new_color)
-			{
-				color = new_color;
-			}
+            void set_color (int r, int g, int b)
+            {
+                color.data.component.r = uint8_t(r < 0 ? 0 : r > 255 ? 255 : r);
+                color.data.component.g = uint8_t(g < 0 ? 0 : g > 255 ? 255 : g);
+                color.data.component.b = uint8_t(b < 0 ? 0 : b > 255 ? 255 : b);
+                color.data.component.a = 0xFF;                                      // Set opaque alpha
+            }
 
-			void set_pixel(size_t offset)
-			{
-				buffer[offset] = color;
-			}
+            void set_color (const Color & new_color)
+            {
+                color = new_color;
+            }
 
-			void set_pixel(int x, int y)
-			{
-				buffer[y * width + x] = color;
-			}
+            void set_pixel (size_t offset)
+            {
+                buffer[offset] = color;
+            }
 
-			void gl_draw_pixels(int raster_x, int raster_y) const
-			{
-				// glDrawPixels() is efficient when the driver has proper support. Otherwise it will be slow.
-				// Color buffer objects could be more appropriate, but glDrawPixels() is more simple and compatible
-				// within the context of this example.
+            void set_pixel (int x, int y)
+            {
+                buffer[y * width + x] = color;
+            }
 
-				glRasterPos2i(raster_x, raster_y);
-				glDrawPixels(width, height, GL_RGBA, GL_UNSIGNED_BYTE, colors());
-			}
+            void gl_draw_pixels (int raster_x, int raster_y) const
+            {
+                // glDrawPixels() is efficient when the driver has proper support. Otherwise it will be slow.
+                // Color buffer objects could be more appropriate, but glDrawPixels() is more simple and compatible
+                // within the context of this example.
 
-		};
+                glRasterPos2i (raster_x, raster_y);
+                glDrawPixels  (width, height, GL_RGBA, GL_UNSIGNED_BYTE, colors ());
+            }
 
-	}
+        };
+
+    }
 
 #endif

@@ -16,6 +16,7 @@ namespace przurro
 
 	using Color = Color_Buffer_Rgba8888::Color;
 	using Color_Buff = Color_Buffer_Rgba8888; //Color_Buffer
+	using CColor_Buff = std::vector< Color_Buffer_Rgba8888::Color>; //Real color buffer
 
 	//Shared Pointers
 	using Model_sptr = std::shared_ptr<Model>;
@@ -26,7 +27,8 @@ namespace przurro
 	{
 		X,
 		Y,
-		Z
+		Z,
+		W,
 	};
 
 	class String_Utilities

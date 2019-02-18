@@ -1,5 +1,6 @@
 #include "Scene.hpp"
 #include "Model.hpp"
+#include "Camera.hpp"
 
 #include <stdio.h>
 #include <iostream>
@@ -11,24 +12,37 @@ using namespace std;
 
 namespace przurro
 {
-	Scene::Scene()
+	Scene::Scene(String & inputAssetsFolderPath, size_t inputWidth, size_t inputHeight, float nearPlaneD, float farPlaneD, float fovDegrees)
+		: assetsFolderPath(inputAssetsFolderPath),
+		colorBuffer(inputWidth,inputHeight), 
+		rasterizer(colorBuffer), 
+		activeCamera(new Camera(nearPlaneD ,farPlaneD,fovDegrees,inputWidth,inputHeight))
 	{
 	}
 
-	void Scene::update(Projection_Matrix3f & projectionM)
+	void Scene::update()
 	{
-		for (Model_sptr & model : models)
+		for(auto & model : models)
 		{
-			model->update(projectionM);
+			model.second->update(activeCamera.get());
 		}
 	}
 
-	void Scene::draw(Rasterizer<Color_Buff>& rasterizer)
+	void Scene::draw()
 	{
+		rasterizer.clear();
+
+		for (auto & model : models)
+		{
+			model.second->draw(rasterizer);
+		}
+
+		// Se copia el framebúffer oculto en el framebúffer de la ventana:
+
+		rasterizer.get_color_buffer().gl_draw_pixels(0, 0);
 	}
 
-
-	bool Scene::load_scene(String xmlFilePath)
+	bool Scene::load_scene(String & xmlFilePath)
 	{
 		bool loaded = false;
 
@@ -76,24 +90,24 @@ namespace przurro
 				String name = "";
 				if (String(model->name()) == "model")
 				{
-					XML_Attr * attribute = model->first_attribute("path");
-
-					if (!attribute)
+					XML_Attr * attribPath = model->first_attribute("path"), * attribName = model->first_attribute("name");;
+					
+					if (!attribPath || !attribName)
 						return false;
 
-					if(attribute->name() != "path")
+					if(attribPath->name() != "path" || attribName->name() != "name")
 						return false;
 
-					models.push_back(Model_sptr(new Model(attribute->value())));
+					models[name] = Model_sptr(new Model("folderPath", attribName->value()));
 
-					XML_Node * property = model->first_node();
+					XML_Node * modelProperty = model->first_node();
 
-					for (property; property; property = property->next_sibling())
+					for (modelProperty; modelProperty; modelProperty = modelProperty->next_sibling())
 					{
-						if (!property || property->type() != node_element)
+						if (!modelProperty || modelProperty->type() != node_element)
 							return false;
 
-						load_model_attribute(property, *models.back());
+						load_model_property(modelProperty, *models[attribName->value()]);
 					}
 				}
 			}
@@ -102,18 +116,19 @@ namespace przurro
 
 		return true;
 	}
-	bool Scene::load_model_attribute(XML_Node * attribute, Model & model)
+	bool Scene::load_model_property(XML_Node * node, Model & model)
 	{
-		String name = attribute->name();
-		String value = attribute->value();
+		String name = node->name();
+		String value = node->value();
 
 		if (name == "position" || name == "rotation" || name == "color" || name == "constant_rotation")
 		{
 			vector<String> stringChunks  = String_Utilities::string_splitter(value, ',');
-			Vector3f values ({stof(stringChunks[0]),stof(stringChunks[1]),stof(stringChunks[2])});
-
+			
 			if (stringChunks.size() == 3)
 			{
+				Vector3f values({ stof(stringChunks[0]),stof(stringChunks[1]),stof(stringChunks[2]) });
+
 				if (name == "position")
 				{
 					model.set_position(values);
@@ -126,13 +141,27 @@ namespace przurro
 				{
 					model.set_constant_rotation(values);
 				}
-				else if (name == "color")
+			}
+			else if (stringChunks.size() == 4)
+			{
+				Vector4f values({ stof(stringChunks[X]),stof(stringChunks[Y]),stof(stringChunks[Z]), stof(stringChunks[W]) });
+
+				if (name == "default_color")
+					model.set_default_color(values);
+
+				if (name == "mesh_color")
 				{
-					model.set_mesh_color(values);
+					XML_Attr * attribName = node->first_attribute("mesh_name");
+
+					if (!attribName)
+						return false;
+					if (attribName->name() != "mesh_name")
+						return false;
+
+					String meshName = attribName->value();
+
+					model.set_mesh_color(meshName, values);
 				}
-
-
-				return true;
 			}
 		}
 		else if (name == "scale") 

@@ -2,6 +2,8 @@
 
 #include <unordered_map>
 #include <list>
+#include <Vector.hpp>
+#include <Point.hpp>
 
 namespace przurro
 {
@@ -14,7 +16,7 @@ namespace przurro
 	using i_Buffer = std::vector<int>;
 	using f_Buffer = std::vector<float>;
 
-	using Point4f_Buffer = std::vector<Point4f>;
-	using Point4i_Buffer = std::vector <Point4i>;
-	using Vector4f_Buffer = std::vector<Vector4f>;
+	using Point4f_Buffer = std::vector<toolkit::Point4f>;
+	using Point4i_Buffer = std::vector <toolkit::Point4i>;
+	using Vector4f_Buffer = std::vector<toolkit::Vector4f>;
 }

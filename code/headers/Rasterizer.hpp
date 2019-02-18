@@ -29,7 +29,7 @@
         public:
 
             typedef COLOR_BUFFER_TYPE            Color_Buffer;
-            typedef typename Color_Buffer::Color_Buffer Color_Buffer;
+            typedef typename Color_Buffer::Color Color;
 
         private:
 
@@ -59,19 +59,19 @@
 
         public:
 
-            void set_mesh_color (const Color_Buffer & new_color)
+            void set_color (const Color & new_color)
             {
-                color_buffer.set_mesh_color (new_color);
+                color_buffer.set_color (new_color);
             }
 
-            void set_mesh_color (int r, int  g, int b)
+            void set_color (int r, int  g, int b)
             {
-                color_buffer.set_mesh_color (r, g, b);
+                color_buffer.set_color (r, g, b);
             }
 
             void clear ()
             {
-                for (Color_Buffer * c = color_buffer.colorBuffer (), * end = c + color_buffer.size (); c < end; c++)
+                for (Color * c = color_buffer.colors (), * end = c + color_buffer.size (); c < end; c++)
                 {
                     *c = 0;
                 }

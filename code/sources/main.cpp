@@ -9,7 +9,10 @@
  *                                                                             *
 \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#include "View.hpp"
+#include "declarations/Internal.hpp"
+
+#include "Scene.hpp"
+
 #include <SFML/Window.hpp>
 #include <SFML/OpenGL.hpp>
 
@@ -19,12 +22,16 @@ using namespace przurro;
 static const size_t window_width  = 800;
 static const size_t window_height = 600;
 
+
 int main ()
 {
     // Create the window and the view that will be shown within the window:
 
     Window window(VideoMode(window_width, window_height), "Z-Buffer", Style::Titlebar | Style::Close, ContextSettings(32));
-    View   view  (window_width, window_height);
+
+	std::string assetsFolderPath = "../../Assets/Scenes/";
+
+    Scene  scene(assetsFolderPath, window_width, window_height);
 
     // Initialization:
 
@@ -61,11 +68,11 @@ int main ()
 
         // Update the view:
 
-        view.update ();
+        scene.update ();
 
         // Repaint the view:
 
-        view.paint ();
+        scene.draw ();
 
         // Swap the OpenGL buffers:
 

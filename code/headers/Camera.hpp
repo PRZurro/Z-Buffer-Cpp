@@ -2,18 +2,22 @@
 
 #include "declarations/Math.hpp"
 
+#include "Scene_Object.hpp"
+
 namespace przurro
 {
-	class Camera
+	class Camera : public Scene_Object
 	{
 	private:
 
-		Transform_Matrix3f transform;
 		Projection_Matrix3f projectionMatrix;
+
+		size_t width;
+		size_t height;
 
 	public:
 
-		Camera(float nearPlaneD, float farPlaneD, float fovDegrees, size_t width, size_t height);
+		Camera(float nearPlaneD, float farPlaneD, float fovDegrees, size_t inputWidth, size_t inputHeight);
 
 	public:
 
@@ -21,6 +25,14 @@ namespace przurro
 		{
 			return projectionMatrix;
 		}
+
+		size_t get_width()
+		{
+			return width;
+		}
+		size_t get_height()
+		{
+			return height;
+		}
 	};
 }
-

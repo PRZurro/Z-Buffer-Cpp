@@ -13,18 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\Internal">
-      <UniqueIdentifier>{5fc8b88f-d157-433a-b81b-b6bea94c54d0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Declarations">
       <UniqueIdentifier>{c4d51c90-61d6-4ba6-a437-b2ec6c1de04f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\code\sources\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\code\sources\View.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\code\sources\Model.cpp">
@@ -39,6 +33,9 @@
     <ClCompile Include="..\..\code\sources\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\code\sources\Scene_Object.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\code\headers\Color_Buffer.hpp">
@@ -51,9 +48,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\code\headers\Rasterizer.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\code\headers\View.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\code\headers\Model.hpp">
@@ -79,6 +73,9 @@
     </ClInclude>
     <ClInclude Include="..\..\code\headers\internal\Declarations\Internal.hpp">
       <Filter>Header Files\Declarations</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\code\headers\Scene_Object.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

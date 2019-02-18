@@ -1,23 +1,34 @@
 #pragma once
 
-#include "Declarations.hpp"
+#include "declarations/Internal.hpp"
+#include "declarations/External_Tools.hpp"
+#include "declarations/Containers.hpp"
+
 #include "Rasterizer.hpp"
 
 namespace przurro
 {
-	class Model;
-	
 	class Scene
 	{
 	private:
 
 		Model_Map models;
-		
+
 		Camera_sptr activeCamera;
+
+	private: 
+
+		Rasterizer<Color_Buff>	rasterizer;
+		Color_Buff	colorBuffer;
+
+
+	private:
+
+		String assetsFolderPath;
 
 	public:
 
-		Scene();
+		Scene(String & inputAssetsFolderPath, size_t inputWidth = 800, size_t inputHeight = 600, float nearPlaneD = .4f, float farPlaneD = 1000.f, float fovDegrees = 90.f);
 
 		~Scene()
 		{
@@ -26,14 +37,14 @@ namespace przurro
 
 	public:
 
-		void update(Camera * activeCamera);
-		void draw(Rasterizer<Color_Buff> & rasterizer);
+		void update();
+		void draw();
 
 	public:
 
-		bool load_scene(String xmlFilePath);
+		bool load_scene(String & xmlFilePath);
 		bool load_models(XML_Node * modelNodeRoot);
-		bool load_model_attribute(XML_Node * attribute, Model & model);
+		bool load_model_property(XML_Node * attribute, Model & model);
 	};
 
 }

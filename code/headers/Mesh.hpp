@@ -3,50 +3,43 @@
 #include "declarations/Internal.hpp"
 #include "declarations/Containers.hpp"
 #include "declarations/Math.hpp"
-#include "declarations/External_Tools.hpp"
 
 #include "Rasterizer.hpp"
 #include "Color_Buffer_Rgba8888.hpp"
-
-#include <tiny_obj_loader.h>
 
 namespace przurro
 {
 	class Mesh
 	{
-		typedef struct Mesh_Attributes
-		{
-			Point4f_Buffer  *	originalVertices;
-			Vector4f_Buffer	*	ovNormals; // original vertices normals, 4th component must be set to '0.f'
-			Color_Buff			ovColors; // original vertices colors
-			i_Buffer			originalIndices;
+	private:
 
-			Point4f_Buffer		transformedVertices;
-			Point4i_Buffer		displayVertices;
+		Point4f_Buffer  &	ovPositions;
+		Vector4f_Buffer	&	ovNormals; // original vertices normals, 4th component must be set to '0.f'
+		i_Buffer			ovIndices;
 
-			Color				color; // Main color of the vertices
+		Point4f_Buffer		tvPositions;
+		CColor_Buff			tvColors; // transformed vertices colors
 
-			~Mesh_Attributes()
-			{
-				transformedVertices.clear();
-				displayVertices.clear();
-			}
-			//std::vector<toolkit::Point2f>			texcoords;  // 'vt'
-		};
+		Point4i_Buffer		displayVertices;
 
-		using Mesh_Attributes_sptr = std::shared_ptr<Mesh_Attributes>;
+		Color				color; // Main color of the vertices
+
+		//std::vector<toolkit::Point2f>			texcoords;  // 'vt'
 
 	private:
 
 		String name;
 		
-	private:
-
-		Mesh_Attributes_sptr attributes;
-
 	public:
 
-		Mesh(Point4f_Buffer * vertexBuffer, Vector4f_Buffer * normalBuffer, const Shape_t & shape);
+		Mesh(Point4f_Buffer & vertexBuffer, Vector4f_Buffer & normalBuffer, size_t nVertex, String & meshName);
+		
+		~Mesh()
+		{
+			tvPositions.clear();
+			ovIndices.clear();
+			displayVertices.clear();
+		}
 
 	public:
 
@@ -57,9 +50,24 @@ namespace przurro
 
 		bool is_frontface(const Point4f * const projected_vertices, const int * const indices);
 
-		void set_color(Vector3f colorV)
+		void set_color(const Vector4f & colorV)
 		{
-			attributes.color.set(colorV[X], colorV[Y], colorV[Z]);
+			color.set(colorV[X], colorV[Y], colorV[Z]);
 		}
+
+
+	public: // Clipping
+
+		int Mesh::clip_with_viewport_2d(const Point4f * vertices, int * first_index, int * last_index, Point4f * clipped_vertices);
+		int clip_with_line_2d(const Point4f * vertices, int * first_index, int * last_index, Point4f * clipped_vertices, float a, float b, float c);
+		Point4f intersect(float a, float b, float c, const Point4f & point0, const Point4f & point1);
+
+	public:
+
+		i_Buffer & get_original_indices()
+		{
+			return ovIndices;
+		}
+		
 	};
 }

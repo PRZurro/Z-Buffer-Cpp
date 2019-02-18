@@ -25,7 +25,7 @@
         {
         public:
 
-            struct Color_Buffer
+            struct Color
             {
                 uint16_t value;
 
@@ -34,19 +34,19 @@
                     value = (r >> 3 << 11) | (g >> 2 << 5) | (b >> 3);
                 }
 
-                Color_Buffer & operator = (const uint16_t & new_value)
+                Color & operator = (const uint16_t & new_value)
                 {
                     value = new_value;
                     return (*this);
                 }
             };
 
-            typedef std::vector< Color_Buffer > Buffer;
+            typedef std::vector< Color > Buffer;
 
         private:
 
             Buffer buffer;
-            Color_Buffer  color;
+            Color  color;
 
         public:
 
@@ -59,19 +59,19 @@
 
         public:
 
-            Color_Buffer * colorBuffer ()
+            Color * colors ()
             {
                 return (&buffer.front ());
             }
 
-            const Color_Buffer * colorBuffer () const
+            const Color * colors () const
             {
                 return (&buffer.front ());
             }
 
             int bits_per_color () const
             {
-                return (sizeof(Color_Buffer) * 8);
+                return (sizeof(Color) * 8);
             }
 
             size_t size () const
@@ -81,12 +81,12 @@
 
         public:
 
-            void set_mesh_color (const Color_Buffer & new_color)
+            void set_color (const Color & new_color)
             {
                 color = new_color;
             }
 
-            void set_mesh_color (int r, int g, int b)
+            void set_color (int r, int g, int b)
             {
                 color.set (r, g, b);
             }
@@ -108,7 +108,7 @@
                 // within the context of this example.
 
                 glRasterPos2i (raster_x, raster_y);
-                glDrawPixels  (width, height, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, colorBuffer ());
+                glDrawPixels  (width, height, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, colors ());
             }
 
         };
