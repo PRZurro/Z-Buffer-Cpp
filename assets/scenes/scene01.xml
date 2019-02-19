@@ -1,5 +1,17 @@
 <?xml version="1.0"?>
-
-<models>
-
-</models>
+<scene>
+    <models>
+        <model path = "../../assets/models/landscape-blender.obj" name = "island-landscape">
+            <position>0.0,0.0,0.0</position>
+            <rotation>0.0,0.0,0.0</rotation>
+            <!-- <constant_rotation>0.0,0.0,0.0</constant_rotation> -->
+            <!-- <default_color></default_color> -->
+        </model>
+        <!-- <model path = "assets/models/propeller-blender.obj" name = "propeller">
+            <position> </position>
+            <rotation> </rotation>
+            <constant_rotation> </constant_rotation>
+            <default_color></default_color>
+        </model> -->
+    </models>
+</scene>

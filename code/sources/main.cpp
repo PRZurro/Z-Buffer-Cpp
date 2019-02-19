@@ -29,9 +29,9 @@ int main ()
 
     Window window(VideoMode(window_width, window_height), "Z-Buffer", Style::Titlebar | Style::Close, ContextSettings(32));
 
-	std::string assetsFolderPath = "../../Assets/Scenes/";
+	std::string assetsFolderPath = "../../assets/scenes/scene01.xml";
 
-    Scene  scene(assetsFolderPath, window_width, window_height);
+    Scene scene(assetsFolderPath, window_width, window_height);
 
     // Initialization:
 

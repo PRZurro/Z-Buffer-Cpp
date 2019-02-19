@@ -14,10 +14,12 @@ namespace przurro
 {
 	Scene::Scene(String & inputAssetsFolderPath, size_t inputWidth, size_t inputHeight, float nearPlaneD, float farPlaneD, float fovDegrees)
 		: assetsFolderPath(inputAssetsFolderPath),
-		colorBuffer(inputWidth,inputHeight), 
-		rasterizer(colorBuffer), 
-		activeCamera(new Camera(nearPlaneD ,farPlaneD,fovDegrees,inputWidth,inputHeight))
+		activeCamera(new Camera(nearPlaneD, farPlaneD, fovDegrees, inputWidth, inputHeight)),
+		colorBuffer(inputWidth, inputHeight),
+		rasterizer(colorBuffer)
 	{
+		models = {};
+		load_scene(assetsFolderPath);
 	}
 
 	void Scene::update()
@@ -46,25 +48,25 @@ namespace przurro
 	{
 		bool loaded = false;
 
-		rapidxml::xml_document<> doc;
-		XML_Node * rootNode;
+		String xmlFilePathTemp = xmlFilePath; //Apparently, rapixml need to modify the string
 
 		// Read the xml file into a vector
-		ifstream theFile(xmlFilePath);
+		ifstream theFile(xmlFilePathTemp);
 		vector<char> buffer((istreambuf_iterator<char>(theFile)), istreambuf_iterator<char>());
 		buffer.push_back('\0');
+
+		rapidxml::xml_document<> doc;
+		XML_Node * rootNode;
 
 		// parse the buffer using the xml file parsing library into doc 
 		doc.parse<0>(&buffer[0]);
 		//find our root node
 		rootNode = doc.first_node("scene");
 
-		if (!rootNode || rootNode->first_node("models")->type() != node_element)
-		{
+		if (!rootNode || rootNode->type() != node_element)
 			return false;
-		}
 
-		if (rootNode->first_node("models")->name() != "models")
+		if (String(rootNode->name()) != "scene")
 			return false;
 
 		return load_models(rootNode->first_node("models"));
@@ -72,15 +74,18 @@ namespace przurro
 
 	bool Scene::load_models(XML_Node * modelNodeRoot)
 	{
+		if (!modelNodeRoot || modelNodeRoot->type() != node_element)
+			return false;
+
+		if (String(modelNodeRoot->name()) != "models")
+			return false;
+
 		XML_Node * model = modelNodeRoot->first_node("model");
 
 		if (!model || model->type() != node_element)
 		{
 			return false;
 		}
-
-		if (model->first_node("models")->name() != "model")
-			return false;
 
 		for (model; model; model = model->next_sibling())
 		{
@@ -95,10 +100,10 @@ namespace przurro
 					if (!attribPath || !attribName)
 						return false;
 
-					if(attribPath->name() != "path" || attribName->name() != "name")
+					if(String(attribPath->name()) != "path" || String(attribName->name()) != "name")
 						return false;
 
-					models[name] = Model_sptr(new Model("folderPath", attribName->value()));
+					models[name] = Model_sptr(new Model(attribPath->value(), attribName->value()));
 
 					XML_Node * modelProperty = model->first_node();
 
@@ -149,7 +154,8 @@ namespace przurro
 				if (name == "default_color")
 					model.set_default_color(values);
 
-				if (name == "mesh_color")
+				// can't set the mesh color
+				/*if (name == "mesh_color")
 				{
 					XML_Attr * attribName = node->first_attribute("mesh_name");
 
@@ -161,7 +167,7 @@ namespace przurro
 					String meshName = attribName->value();
 
 					model.set_mesh_color(meshName, values);
-				}
+				}*/
 			}
 		}
 		else if (name == "scale") 

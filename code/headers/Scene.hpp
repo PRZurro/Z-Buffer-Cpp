@@ -18,8 +18,9 @@ namespace przurro
 
 	private: 
 
-		Rasterizer<Color_Buff>	rasterizer;
 		Color_Buff	colorBuffer;
+
+		Rasterizer<Color_Buff>	rasterizer;
 
 
 	private:

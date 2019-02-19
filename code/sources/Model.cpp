@@ -14,7 +14,7 @@ namespace przurro
 		std::vector< Shape_t   > shapes;
 		std::vector< Material_t > materials;
 
-		String path = assetFolderPath + assetName;
+		String path = assetFolderPath;
 
 		// Attempt to load an object
 
