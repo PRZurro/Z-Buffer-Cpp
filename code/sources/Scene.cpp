@@ -92,7 +92,6 @@ namespace przurro
 			if (model->type() == node_element)
 			{
 				// Iterate over each entity node
-				String name = "";
 				if (String(model->name()) == "model")
 				{
 					XML_Attr * attribPath = model->first_attribute("path"), * attribName = model->first_attribute("name");;
@@ -103,7 +102,9 @@ namespace przurro
 					if(String(attribPath->name()) != "path" || String(attribName->name()) != "name")
 						return false;
 
-					models[name] = Model_sptr(new Model(attribPath->value(), attribName->value()));
+					models[attribName->value()] = Model_sptr(new Model(attribPath->value(), attribName->value()));
+
+					models[attribName->value()]->set_parent(activeCamera->get_transform());
 
 					XML_Node * modelProperty = model->first_node();
 
@@ -112,7 +113,7 @@ namespace przurro
 						if (!modelProperty || modelProperty->type() != node_element)
 							return false;
 
-						load_model_property(modelProperty, *models[attribName->value()]);
+						load_model_property(modelProperty, *models[attribName->value()].get());
 					}
 				}
 			}
@@ -132,7 +133,7 @@ namespace przurro
 			
 			if (stringChunks.size() == 3)
 			{
-				Vector3f values({ stof(stringChunks[0]),stof(stringChunks[1]),stof(stringChunks[2]) });
+				Vector3f values({stof(stringChunks[0]), stof(stringChunks[1]), stof(stringChunks[2])});
 
 				if (name == "position")
 				{

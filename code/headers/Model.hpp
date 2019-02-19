@@ -22,7 +22,6 @@ namespace przurro
 		
 	private:
 
-		String name;
 		String error;
 
 	public:

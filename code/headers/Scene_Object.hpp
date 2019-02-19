@@ -9,6 +9,11 @@ namespace przurro
 	{
 	protected:
 
+		String name;
+		//Scene scene;
+
+	protected:
+
 		Transform_Matrix3f	localTransform;
 		Transform_Matrix3f	globalTransform;
 
@@ -16,6 +21,11 @@ namespace przurro
 
 		Vector3f			position, rotation, constantRotation;
 		float				scale;
+
+
+	public:
+
+		Scene_Object(const String & inputName);
 
 	public:
 
@@ -30,5 +40,22 @@ namespace przurro
 
 		void set_local_transform(const Transform_Matrix3f newTransform);
 		void set_transform(const Transform_Matrix3f newTransform);
+
+		void set_parent(Transform_Matrix3f & parent);
+
+	public:
+
+		Transform_Matrix3f * get_parent()const
+		{
+			return transformParent;
+		}
+
+		Transform_Matrix3f & get_transform()
+		{
+			return globalTransform;
+		}
+	private:
+
+		void update_transform();
 	};
 }

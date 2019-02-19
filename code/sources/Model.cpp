@@ -8,7 +8,7 @@
 namespace przurro
 {
 	Model::Model(const String & assetFolderPath, const String & assetName)
-		: name(assetName)
+		: Scene_Object(assetName)
 	{
 		Attrib_t             attribs;
 		std::vector< Shape_t   > shapes;
@@ -24,26 +24,29 @@ namespace przurro
 		}
 
 		// Checking if the data is valid
-
-		size_t vertexComponentsN = (size_t)attribs.vertices.size();
-		size_t normalComponentsN = (size_t)attribs.normals.size();
-		size_t shapesN = (size_t)shapes.size();
-
-		if (shapesN == 0) { error = String("There're no shapes in ") + path; return; }
-		if (vertexComponentsN == 0) { error = String("There're no vertices in ") + path; return; }
-		if (shapesN == 0) { error = String("There're no normals in ") + path; return; }
+		if ((size_t)shapes.size() == 0) { error = String("There're no shapes in ") + path; return; }
+		if ((size_t)attribs.vertices.size() == 0) { error = String("There're no vertices in ") + path; return; }
+		if ((size_t)attribs.normals.size() == 0) { error = String("There're no normals in ") + path; return; }
 
 		//Here is loaded the vertex and normal arrays 
+		size_t indicesN = 0;
+		for (Shape_t & shape : shapes)
+		{
+			indicesN += (size_t)shape.mesh.indices.size();
+		}
+
+		ovPositions.resize(indicesN);
+		ovNormals.resize(indicesN);
 
 		size_t verticesProcessedN = 0, indicesProcessedN;
 		for (Shape_t & shape : shapes)
 		{
 			const std::vector< Index_t > &	indices = shape.mesh.indices;
-			const size_t					nIndices = (size_t) indices.size();
+			const size_t					indicesMeshN = (size_t) indices.size();
 
 			Mesh_sptr tempMesh(new Mesh(ovPositions, ovNormals, indices.size(), shape.name));
 			i_Buffer & tempMeshIndices = tempMesh->get_original_indices();
-			tempMeshIndices.resize(nIndices);
+			tempMeshIndices.resize(indicesMeshN);
 
 			// We loop through the faces index array 
 			indicesProcessedN = 0;
@@ -54,26 +57,22 @@ namespace przurro
 				size_t vertexIndex = 3 * index.vertex_index; // Storing the index of the first component of the vertex (X)
 				size_t normalIndex = 3 * index.normal_index; // Storing the index of the first component of the normal (X)
 
-				ovPositions.push_back
-				(	
-					Point4f
-					({
-						attribs.vertices[vertexIndex + X],
-						attribs.vertices[vertexIndex + Y],
-						attribs.vertices[vertexIndex + Z],
-						1.f
-					})
-				);
-				ovNormals.push_back
-				(
-					Vector4f
-					({
-						attribs.normals[normalIndex + X],
-						attribs.normals[normalIndex + Y],
-						attribs.normals[normalIndex + Z],
-						0.f
-					})
-				);
+				ovPositions[verticesProcessedN] = Point4f
+				({
+					attribs.vertices[vertexIndex + X],
+					attribs.vertices[vertexIndex + Y],
+					attribs.vertices[vertexIndex + Z],
+					1.f
+				});
+
+				ovNormals[verticesProcessedN] = Vector4f
+				({
+					attribs.normals[normalIndex + X],
+					attribs.normals[normalIndex + Y],
+					attribs.normals[normalIndex + Z],
+					0.f
+				});
+
 				++indicesProcessedN;
 			}
 			++verticesProcessedN;
