@@ -5,7 +5,12 @@ namespace przurro
 	Mesh::Mesh(Point4f_Buffer & vertexBuffer, Vector4f_Buffer & normalBuffer, size_t nVertex, String & meshName)
 		: name(meshName), ovPositions(vertexBuffer), ovNormals(normalBuffer)
 	{
-		tvColors.resize(ovPositions.size());
+	}
+
+	void Mesh::initialize()
+	{
+		tvPositions.resize(ovIndices.size());
+		tvColors.resize(ovIndices.size());
 	}
 
 	void Mesh::update(Transform_Matrix3f modelTransform)

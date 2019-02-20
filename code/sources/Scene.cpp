@@ -155,8 +155,7 @@ namespace przurro
 				if (name == "default_color")
 					model.set_default_color(values);
 
-				// can't set the mesh color
-				/*if (name == "mesh_color")
+				if (name == "mesh_color")
 				{
 					XML_Attr * attribName = node->first_attribute("mesh_name");
 
@@ -168,7 +167,7 @@ namespace przurro
 					String meshName = attribName->value();
 
 					model.set_mesh_color(meshName, values);
-				}*/
+				}
 			}
 		}
 		else if (name == "scale") 

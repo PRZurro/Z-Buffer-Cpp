@@ -22,7 +22,6 @@ namespace przurro
 
 		Rasterizer<Color_Buff>	rasterizer;
 
-
 	private:
 
 		String assetsFolderPath;

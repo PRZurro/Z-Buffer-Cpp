@@ -4,8 +4,15 @@
         <model path = "../../assets/models/landscape-blender.obj" name = "island-landscape">
             <position>0.5,0.0,0.0</position>
             <rotation>0.0,0.0,0.0</rotation>
-            <!-- <constant_rotation>0.0,0.0,0.0</constant_rotation> -->
-            <!-- <default_color></default_color> -->
+            <constant_rotation>0.0,0.0,0.0</constant_rotation>
+            <default_color></default_color>
+            <mesh_color name= "L003"></mesh_color>
+            <mesh_color name= "cloud2"></mesh_color>
+            <mesh_color name= "cloud1"></mesh_color>
+            <mesh_color name= "Mill"></mesh_color>
+            <mesh_color name= "L003"></mesh_color>
+            <mesh_color name= "L003"></mesh_color>
+            <mesh_color name= "L003"></mesh_color>
         </model>
         <!-- <model path = "assets/models/propeller-blender.obj" name = "propeller">
             <position> </position>

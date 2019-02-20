@@ -18,6 +18,8 @@ namespace przurro
 		Point4f_Buffer ovPositions;
 		Vector4f_Buffer	ovNormals; // original vertices normals, 4th component must be set to '0.f'
 
+
+
 		Color defaultColor;
 		
 	private:

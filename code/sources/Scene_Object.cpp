@@ -76,11 +76,12 @@ namespace przurro
 		rotationY.set< Rotation_Matrix3f::AROUND_THE_Y_AXIS >(rotation[Y]);
 		rotationZ.set< Rotation_Matrix3f::AROUND_THE_Z_AXIS >(rotation[Z]);
 
+		//Creation of the unified transformation matrix :
+
 		globalTransform = localTransform = positionMatrix * rotationX * rotationY * rotationZ * scaleMatrix;
 
 		if(transformParent)
 			globalTransform = globalTransform * (*transformParent);
-
 	}
 
 }

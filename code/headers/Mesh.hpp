@@ -43,6 +43,7 @@ namespace przurro
 
 	public:
 
+		void initialize();
 		void update(Transform_Matrix3f modelTransform);
 		void draw(Rasterizer<Color_Buff> & rasterizer);
 
