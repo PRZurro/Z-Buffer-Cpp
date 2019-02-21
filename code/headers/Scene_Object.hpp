@@ -45,7 +45,7 @@ namespace przurro
 
 	public:
 
-		Transform_Matrix3f * get_parent()const
+		Transform_Matrix3f * get_parent() const
 		{
 			return transformParent;
 		}
@@ -54,6 +54,14 @@ namespace przurro
 		{
 			return globalTransform;
 		}
+
+		Transform_Matrix3f get_inverse_transform() const
+		{
+			Transform_Matrix3f inverseMatrix = globalTransform;
+		
+			return inverseMatrix;
+		}
+
 	private:
 
 		void update_transform();

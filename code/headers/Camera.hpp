@@ -21,7 +21,7 @@ namespace przurro
 
 	public:
 
-		Projection_Matrix3f & get_projection_matrix()
+		const Projection_Matrix3f & get_projection_matrix() const
 		{
 			return projectionMatrix;
 		}

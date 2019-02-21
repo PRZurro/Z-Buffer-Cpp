@@ -44,8 +44,8 @@ namespace przurro
 
 	public:
 
-		bool set_mesh_color(String & meshName, const Vector4f & colorV);
-		void set_default_color(const Vector4f & colorRGB);
+		bool set_mesh_color(String & meshName, const Vector4i & colorV);
+		void set_default_color(const Vector4i & colorRGB);
 
 	public:
 

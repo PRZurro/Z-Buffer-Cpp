@@ -127,7 +127,7 @@ namespace przurro
 		String name = node->name();
 		String value = node->value();
 
-		if (name == "position" || name == "rotation" || name == "color" || name == "constant_rotation")
+		if (name == "position" || name == "rotation" || name == "color" || name == "constant_rotation"|| name == "default_color" || name == "mesh_color")
 		{
 			vector<String> stringChunks  = String_Utilities::string_splitter(value, ',');
 			
@@ -150,32 +150,34 @@ namespace przurro
 			}
 			else if (stringChunks.size() == 4)
 			{
-				Vector4f values({ stof(stringChunks[X]),stof(stringChunks[Y]),stof(stringChunks[Z]), stof(stringChunks[W]) });
+				Vector4i values({ stoi(stringChunks[X]),stoi(stringChunks[Y]),stoi(stringChunks[Z]), stoi(stringChunks[W]) });
 
 				if (name == "default_color")
+				{
 					model.set_default_color(values);
-
+					return true;
+				}
 				if (name == "mesh_color")
 				{
 					XML_Attr * attribName = node->first_attribute("mesh_name");
 
 					if (!attribName)
 						return false;
-					if (attribName->name() != "mesh_name")
+					if ((String)attribName->name() != "mesh_name")
 						return false;
 
 					String meshName = attribName->value();
 
-					model.set_mesh_color(meshName, values);
+					return model.set_mesh_color(meshName, values);
 				}
 			}
 		}
 		else if (name == "scale") 
 		{
 			model.set_scale(stof(value));
-			return true;
 		}
+		else return false;
 
-		return false;
+		return true;
 	}
 }

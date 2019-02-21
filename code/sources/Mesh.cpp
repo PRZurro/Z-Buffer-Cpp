@@ -41,8 +41,8 @@ namespace przurro
 			// La coordenada Z se escala a un valor suficientemente grande dentro del
 			// rango de int (que es lo que espera fill_convex_polygon_z_buffer).
 
-		float widthHalf = rasterizer.get_color_buffer().get_width() / 2;
-		float heightHalf = rasterizer.get_color_buffer().get_height() / 2;
+		float widthHalf = size_t(rasterizer.get_color_buffer().get_width()) / 2.f;
+		float heightHalf = size_t(rasterizer.get_color_buffer().get_height()) / 2.f;
 
 		Scale_Matrix3f			scaling = Scale_Matrix3f(widthHalf, heightHalf, 100000000.f);
 		Translation_Matrix3f    translation = Translation_Matrix3f(widthHalf, heightHalf, 0.f);

@@ -77,5 +77,8 @@
     <ClInclude Include="..\..\code\headers\Scene_Object.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\code\headers\Light.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

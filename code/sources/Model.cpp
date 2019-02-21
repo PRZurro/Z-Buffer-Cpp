@@ -98,7 +98,7 @@ namespace przurro
 			mesh.second->draw(rasterizer);
 	}
 
-	bool Model::set_mesh_color(String & meshName, const Vector4f & colorV)
+	bool Model::set_mesh_color(String & meshName, const Vector4i & colorV)
 	{
 		auto iterator = meshes.find(meshName);
 
@@ -109,8 +109,11 @@ namespace przurro
 
 		return true;
 	}
-	void Model::set_default_color(const Vector4f & colorRGB)
+	void Model::set_default_color(const Vector4i & colorRGB)
 	{
 		defaultColor.set(colorRGB[X], colorRGB[Y], colorRGB[Z]);
+
+		for (auto & meshIterator : meshes)
+			meshIterator.second->set_color(defaultColor);
 	}
 }

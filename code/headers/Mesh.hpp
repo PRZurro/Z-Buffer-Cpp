@@ -51,9 +51,14 @@ namespace przurro
 
 		bool is_frontface(const Point4f * const projected_vertices, const int * const indices);
 
-		void set_color(const Vector4f & colorV)
+		void set_color(const Vector4i & colorV)
 		{
 			color.set(colorV[X], colorV[Y], colorV[Z]);
+		}
+
+		void set_color(const Color & inputColor)
+		{
+			color = inputColor;
 		}
 
 
