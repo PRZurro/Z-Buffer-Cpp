@@ -87,22 +87,23 @@ namespace przurro
 	{
 		//transform global = transform_local * local scale 
 
-		Matrix44f cameraMatrix = activeCamera->look_at();
-		Matrix44f projectedTransformation = cameraMatrix * Matrix44f(activeCamera->get_projection_matrix()) * Matrix44f(globalTransform);
+		Matrix44f cameraMatrix = activeCamera->look_at(); // get the camera coordinates
 
-		Vector4f lightV = cameraMatrix * Matrix41f();
-		vec4 lightglmV = normalize(vec4(lightV[X], lightV[Y], lightV[Z], lightV[W]));
-		lightV = Vector4f({lightglmV[X], lightglmV[Y], lightglmV[Z], lightglmV[W]});
+		Vector4f lightV = cameraMatrix * Matrix41f(inputLight->get_direction()); // cache:  calculate the light vector from the camera coordinates
+		vec4 lightglmV = normalize(vec4(lightV[X], lightV[Y], lightV[Z], lightV[W])); 
+
+		cameraMatrix = cameraMatrix * Matrix44f(globalTransform); // cache: get the model camera coordinates
+		Matrix44f projectedTransformation = cameraMatrix * Matrix44f(activeCamera->get_projection_matrix()); // cache: pre calculate the projected transformation
 
 		if (inputLight)
 		{
 			for (auto & mesh : meshes)
-				mesh.second->update(cameraMatrix, projectedTransformation, lightV, inputLight->get_intensity());
+				mesh.second->update(cameraMatrix, projectedTransformation, lightglmV, inputLight->get_intensity());
 		}
 		else
 		{
 			for (auto & mesh : meshes)
-				mesh.second->update(cameraMatrix, projectedTransformation, lightV);
+				mesh.second->update(cameraMatrix, projectedTransformation, lightglmV);
 		}
 			
 	}

@@ -8,9 +8,9 @@ namespace przurro
 		: Scene_Object("camera-undefined"),
 		width(inputWidth), 
 		height(inputHeight), 
-		projectionMatrix(nearPlaneD, farPlaneD, fovDegrees, width* (1/height)),
+		projectionMatrix(nearPlaneD, farPlaneD, fovDegrees, width* (1.f/height)),
 		viewTarget(target),
-		defaultViewDirection({0.f, 3.f, 10000.f})
+		defaultViewDirection({0.f, 0.f, 10000.f})
 	{}
 
 	Matrix44f Camera::look_at(const Vector3f & at)
@@ -24,7 +24,7 @@ namespace przurro
 		vec3 right = cross(normalize(tmp), forward);
 		vec3 up = cross(forward, right);
 
-		Matrix44f camToWorld;
+		Matrix44f camToWorld = Matrix44f::identity;
 
 		camToWorld[0][0] = right.x; 
 		camToWorld[0][1] = right.y;

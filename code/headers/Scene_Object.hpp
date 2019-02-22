@@ -22,7 +22,6 @@ namespace przurro
 		Vector3f			position, rotation, constantRotation;
 		float				scale;
 
-
 	public:
 
 		Scene_Object(const String & inputName);

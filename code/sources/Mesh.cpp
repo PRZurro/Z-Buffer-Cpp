@@ -10,13 +10,35 @@ namespace przurro
 	void Mesh::initialize()
 	{
 		tvPositions.resize(ovIndices.size());
+		tvNormals.resize(ovIndices.size());
 		tvColors.resize(ovIndices.size());
 	}
 
-	void Mesh::update(const Transform_Matrix3f & cameraMatrix, const Transform_Matrix3f & projectedTransform, const Vector4f & lightVector, float lightIntensity, float ambientalIntensity)
+	void Mesh::update(Matrix44f & cameraMatrix, Matrix44f & projectedTransform, vec4 & lightVector, float lightIntensity, float ambientalIntensity)
 	{
 		for (size_t index = 0, number_of_vertices = tvPositions.size(); index < number_of_vertices; ++index)
 		{
+			Point4f vertexPosition = cameraMatrix * Matrix41f(ovPositions[ovIndices[index]]); //Calculate the transformed vertex position
+			Vector4f vertexNormal = cameraMatrix * Matrix41f(ovNormals[ovIndices[index]]); //Calculate the transformed normal vector
+
+			vec4 glmNormal({ vertexNormal[X], vertexNormal[Y], vertexNormal[Z], vertexNormal[W]});
+
+			float intensity = std::max(dot(lightVector, glmNormal), 0.f) + ambientalIntensity;
+			intensity = std::min(intensity, 1.f);
+
+			Color & tColor = tvColors[index];
+			tColor.set(tColor.data.component.r * intensity, tColor.data.component.g * intensity, tColor.data.component.b * intensity);
+
+			vertexPosition = projectedTransform * Matrix41f(tvPositions[index]);
+
+			float oneByW = (1.f / vertexPosition[W]);
+
+			vertexNormal[W] = 0.f;
+
+			tvPositions[index] = Point4f({vertexPosition[X] * oneByW, vertexPosition[Y] * oneByW, vertexPosition[Z] * oneByW, 1.f});
+			tvNormals[index] = vertexNormal;
+			
+ 
 			// Se multiplican todos los v�rtices originales con la matriz de transformaci�n y
 			// se guarda el resultado en otro vertex buffer:
 			

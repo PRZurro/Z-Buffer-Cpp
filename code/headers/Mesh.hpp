@@ -18,6 +18,7 @@ namespace przurro
 		i_Buffer			ovIndices;
 
 		Point4f_Buffer		tvPositions;
+		Vector4f_Buffer		tvNormals;
 		CColor_Buff			tvColors; // transformed vertices colors
 
 		Point4i_Buffer		displayVertices;
@@ -44,7 +45,7 @@ namespace przurro
 	public:
 
 		void initialize();
-		void update(const Transform_Matrix3f & cameraMatrix, const Transform_Matrix3f & projectedTransform, const Vector4f & lightVector, float lightIntensity = 2.f, float ambientalIntensity = 0.7f);
+		void update(Matrix44f & cameraMatrix, Matrix44f & projectedTransform, vec4 & lightVector, float lightIntensity = 2.f, float ambientalIntensity = 0.7f);
 		void draw(Rasterizer<Color_Buff> & rasterizer);
 
 	public:

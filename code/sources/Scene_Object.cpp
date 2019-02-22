@@ -4,7 +4,10 @@
 namespace przurro
 {
 	Scene_Object::Scene_Object(const String & inputName)
-		: name(inputName)
+		: name(inputName),
+		position(Vector3f({0.f, 0.f, 0.f})),
+		rotation(position),
+		constantRotation(position)
 	{}
 
 	void Scene_Object::translate(const Vector3f & translationV)
