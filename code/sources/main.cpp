@@ -68,15 +68,15 @@ int main ()
 
         // Update the view:
 
-        //scene.update ();
+        scene.update ();
 
-        //// Repaint the view:
+        // Repaint the view:
 
-        //scene.draw ();
+        scene.draw ();
 
-        //// Swap the OpenGL buffers:
+        // Swap the OpenGL buffers:
 
-        //window.display ();
+        window.display ();
     }
     while (running);
 

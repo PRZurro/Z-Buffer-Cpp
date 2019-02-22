@@ -79,7 +79,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>SFML_STATIC;WIN32;_SCL_SECURE_NO_WARNINGS;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..\..\code\headers\internal;$(SolutionDir)\..\..\code\headers;$(SolutionDir)\..\..\libraries\cpp-toolkit\headers;$(SolutionDir)\..\..\libraries\sfml-2.3-vs-2015\include;$(SolutionDir)\..\..\libraries\gl\headers;$(SolutionDir)\..\..\libraries\tinyobjloader-1.0\include;$(SolutionDir)\..\..\libraries\rapidxml\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\..\..\code\headers\internal;$(SolutionDir)\..\..\code\headers;$(SolutionDir)\..\..\libraries\cpp-toolkit\headers;$(SolutionDir)\..\..\libraries\sfml-2.3-vs-2015\include;$(SolutionDir)\..\..\libraries\gl\headers;$(SolutionDir)\..\..\libraries\tinyobjloader-1.0\include;$(SolutionDir)\..\..\libraries\rapidxml\include;$(SolutionDir)\..\..\libraries\glm</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

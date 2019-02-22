@@ -4,6 +4,7 @@
 #include "declarations/External_Tools.hpp"
 #include "declarations/Containers.hpp"
 
+#include "Light.hpp"
 #include "Rasterizer.hpp"
 
 namespace przurro
@@ -15,6 +16,8 @@ namespace przurro
 		Model_Map models;
 
 		Camera_sptr activeCamera;
+
+		Light infiniteLight;
 
 	private: 
 

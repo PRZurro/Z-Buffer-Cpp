@@ -4,7 +4,7 @@
 
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>
-
+#include <glm.hpp>
 #include <iostream>
 
 namespace przurro
@@ -83,13 +83,28 @@ namespace przurro
 		}
 	}
 
-	void Model::update(Camera * activeCamera)
+	void Model::update(Camera * activeCamera, Light * inputLight)
 	{
 		//transform global = transform_local * local scale 
-		Transform_Matrix3f projectedTransformation = activeCamera->get_projection_matrix() * globalTransform;
 
-		for (auto & mesh : meshes)
-			mesh.second->update(projectedTransformation);
+		Matrix44f cameraMatrix = activeCamera->look_at();
+		Matrix44f projectedTransformation = cameraMatrix * Matrix44f(activeCamera->get_projection_matrix()) * Matrix44f(globalTransform);
+
+		Vector4f lightV = cameraMatrix * Matrix41f();
+		vec4 lightglmV = normalize(vec4(lightV[X], lightV[Y], lightV[Z], lightV[W]));
+		lightV = Vector4f({lightglmV[X], lightglmV[Y], lightglmV[Z], lightglmV[W]});
+
+		if (inputLight)
+		{
+			for (auto & mesh : meshes)
+				mesh.second->update(cameraMatrix, projectedTransformation, lightV, inputLight->get_intensity());
+		}
+		else
+		{
+			for (auto & mesh : meshes)
+				mesh.second->update(cameraMatrix, projectedTransformation, lightV);
+		}
+			
 	}
 
 	void Model::draw(Rasterizer<Color_Buff> & rasterizer)

@@ -26,7 +26,7 @@ namespace przurro
 	{
 		for(auto & model : models)
 		{
-			model.second->update(activeCamera.get());
+			model.second->update(activeCamera.get(),&infiniteLight);
 		}
 	}
 

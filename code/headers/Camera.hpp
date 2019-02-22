@@ -11,13 +11,37 @@ namespace przurro
 	private:
 
 		Projection_Matrix3f projectionMatrix;
+		 
+		Vector3f * viewTarget;
+		Vector3f defaultViewDirection; 
 
 		size_t width;
 		size_t height;
 
 	public:
 
-		Camera(float nearPlaneD, float farPlaneD, float fovDegrees, size_t inputWidth, size_t inputHeight);
+		Camera(float nearPlaneD, float farPlaneD, float fovDegrees, size_t inputWidth, size_t inputHeight, Vector3f * target = nullptr);
+
+	public:
+
+		Matrix44f look_at(const Vector3f& at);
+
+		Matrix44f look_at()
+		{
+			if (!viewTarget)
+			{
+				return look_at(defaultViewDirection);
+			}
+
+			return look_at(*viewTarget);
+		}
+
+	public:
+
+		void set_target(Vector3f * target)
+		{
+			viewTarget = target;
+		}
 
 	public:
 

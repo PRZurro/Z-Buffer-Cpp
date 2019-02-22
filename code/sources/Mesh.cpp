@@ -13,24 +13,24 @@ namespace przurro
 		tvColors.resize(ovIndices.size());
 	}
 
-	void Mesh::update(Transform_Matrix3f modelTransform)
+	void Mesh::update(const Transform_Matrix3f & cameraMatrix, const Transform_Matrix3f & projectedTransform, const Vector4f & lightVector, float lightIntensity, float ambientalIntensity)
 	{
-		for (size_t index = 0, number_of_vertices = tvPositions.size(); index < number_of_vertices; index++)
+		for (size_t index = 0, number_of_vertices = tvPositions.size(); index < number_of_vertices; ++index)
 		{
-			// Se multiplican todos los vértices originales con la matriz de transformación y
+			// Se multiplican todos los vï¿½rtices originales con la matriz de transformaciï¿½n y
 			// se guarda el resultado en otro vertex buffer:
 			
-			Point4f vertexPos = Matrix44f(modelTransform) * Matrix41f(ovPositions[index]);
+			/*Point4f vertexPos = Matrix44f(modelTransform) * Matrix41f(ovPositions[index]);*/
 
-			// La matriz de proyección en perspectiva hace que el último componente del vector
+			// La matriz de proyecciï¿½n en perspectiva hace que el ï¿½ltimo componente del vector
 			// transformado no tenga valor 1.0, por lo que hay que normalizarlo dividiendo:
 
-			float divisor = 1.f / vertexPos[W];
+			//float divisor = 1.f / vertexPos[W];
 
-			vertexPos[X] *= divisor;
+		/*	vertexPos[X] *= divisor;
 			vertexPos[Y] *= divisor;
 			vertexPos[Z] *= divisor;
-			vertexPos[W] = 1.f;
+			vertexPos[W] = 1.f;*/
 		}
 	}
 
@@ -41,35 +41,35 @@ namespace przurro
 			// La coordenada Z se escala a un valor suficientemente grande dentro del
 			// rango de int (que es lo que espera fill_convex_polygon_z_buffer).
 
-		float widthHalf = size_t(rasterizer.get_color_buffer().get_width()) / 2.f;
-		float heightHalf = size_t(rasterizer.get_color_buffer().get_height()) / 2.f;
+		//float widthHalf = rasterizer.get_color_buffer().get_width() / 2;
+		//float heightHalf = rasterizer.get_color_buffer().get_height() / 2;
 
-		Scale_Matrix3f			scaling = Scale_Matrix3f(widthHalf, heightHalf, 100000000.f);
-		Translation_Matrix3f    translation = Translation_Matrix3f(widthHalf, heightHalf, 0.f);
-		Transform_Matrix3f		transformation = translation * scaling;
+		//Scale_Matrix3f			scaling = Scale_Matrix3f(widthHalf, heightHalf, 100000000.f);
+		//Translation_Matrix3f    translation = Translation_Matrix3f(widthHalf, heightHalf, 0.f);
+		//Transform_Matrix3f		transformation = translation * scaling;
 
-		for (size_t index = 0, number_of_vertices = tvPositions.size(); index < number_of_vertices; index++)
-		{
-			displayVertices[index] = Point4i(Matrix44f(transformation) * Matrix41f(tvPositions[index]));
-		}
+		//for (size_t index = 0, number_of_vertices = tvPositions.size(); index < number_of_vertices; index++)
+		//{
+		//	displayVertices[index] = Point4i(Matrix44f(transformation) * Matrix41f(tvPositions[index]));
+		//}
 
-		// Se borra el framebúffer y se dibujan los triángulos:
+		//// Se borra el framebï¿½ffer y se dibujan los triï¿½ngulos:
 
-		rasterizer.clear();
+		//rasterizer.clear();
 
-		for (int * indices = ovIndices.data(), *end = indices + ovIndices.size(); indices < end; indices += 3)
-		{
-			if (is_frontface(tvPositions.data(), indices))
-			{
-				// Se establece el color del polígono a partir del color de su primer vértice:
+		//for (int * indices = ovIndices.data(), *end = indices + ovIndices.size(); indices < end; indices += 3)
+		//{
+		//	if (is_frontface(tvPositions.data(), indices))
+		//	{
+		//		// Se establece el color del polï¿½gono a partir del color de su primer vï¿½rtice:
 
-				rasterizer.set_color(tvColors[*indices]);
+		//		rasterizer.set_color(tvColors[*indices]);
 
-				// Se rellena el polígono:
+		//		// Se rellena el polï¿½gono:
 
-				rasterizer.fill_convex_polygon_z_buffer(displayVertices.data(), indices, indices + 3);
-			}
-		}
+		//		rasterizer.fill_convex_polygon_z_buffer(displayVertices.data(), indices, indices + 3);
+		//	}
+		//}
 	}
 
 	bool Mesh::is_frontface(const Point4f * const projected_vertices, const int * const indices)
@@ -78,8 +78,8 @@ namespace przurro
 		const Point4f & v1 = projected_vertices[indices[1]];
 		const Point4f & v2 = projected_vertices[indices[2]];
 
-		// Se asumen coordenadas proyectadas y polígonos definidos en sentido horario.
-		// Se comprueba a qué lado de la línea que pasa por v0 y v1 queda el punto v2:
+		// Se asumen coordenadas proyectadas y polï¿½gonos definidos en sentido horario.
+		// Se comprueba a quï¿½ lado de la lï¿½nea que pasa por v0 y v1 queda el punto v2:
 
 		return ((v1[0] - v0[0]) * (v2[1] - v0[1]) - (v2[0] - v0[0]) * (v1[1] - v0[1]) > 0.f);
 	}

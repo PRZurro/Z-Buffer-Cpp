@@ -44,7 +44,7 @@ namespace przurro
 	public:
 
 		void initialize();
-		void update(Transform_Matrix3f modelTransform);
+		void update(const Transform_Matrix3f & cameraMatrix, const Transform_Matrix3f & projectedTransform, const Vector4f & lightVector, float lightIntensity = 2.f, float ambientalIntensity = 0.7f);
 		void draw(Rasterizer<Color_Buff> & rasterizer);
 
 	public:

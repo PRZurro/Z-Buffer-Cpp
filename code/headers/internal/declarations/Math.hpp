@@ -7,6 +7,10 @@
 #include <Projection.hpp>
 #include <Vector.hpp>
 
+#include <glm.hpp>
+
+using namespace glm;
+
 namespace przurro
 {
 	using Point2f = toolkit::Point2f;

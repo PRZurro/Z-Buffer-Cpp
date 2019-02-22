@@ -3,6 +3,7 @@
 #include "declarations/Internal.hpp"
 #include "declarations/External_Tools.hpp"
 #include "Mesh.hpp"
+#include "Light.hpp"
 
 #include "Scene_Object.hpp"
 #include "Rasterizer.hpp"
@@ -17,8 +18,6 @@ namespace przurro
 
 		Point4f_Buffer ovPositions;
 		Vector4f_Buffer	ovNormals; // original vertices normals, 4th component must be set to '0.f'
-
-
 
 		Color defaultColor;
 		
@@ -38,10 +37,10 @@ namespace przurro
 
 	public:
 
-		void update(Camera * activeCamera);
+		void update(Camera * activeCamera, Light * inputLight);
 
 		void draw(Rasterizer<Color_Buff> & rasterizer);
-
+		
 	public:
 
 		bool set_mesh_color(String & meshName, const Vector4i & colorV);
