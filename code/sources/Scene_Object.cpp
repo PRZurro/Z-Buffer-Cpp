@@ -7,7 +7,10 @@ namespace przurro
 		: name(inputName),
 		position(Vector3f({0.f, 0.f, 0.f})),
 		rotation(position),
-		constantRotation(position)
+		constantRotation(position),
+		scale(1.f),
+		localTransform(Matrix44f::identity),
+		globalTransform(localTransform)
 	{}
 
 	void Scene_Object::translate(const Vector3f & translationV)

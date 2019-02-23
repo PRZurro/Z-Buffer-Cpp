@@ -10,7 +10,8 @@
 namespace przurro
 {
 	Model::Model(const String & assetFolderPath, const String & assetName)
-		: Scene_Object(assetName)
+		: Scene_Object(assetName),
+		defaultColor({0, 0, 0})
 	{
 		Attrib_t					attribs;
 		std::vector< Shape_t   >	shapes;
@@ -44,12 +45,11 @@ namespace przurro
 			const std::vector< Index_t > &	indices = shape.mesh.indices;
 			const size_t					indicesMeshN = (size_t) indices.size();
 
-			Mesh_sptr tempMesh(new Mesh(ovPositions, ovNormals, indices.size(), shape.name));
+			Mesh_sptr tempMesh(new Mesh(ovPositions, ovNormals, indicesMeshN, shape.name));
 			i_Buffer & tempMeshIndices = tempMesh->get_original_indices();
-			tempMeshIndices.resize(indicesMeshN);
 
 			// We loop through the faces index array 
-			for (size_t index = 0; index < indices.size(); ++index)
+			for (size_t index = 0; index < indicesMeshN; ++index)
 			{
 				tempMeshIndices[index] = verticesProcessedN;
 
@@ -64,20 +64,14 @@ namespace przurro
 					1.f
 				});
 
-				ovNormals[verticesProcessedN] = Vector4f
+				ovNormals[verticesProcessedN++] = Vector4f
 				({
 					attribs.normals[normalIndex + X],
 					attribs.normals[normalIndex + Y],
 					attribs.normals[normalIndex + Z],
 					0.f
 				});
-
-				++verticesProcessedN;
 			}
-
-			tempMesh->initialize();
-
-			std::cout << "Shape name: " + shape.name << std::endl;
 
 			meshes[shape.name] = tempMesh;
 		}

@@ -30,6 +30,7 @@ namespace przurro
 	private:
 
 		String name;
+		static int numberOfIterations;
 		
 	public:
 
@@ -37,14 +38,16 @@ namespace przurro
 		
 		~Mesh()
 		{
-			tvPositions.clear();
 			ovIndices.clear();
+
+			tvPositions.clear();
+			tvNormals.clear();
+			tvColors.clear();
+			
 			displayVertices.clear();
 		}
 
 	public:
-
-		void initialize();
 		void update(Matrix44f & cameraMatrix, Matrix44f & projectedTransform, vec4 & lightVector, float lightIntensity = 2.f, float ambientalIntensity = 0.7f);
 		void draw(Rasterizer<Color_Buff> & rasterizer);
 
