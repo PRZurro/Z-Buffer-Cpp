@@ -69,7 +69,7 @@ namespace przurro
 		if (String(rootNode->name()) != "scene")
 			return false;
 
-		return load_models(rootNode->first_node("models"));
+		return load_models(rootNode->first_node("models")) && load_cameras(rootNode->first_node("cameras"));
 	}
 
 	bool Scene::load_models(XML_Node * modelNodeRoot)
@@ -111,23 +111,66 @@ namespace przurro
 					for (modelProperty; modelProperty; modelProperty = modelProperty->next_sibling())
 					{
 						if (!modelProperty || modelProperty->type() != node_element)
-							return false;
+							break;
 
-						load_model_property(modelProperty, *models[attribName->value()].get());
+						if(!load_property(modelProperty, models[attribName->value()].get()))
+							return false;
 					}
 				}
 			}
-			else return false;	
+			else break;	
 		}
 
 		return true;
 	}
-	bool Scene::load_model_property(XML_Node * node, Model & model)
+	bool Scene::load_cameras(XML_Node * cameraNode)
 	{
-		String name = node->name();
-		String value = node->value();
+		if (!cameraNode || cameraNode->type() != node_element)
+			return false;
 
-		if (name == "position" || name == "rotation" || name == "color" || name == "constant_rotation"|| name == "default_color" || name == "mesh_color")
+		if (String(cameraNode->name()) != "cameras")
+			return false;
+
+		XML_Node * camera = cameraNode->first_node("camera");
+
+		if (!camera || camera->type() != node_element)
+		{
+			return false;
+		}
+
+		if (String(camera->name()) != "camera")
+			return false;
+
+		XML_Node * cameraProperty = camera->first_node();
+
+		for (cameraProperty;cameraProperty; cameraProperty = cameraProperty->next_sibling())
+		{
+			if (!cameraProperty || cameraProperty->type() != node_element)
+				break;
+
+			if(!load_property(cameraProperty, nullptr, activeCamera.get()))
+				return false;
+		}
+
+		return true;
+	}
+	bool Scene::load_property(XML_Node * attribute, Model * model, Camera * camera)
+	{
+		String name = attribute->name();
+		String value = attribute->value();
+
+		if (name == "target")
+		{
+			if (!is_existing_model(value))
+			{
+				return false;
+			}
+			if (camera)
+			{
+				activeCamera->set_target(&models[value]->get_reference_to_position());
+			}
+		}
+		else if (name == "position" || name == "rotation" || name == "color" || name == "constant_rotation"|| name == "default_color" || name == "mesh_color")
 		{
 			vector<String> stringChunks  = String_Utilities::string_splitter(value, ',');
 			
@@ -137,46 +180,64 @@ namespace przurro
 
 				if (name == "position")
 				{
-					model.set_position(values);
+					if(model)
+						model->set_position(values);
+					else if (camera)
+						camera->set_position(values);
 				}
-				else if(name == "rotation")
+				if (model)
 				{
-					model.set_rotation(values);
-				}
-				else if (name == "constant_rotation")
-				{
-					model.set_constant_rotation(values);
+					if (name == "rotation")
+					{
+						model->set_rotation(values);
+					}
+					else if (name == "constant_rotation")
+					{
+						model->set_constant_rotation(values);
+					}
 				}
 			}
 			else if (stringChunks.size() == 4)
 			{
-				Vector4i values({ stoi(stringChunks[X]),stoi(stringChunks[Y]),stoi(stringChunks[Z]), stoi(stringChunks[W]) });
-
-				if (name == "default_color")
+				if (model)
 				{
-					model.set_default_color(values);
-					return true;
-				}
-				if (name == "mesh_color")
-				{
-					XML_Attr * attribName = node->first_attribute("mesh_name");
+					Vector4i values({ stoi(stringChunks[X]),stoi(stringChunks[Y]),stoi(stringChunks[Z]), stoi(stringChunks[W]) });
 
-					if (!attribName)
-						return false;
-					if ((String)attribName->name() != "mesh_name")
-						return false;
+					if (name == "default_color")
+					{
+						model->set_default_color(values);
+						return true;
+					}
+					if (name == "mesh_color")
+					{
+						XML_Attr * attribName = attribute->first_attribute("mesh_name");
 
-					String meshName = attribName->value();
+						if (!attribName)
+							return false;
+						if ((String)attribName->name() != "mesh_name")
+							return false;
 
-					return model.set_mesh_color(meshName, values);
+						String meshName = attribName->value();
+
+						return model->set_mesh_color(meshName, values);
+					}
 				}
 			}
 		}
 		else if (name == "scale") 
 		{
-			model.set_scale(stof(value));
+			model->set_scale(stof(value));
 		}
 		else return false;
+
+		return true;
+	}
+	bool Scene::is_existing_model(const String & name)
+	{
+		auto iterator = models.find(name);
+
+		if (iterator == models.end())
+			return false;
 
 		return true;
 	}

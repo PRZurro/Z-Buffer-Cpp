@@ -47,7 +47,12 @@ namespace przurro
 
 		bool load_scene(String & xmlFilePath);
 		bool load_models(XML_Node * modelNodeRoot);
-		bool load_model_property(XML_Node * attribute, Model & model);
-	};
+		bool load_cameras(XML_Node * cameraNode);
+		bool load_property(XML_Node * attribute, Model * model = nullptr, Camera * camera = nullptr);
 
+	public:
+
+		bool is_existing_model(const String & name);
+		
+	};
 }

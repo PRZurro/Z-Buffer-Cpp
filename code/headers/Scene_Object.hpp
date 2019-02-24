@@ -54,6 +54,11 @@ namespace przurro
 			return globalTransform;
 		}
 
+		Vector3f & get_reference_to_position()
+		{
+			return position;
+		}
+
 		Transform_Matrix3f get_inverse_transform() const
 		{
 			Transform_Matrix3f inverseMatrix = globalTransform;

@@ -61,7 +61,6 @@
                 matrix[3][2] =  Numeric_Type(-1);
                 matrix[3][3] =  Numeric_Type( 0);
             }
-
         };
 
         typedef Projection< 3, int    > Projection3i;

@@ -81,8 +81,8 @@ namespace przurro
 
 		globalTransform = localTransform = positionMatrix * rotationX * rotationY * rotationZ * scaleMatrix;
 
-		if(transformParent)
-			globalTransform = globalTransform * (*transformParent);
+		/*if(transformParent)
+			globalTransform = globalTransform * (*transformParent);*/
 	}
 
 }

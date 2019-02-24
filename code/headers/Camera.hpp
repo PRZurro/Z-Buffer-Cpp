@@ -1,6 +1,7 @@
 #pragma once
 
 #include "declarations/Math.hpp"
+#include "declarations/Containers.hpp"
 
 #include "Scene_Object.hpp"
 
@@ -57,6 +58,15 @@ namespace przurro
 		size_t get_height()
 		{
 			return height;
+		}
+
+		Vector4f_Buffer extract_frustrum_planes(bool normalize);
+
+		Vector4f normalizePlane(Vector4f & planeToNormalize)
+		{
+			vec4 glmVector = normalize(vec4({planeToNormalize[X], planeToNormalize[Y], planeToNormalize[Z], planeToNormalize[W]}));
+
+			return Vector4f({ glmVector[X],glmVector[Y],glmVector[Z],glmVector[W]});
 		}
 	};
 }

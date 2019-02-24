@@ -2,8 +2,6 @@
 
 namespace przurro
 {
-	int Mesh::numberOfIterations = 0;
-
 	Mesh::Mesh(Point4f_Buffer & vertexBuffer, Vector4f_Buffer & normalBuffer, size_t nVertex, String & meshName)
 		: name(meshName),
 		ovPositions(vertexBuffer), 
@@ -12,34 +10,54 @@ namespace przurro
 		tvPositions(nVertex),
 		tvNormals(nVertex),
 		tvColors(nVertex),
+		displayVertices(nVertex),
 		color({0, 0, 0})
 	{
 	}
 
 	void Mesh::update(Matrix44f & cameraMatrix, Matrix44f & projectedTransform, vec4 & lightVector, float lightIntensity, float ambientalIntensity)
 	{
-		for (size_t index = 0, number_of_vertices = tvPositions.size(); index < number_of_vertices; ++index)
+		for (size_t index = 0, number_of_vertices = tvPositions.size(); index < number_of_vertices; index += 3)
 		{
-			Matrix41f matrixtemp = ovPositions[ovIndices[index]];
-			Point4f vertexPosition = cameraMatrix * Matrix41f(ovPositions[ovIndices[index]]); //Calculate the transformed vertex position
-			Vector4f vertexNormal = cameraMatrix * Matrix41f(ovNormals[ovIndices[index]]); //Calculate the transformed normal vector
+			cacheIndices[X] = index + X; cacheIndices[Y] = index + Y; cacheIndices[Z] = index + Z; cacheIndices[W] = index + W;
 
-			vec4 glmNormal({ vertexNormal[X], vertexNormal[Y], vertexNormal[Z], vertexNormal[W]});
+			//---------------------------------------Light calculation----------------------------------------------------
+			Vector4f vn0 = cameraMatrix * Matrix41f(ovNormals[ovIndices[index + X]]); //Calculate the transformed normal vector
+			Vector4f vn1 = cameraMatrix * Matrix41f(ovNormals[ovIndices[index + Y]]);
+			Vector4f vn2 = cameraMatrix * Matrix41f(ovNormals[ovIndices[index + Z]]);
+
+			vec4 glmNormal({ vn0[X], vn0[Y], vn0[Z], vn0[W]});
 
 			float intensity = std::max(dot(lightVector, glmNormal), 0.f) + ambientalIntensity;
 			intensity = std::min(intensity, 1.f);
-
 			Color & tColor = tvColors[index];
-			tColor.set(color.data.component.r * intensity, color.data.component.g * intensity, color.data.component.b * intensity);
+			tColor.set
+			(
+				(int)((float)color.data.component.r * intensity), 
+				(int)((float)color.data.component.g * intensity), 
+				(int)((float)color.data.component.b * intensity)
+			);
 
-			vertexPosition = projectedTransform * Matrix41f(tvPositions[index]);
+			vn0[W] = vn1[W] = vn2[W] = 0.f;
+			tvNormals[index + X] = vn0; tvNormals[index + Y] = vn1; tvNormals[index + Z] = vn2;
 
-			float oneByW = (1.f / vertexPosition[W]);
+			//---------------------------------------Projected vertex coordinates calculation-----------------------------
+			Point4f vp0 = projectedTransform * cameraMatrix * Matrix41f(ovPositions[ovIndices[index + X]]); //Calculate the transformed vertex position
+			Point4f vp1 = projectedTransform * cameraMatrix * Matrix41f(ovPositions[ovIndices[index + Y]]);
+			Point4f vp2 = projectedTransform * cameraMatrix * Matrix41f(ovPositions[ovIndices[index + Z]]);
 
-			vertexNormal[W] = 0.f;
+			//---------------------------------------Clipping-------------------------------------------------------------
 
-			tvPositions[index] = Point4f({vertexPosition[X] * oneByW, vertexPosition[Y] * oneByW, vertexPosition[Z] * oneByW, 1.f}); 
-			tvNormals[index] = vertexNormal;
+
+
+			//---------------------------------------NDC Coordinates------------------------------------------------------
+			float oneByW0 = (1.f / vp0[W]), float oneByW1 = (1.f / vp1[W]), float oneByW2 = (1.f / vp2[W]);
+
+			tvPositions[index + X] = Point4f({vp0[X] * oneByW0, vp0[Y] * oneByW0, vp0[Z] * oneByW0, 1.f}); 
+			tvPositions[index + Y] = Point4f({vp1[X] * oneByW1, vp1[Y] * oneByW1, vp1[Z] * oneByW1, 1.f});
+			tvPositions[index + Z] = Point4f({vp2[X] * oneByW2, vp2[Y] * oneByW2, vp2[Z] * oneByW2, 1.f});
+
+			
 		}
 	}
 
@@ -59,25 +77,24 @@ namespace przurro
 
 		// Se borra el frameb�ffer y se dibujan los tri�ngulos:
 
-		displayVertices.resize(tvPositions.size());
+		for (size_t index = 0, number_of_vertices = tvPositions.size(); index < number_of_vertices; index += 3)
+		{
+			Point4i & d0 = displayVertices[index + X] = Point4i(Matrix44f(transformation) * Matrix41f(tvPositions[index + X]));
+			Point4i & d1 = displayVertices[index + Y] = Point4i(Matrix44f(transformation) * Matrix41f(tvPositions[index + Y]));
+			Point4i & d2 = displayVertices[index + Z] = Point4i(Matrix44f(transformation) * Matrix41f(tvPositions[index + Z]));
+		}
+		
 		rasterizer.clear();
 
-		int indices[3];//Cache array to store the actual indices to this class buffers
 		for (size_t index = 0, number_of_vertices = tvPositions.size(); index < number_of_vertices; index += 3)
 		{	
-			indices[X] = index + X; indices[Y] = index + Y; indices[Z] = index + Z;
+			cacheIndices[X] = index + X; cacheIndices[Y] = index + Y; cacheIndices[Z] = index + Z; cacheIndices[W] = index + W;
 
-			if (is_frontface(tvPositions.data(), indices))
+			if (is_frontface(tvPositions.data(), cacheIndices))
 			{
-				displayVertices[indices[X]] = Point4i(Matrix44f(transformation) * Matrix41f(tvPositions[indices[X]]));
-				displayVertices[indices[Y]] = Point4i(Matrix44f(transformation) * Matrix41f(tvPositions[indices[Y]]));
-				displayVertices[indices[Z]] = Point4i(Matrix44f(transformation) * Matrix41f(tvPositions[indices[Z]]));
+				rasterizer.set_color(tvColors[index]); //The color of the polygon is established from the color of its first vertex
 
-				//The color of the polygon is established from the color of its first vertex
-				rasterizer.set_color(tvColors[index]);
-
-				//The polygon is filled
-				rasterizer.fill_convex_polygon_z_buffer(displayVertices.data(), indices, indices + Z);
+				rasterizer.fill_convex_polygon_z_buffer(displayVertices.data(), cacheIndices, cacheIndices + W); //The polygon is filled
 			}
 		}
 	}
@@ -140,7 +157,7 @@ namespace przurro
 		Point4f current_vertex;
 		Point4f    next_vertex;
 
-		int clipped_vertex_count = 9;
+		int clipped_vertex_count = 0;
 
 		for (int * index = first_index; index < last_index; )
 		{
@@ -156,11 +173,11 @@ namespace przurro
 			switch ((current_value << 1) | next_value)
 			{
 			case 1:		// EL PRIMERO FUERA Y EL SEGUNDO DENTRO
-				clipped_vertices[clipped_vertex_count++] = intersect(a, b, c, current_vertex, next_vertex);
+				clipped_vertices[clipped_vertex_count++] = intersect_rect(a, b, c, current_vertex, next_vertex);
 				clipped_vertices[clipped_vertex_count++] = next_vertex;
 				break;
 			case 2:		// EL PRIMERO DENTRO Y EL SEGUNDO FUERA
-				clipped_vertices[clipped_vertex_count++] = intersect(a, b, c, current_vertex, next_vertex);
+				clipped_vertices[clipped_vertex_count++] = intersect_rect(a, b, c, current_vertex, next_vertex);
 				break;
 			case 3:		// LOS DOS DENTRO
 				clipped_vertices[clipped_vertex_count++] = next_vertex;
@@ -171,7 +188,7 @@ namespace przurro
 		return clipped_vertex_count;
 	}
 
-	Point4f Mesh::intersect(float a, float b, float c, const Point4f & point0, const Point4f & point1)
+	Point4f Mesh::intersect_rect(float a, float b, float c, const Point4f & point0, const Point4f & point1)
 	{
 		/*plane_n = Vector_Normalise(plane_n);
 		float plane_d = -Vector_DotProduct(plane_n, plane_p);

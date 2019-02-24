@@ -24,13 +24,13 @@ namespace przurro
 		Point4i_Buffer		displayVertices;
 
 		Color				color; // Main color of the vertices
-
 		//std::vector<toolkit::Point2f>			texcoords;  // 'vt'
 
 	private:
 
 		String name;
-		static int numberOfIterations;
+
+		int cacheIndices[4];//Cache array to store the actual indices to this class buffers. It's necessary to add the 4 position because is required in the rasterizer
 		
 	public:
 
@@ -70,7 +70,7 @@ namespace przurro
 
 		int Mesh::clip_with_viewport_2d(const Point4f * vertices, int * first_index, int * last_index, Point4f * clipped_vertices);
 		int clip_with_line_2d(const Point4f * vertices, int * first_index, int * last_index, Point4f * clipped_vertices, float a, float b, float c);
-		Point4f intersect(float a, float b, float c, const Point4f & point0, const Point4f & point1);
+		Point4f intersect_rect(float a, float b, float c, const Point4f & point0, const Point4f & point1);
 
 	public:
 
