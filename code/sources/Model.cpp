@@ -87,7 +87,7 @@ namespace przurro
 		vec4 lightglmV = normalize(vec4(lightV[X], lightV[Y], lightV[Z], lightV[W])); 
 
 		cameraMatrix = cameraMatrix * Matrix44f(globalTransform); // cache: get the model camera coordinates
-		Matrix44f projectedTransformation = cameraMatrix *  Matrix44f(activeCamera->get_projection_matrix()); // cache: pre calculate the projected transformation
+		Matrix44f projectedTransformation = Matrix44f(activeCamera->get_projection_matrix()) * cameraMatrix; // cache: pre calculate the projected transformation
 
 		if (inputLight)
 		{

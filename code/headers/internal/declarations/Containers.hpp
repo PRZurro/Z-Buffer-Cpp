@@ -1,5 +1,6 @@
 #pragma once
 
+#include <declarations/Internal.hpp>
 #include <unordered_map>
 #include <list>
 #include <Vector.hpp>

@@ -42,16 +42,16 @@ namespace przurro
 			tvNormals[index + X] = vn0; tvNormals[index + Y] = vn1; tvNormals[index + Z] = vn2;
 
 			//---------------------------------------Projected vertex coordinates calculation-----------------------------
-			Point4f vp0 = projectedTransform * cameraMatrix * Matrix41f(ovPositions[ovIndices[index + X]]); //Calculate the transformed vertex position
-			Point4f vp1 = projectedTransform * cameraMatrix * Matrix41f(ovPositions[ovIndices[index + Y]]);
-			Point4f vp2 = projectedTransform * cameraMatrix * Matrix41f(ovPositions[ovIndices[index + Z]]);
+			Point4f vp0 = projectedTransform * Matrix41f(ovPositions[ovIndices[index + X]]); //Calculate the transformed vertex position
+			Point4f vp1 = projectedTransform * Matrix41f(ovPositions[ovIndices[index + Y]]);
+			Point4f vp2 = projectedTransform * Matrix41f(ovPositions[ovIndices[index + Z]]);
 
 			//---------------------------------------Clipping-------------------------------------------------------------
 
 
 
 			//---------------------------------------NDC Coordinates------------------------------------------------------
-			float oneByW0 = (1.f / vp0[W]), float oneByW1 = (1.f / vp1[W]), float oneByW2 = (1.f / vp2[W]);
+			float oneByW0 = (1.f / vp0[W]), oneByW1 = (1.f / vp1[W]), oneByW2 = (1.f / vp2[W]);
 
 			tvPositions[index + X] = Point4f({vp0[X] * oneByW0, vp0[Y] * oneByW0, vp0[Z] * oneByW0, 1.f}); 
 			tvPositions[index + Y] = Point4f({vp1[X] * oneByW1, vp1[Y] * oneByW1, vp1[Z] * oneByW1, 1.f});
@@ -190,14 +190,14 @@ namespace przurro
 
 	Point4f Mesh::intersect_rect(float a, float b, float c, const Point4f & point0, const Point4f & point1)
 	{
-		/*plane_n = Vector_Normalise(plane_n);
+		plane_n = Vector_Normalise(plane_n);
 		float plane_d = -Vector_DotProduct(plane_n, plane_p);
 		float ad = Vector_DotProduct(lineStart, plane_n);
 		float bd = Vector_DotProduct(lineEnd, plane_n);
 		float t = (-plane_d - ad) / (bd - ad);
 		vec3d lineStartToEnd = Vector_Sub(lineEnd, lineStart);
 		vec3d lineToIntersect = Vector_Mul(lineStartToEnd, t);
-		return Vector_Add(lineStart, lineToIntersect);*/
+		return Vector_Add(lineStart, lineToIntersect);
 		return Point4f();
 	}
 }
