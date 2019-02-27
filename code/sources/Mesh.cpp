@@ -2,15 +2,16 @@
 
 namespace przurro
 {
-	Mesh::Mesh(Point4f_Buffer & vertexBuffer, Vector4f_Buffer & normalBuffer, size_t nVertex, String & meshName)
+	Mesh::Mesh(Point4f_Buffer & vertexBuffer, Vector4f_Buffer & normalBuffer, size_t nVertex, size_t meshFIndex, String & meshName)
 		: name(meshName),
 		ovPositions(vertexBuffer), 
 		ovNormals(normalBuffer), 
-		ovIndices(nVertex),
+		triangleIndices(nVertex),
 		tvPositions(nVertex),
 		tvNormals(nVertex),
 		tvColors(nVertex),
 		displayVertices(nVertex),
+		numberOfIndices(nVertex),
 		color({0, 0, 0})
 	{
 	}
@@ -22,9 +23,9 @@ namespace przurro
 			cacheIndices[X] = index + X; cacheIndices[Y] = index + Y; cacheIndices[Z] = index + Z; cacheIndices[W] = index + W;
 
 			//---------------------------------------Light calculation----------------------------------------------------
-			Vector4f vn0 = cameraMatrix * Matrix41f(ovNormals[ovIndices[index + X]]); //Calculate the transformed normal vector
-			Vector4f vn1 = cameraMatrix * Matrix41f(ovNormals[ovIndices[index + Y]]);
-			Vector4f vn2 = cameraMatrix * Matrix41f(ovNormals[ovIndices[index + Z]]);
+			Vector4f vn0 = cameraMatrix * Matrix41f(ovNormals[triangleIndices[index + X]]); //Calculate the transformed normal vector
+			Vector4f vn1 = cameraMatrix * Matrix41f(ovNormals[triangleIndices[index + Y]]);
+			Vector4f vn2 = cameraMatrix * Matrix41f(ovNormals[triangleIndices[index + Z]]);
 
 			vec4 glmNormal({ vn0[X], vn0[Y], vn0[Z], vn0[W]});
 
@@ -42,9 +43,9 @@ namespace przurro
 			tvNormals[index + X] = vn0; tvNormals[index + Y] = vn1; tvNormals[index + Z] = vn2;
 
 			//---------------------------------------Projected vertex coordinates calculation-----------------------------
-			Point4f vp0 = projectedTransform * Matrix41f(ovPositions[ovIndices[index + X]]); //Calculate the transformed vertex position
-			Point4f vp1 = projectedTransform * Matrix41f(ovPositions[ovIndices[index + Y]]);
-			Point4f vp2 = projectedTransform * Matrix41f(ovPositions[ovIndices[index + Z]]);
+			Point4f vp0 = projectedTransform * Matrix41f(ovPositions[triangleIndices[index + X]]); //Calculate the transformed vertex position
+			Point4f vp1 = projectedTransform * Matrix41f(ovPositions[triangleIndices[index + Y]]);
+			Point4f vp2 = projectedTransform * Matrix41f(ovPositions[triangleIndices[index + Z]]);
 
 			//---------------------------------------Clipping-------------------------------------------------------------
 

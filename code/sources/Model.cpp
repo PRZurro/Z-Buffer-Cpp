@@ -45,7 +45,7 @@ namespace przurro
 			const std::vector< Index_t > &	indices = shape.mesh.indices;
 			const size_t					indicesMeshN = (size_t) indices.size();
 
-			Mesh_sptr tempMesh(new Mesh(ovPositions, ovNormals, indicesMeshN, shape.name));
+			Mesh_sptr tempMesh(new Mesh(ovPositions, ovNormals, indicesMeshN, verticesProcessedN, shape.name));
 			i_Buffer & tempMeshIndices = tempMesh->get_original_indices();
 
 			// We loop through the faces index array 

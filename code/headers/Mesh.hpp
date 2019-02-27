@@ -15,15 +15,18 @@ namespace przurro
 
 		Point4f_Buffer  &	ovPositions;
 		Vector4f_Buffer	&	ovNormals; // original vertices normals, 4th component must be set to '0.f'
-		i_Buffer			ovIndices;
+		i_Buffer			triangleIndices;
 
-		Point4f_Buffer		tvPositions;
-		Vector4f_Buffer		tvNormals;
+		Point4f_Buffer	&	tvPositions;
+		Vector4f_Buffer	&	tvNormals;
 		CColor_Buff			tvColors; // transformed vertices colors
 
 		Point4i_Buffer		displayVertices;
 
 		Color				color; // Main color of the vertices
+
+		size_t meshFirstIndex;
+		size_t numberOfIndices;
 		//std::vector<toolkit::Point2f>			texcoords;  // 'vt'
 
 	private:
@@ -34,11 +37,11 @@ namespace przurro
 		
 	public:
 
-		Mesh(Point4f_Buffer & vertexBuffer, Vector4f_Buffer & normalBuffer, size_t nVertex, String & meshName);
+		Mesh(Point4f_Buffer & vertexBuffer, Vector4f_Buffer & normalBuffer, size_t nVertex, size_t meshFIndex, String & meshName);
 		
 		~Mesh()
 		{
-			ovIndices.clear();
+			triangleIndices.clear();
 
 			tvPositions.clear();
 			tvNormals.clear();
@@ -76,7 +79,7 @@ namespace przurro
 
 		i_Buffer & get_original_indices()
 		{
-			return ovIndices;
+			return triangleIndices;
 		}
 		
 	};

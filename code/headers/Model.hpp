@@ -16,8 +16,14 @@ namespace przurro
 
 		Mesh_Map meshes;
 
-		Point4f_Buffer ovPositions;
-		Vector4f_Buffer	ovNormals; // original vertices normals, 4th component must be set to '0.f'
+		Point4f_Buffer		ovPositions;
+		Vector4f_Buffer		ovNormals; // original vertices normals, 4th component must be set to '0.f'
+		i_Buffer			meshesVerticesN;
+
+		i_Buffer			trianglesIntensities;
+		Point4f_Buffer		tvPositions;
+		Vector4f_Buffer		tvNormals;
+
 
 		Color defaultColor;
 		
