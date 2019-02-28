@@ -2,13 +2,12 @@
 
 namespace przurro
 {
-	Mesh::Mesh(Point4f_Buffer & vertexBuffer, Vector4f_Buffer & normalBuffer, size_t nVertex, size_t meshFIndex, String & meshName)
+	Mesh::Mesh(Point4f_Buffer & vertexBuffer, Point4f_Buffer & transformedVertexBuffer, Vector4f_Buffer & normalBuffer, Vector4f_Buffer & transformedNormalBuffer, size_t nVertex, size_t meshFIndex, String & meshName)
 		: name(meshName),
 		ovPositions(vertexBuffer), 
 		ovNormals(normalBuffer), 
+		tvPositions(transformedVertexBuffer)
 		triangleIndices(nVertex),
-		tvPositions(nVertex),
-		tvNormals(nVertex),
 		tvColors(nVertex),
 		displayVertices(nVertex),
 		numberOfIndices(nVertex),

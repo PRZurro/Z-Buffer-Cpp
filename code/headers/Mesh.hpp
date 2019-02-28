@@ -15,10 +15,13 @@ namespace przurro
 
 		Point4f_Buffer  &	ovPositions;
 		Vector4f_Buffer	&	ovNormals; // original vertices normals, 4th component must be set to '0.f'
-		i_Buffer			triangleIndices;
-
+		
 		Point4f_Buffer	&	tvPositions;
 		Vector4f_Buffer	&	tvNormals;
+
+		Triangle_Buffer		triangleIndices;
+
+
 		CColor_Buff			tvColors; // transformed vertices colors
 
 		Point4i_Buffer		displayVertices;
@@ -37,7 +40,7 @@ namespace przurro
 		
 	public:
 
-		Mesh(Point4f_Buffer & vertexBuffer, Vector4f_Buffer & normalBuffer, size_t nVertex, size_t meshFIndex, String & meshName);
+		Mesh(Point4f_Buffer & vertexBuffer, Point4f_Buffer & transformedVertexBuffer, Vector4f_Buffer & normalBuffer, Vector4f_Buffer & transformedNormalBuffer, size_t nVertex, size_t meshFIndex, String & meshName);
 		
 		~Mesh()
 		{

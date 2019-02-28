@@ -31,6 +31,13 @@ namespace przurro
 		W,
 	};
 
+	struct Triangle_Index
+	{
+		size_t vA;
+		size_t vB;
+		size_t vC;
+	};
+
 	class String_Utilities
 	{
 	public:
