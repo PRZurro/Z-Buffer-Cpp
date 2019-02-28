@@ -14,22 +14,20 @@ namespace przurro
 	private:
 
 		Point4f_Buffer  &	ovPositions;
-		Vector4f_Buffer	&	ovNormals; // original vertices normals, 4th component must be set to '0.f'
-		
 		Point4f_Buffer	&	tvPositions;
+		Vector4f_Buffer	&	ovNormals; // original vertices normals, 4th component must be set to '0.f'
 		Vector4f_Buffer	&	tvNormals;
 
 		Triangle_Buffer		triangleIndices;
 
-
 		CColor_Buff			tvColors; // transformed vertices colors
 
+		i_Buffer			triangleIndices;
 		Point4i_Buffer		displayVertices;
 
 		Color				color; // Main color of the vertices
 
-		size_t meshFirstIndex;
-		size_t numberOfIndices;
+		size_t fIndex, lIndex; //first index and last index
 		//std::vector<toolkit::Point2f>			texcoords;  // 'vt'
 
 	private:
@@ -40,7 +38,7 @@ namespace przurro
 		
 	public:
 
-		Mesh(Point4f_Buffer & vertexBuffer, Point4f_Buffer & transformedVertexBuffer, Vector4f_Buffer & normalBuffer, Vector4f_Buffer & transformedNormalBuffer, size_t nVertex, size_t meshFIndex, String & meshName);
+		Mesh(Point4f_Buffer & vertexBuffer, Point4f_Buffer & transformedVertexBuffer, Vector4f_Buffer & normalBuffer, Vector4f_Buffer & transformedNormalBuffer, size_t nVertices, size_t meshFIndex, String & meshName);
 		
 		~Mesh()
 		{
@@ -77,13 +75,5 @@ namespace przurro
 		int Mesh::clip_with_viewport_2d(const Point4f * vertices, int * first_index, int * last_index, Point4f * clipped_vertices);
 		int clip_with_line_2d(const Point4f * vertices, int * first_index, int * last_index, Point4f * clipped_vertices, float a, float b, float c);
 		Point4f intersect_rect(float a, float b, float c, const Point4f & point0, const Point4f & point1);
-
-	public:
-
-		i_Buffer & get_original_indices()
-		{
-			return triangleIndices;
-		}
-		
 	};
 }

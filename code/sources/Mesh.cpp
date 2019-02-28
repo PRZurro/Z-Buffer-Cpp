@@ -2,22 +2,22 @@
 
 namespace przurro
 {
-	Mesh::Mesh(Point4f_Buffer & vertexBuffer, Point4f_Buffer & transformedVertexBuffer, Vector4f_Buffer & normalBuffer, Vector4f_Buffer & transformedNormalBuffer, size_t nVertex, size_t meshFIndex, String & meshName)
+	Mesh::Mesh(Point4f_Buffer & vertexBuffer, Point4f_Buffer & transformedVertexBuffer, Vector4f_Buffer & normalBuffer, Vector4f_Buffer & transformedNormalBuffer, size_t nVertices, size_t meshFIndex, String & meshName)
 		: name(meshName),
 		ovPositions(vertexBuffer), 
 		ovNormals(normalBuffer), 
-		tvPositions(transformedVertexBuffer)
-		triangleIndices(nVertex),
-		tvColors(nVertex),
-		displayVertices(nVertex),
-		numberOfIndices(nVertex),
+		tvPositions(transformedVertexBuffer),
+		tvNormals(transformedNormalBuffer),
+		tvColors(nVertices / 3),
+		displayVertices(nVertices),
+		fIndex(meshFIndex),
+		lIndex(fIndex + nVertices - 1),
 		color({0, 0, 0})
-	{
-	}
+	{}
 
 	void Mesh::update(Matrix44f & cameraMatrix, Matrix44f & projectedTransform, vec4 & lightVector, float lightIntensity, float ambientalIntensity)
 	{
-		for (size_t index = 0, number_of_vertices = tvPositions.size(); index < number_of_vertices; index += 3)
+		for (size_t index = fIndex; index < lIndex; index += 3)
 		{
 			cacheIndices[X] = index + X; cacheIndices[Y] = index + Y; cacheIndices[Z] = index + Z; cacheIndices[W] = index + W;
 
@@ -56,8 +56,6 @@ namespace przurro
 			tvPositions[index + X] = Point4f({vp0[X] * oneByW0, vp0[Y] * oneByW0, vp0[Z] * oneByW0, 1.f}); 
 			tvPositions[index + Y] = Point4f({vp1[X] * oneByW1, vp1[Y] * oneByW1, vp1[Z] * oneByW1, 1.f});
 			tvPositions[index + Z] = Point4f({vp2[X] * oneByW2, vp2[Y] * oneByW2, vp2[Z] * oneByW2, 1.f});
-
-			
 		}
 	}
 
@@ -77,7 +75,7 @@ namespace przurro
 
 		// Se borra el frameb�ffer y se dibujan los tri�ngulos:
 
-		for (size_t index = 0, number_of_vertices = tvPositions.size(); index < number_of_vertices; index += 3)
+		for (size_t index = fIndex; index < lIndex; index += 3)
 		{
 			Point4i & d0 = displayVertices[index + X] = Point4i(Matrix44f(transformation) * Matrix41f(tvPositions[index + X]));
 			Point4i & d1 = displayVertices[index + Y] = Point4i(Matrix44f(transformation) * Matrix41f(tvPositions[index + Y]));
@@ -86,7 +84,7 @@ namespace przurro
 		
 		rasterizer.clear();
 
-		for (size_t index = 0, number_of_vertices = tvPositions.size(); index < number_of_vertices; index += 3)
+		for (size_t index = fIndex; index < lIndex; index += 3)
 		{	
 			cacheIndices[X] = index + X; cacheIndices[Y] = index + Y; cacheIndices[Z] = index + Z; cacheIndices[W] = index + W;
 
@@ -190,14 +188,14 @@ namespace przurro
 
 	Point4f Mesh::intersect_rect(float a, float b, float c, const Point4f & point0, const Point4f & point1)
 	{
-		plane_n = Vector_Normalise(plane_n);
+		/*plane_n = Vector_Normalise(plane_n);
 		float plane_d = -Vector_DotProduct(plane_n, plane_p);
 		float ad = Vector_DotProduct(lineStart, plane_n);
 		float bd = Vector_DotProduct(lineEnd, plane_n);
 		float t = (-plane_d - ad) / (bd - ad);
 		vec3d lineStartToEnd = Vector_Sub(lineEnd, lineStart);
 		vec3d lineToIntersect = Vector_Mul(lineStartToEnd, t);
-		return Vector_Add(lineStart, lineToIntersect);
+		return Vector_Add(lineStart, lineToIntersect);*/
 		return Point4f();
 	}
 }

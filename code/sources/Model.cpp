@@ -45,14 +45,10 @@ namespace przurro
 			const std::vector< Index_t > &	indices = shape.mesh.indices;
 			const size_t					indicesMeshN = (size_t) indices.size();
 
-			Mesh_sptr tempMesh(new Mesh(ovPositions, ovNormals, indicesMeshN, verticesProcessedN, shape.name));
-			i_Buffer & tempMeshIndices = tempMesh->get_original_indices();
-
+			Mesh_sptr tempMesh(new Mesh(ovPositions,tvPositions, ovNormals, tvNormals, indicesMeshN, verticesProcessedN, shape.name));
 			// We loop through the faces index array 
 			for (size_t index = 0; index < indicesMeshN; ++index)
 			{
-				tempMeshIndices[index] = verticesProcessedN;
-
 				size_t vertexIndex = 3 * indices[index].vertex_index; // Storing the index of the first component of the vertex (X)
 				size_t normalIndex = 3 * indices[index].normal_index; // Storing the index of the first component of the normal (X)
 
