@@ -20,5 +20,5 @@ namespace przurro
 	using Point4f_Buffer = std::vector<toolkit::Point4f>;
 	using Point4i_Buffer = std::vector <toolkit::Point4i>;
 	using Vector4f_Buffer = std::vector<toolkit::Vector4f>;
-	using Triangle_Buffer = std::vector<Triangle_Index>;
+	using TriangleI_Buffer = std::vector<Triangle_Index>;
 }

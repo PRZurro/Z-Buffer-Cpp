@@ -33,9 +33,9 @@ namespace przurro
 
 	struct Triangle_Index
 	{
-		size_t vA;
-		size_t vB;
-		size_t vC;
+		size_t v0;
+		size_t v1;
+		size_t v2;
 	};
 
 	class String_Utilities

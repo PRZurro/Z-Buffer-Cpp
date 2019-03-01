@@ -18,12 +18,10 @@ namespace przurro
 		Vector4f_Buffer	&	ovNormals; // original vertices normals, 4th component must be set to '0.f'
 		Vector4f_Buffer	&	tvNormals;
 
-		Triangle_Buffer		triangleIndices;
+		TriangleI_Buffer	dti; // display triangle indices
+		Point4i_Buffer		displayVertices;
 
 		CColor_Buff			tvColors; // transformed vertices colors
-
-		i_Buffer			triangleIndices;
-		Point4i_Buffer		displayVertices;
 
 		Color				color; // Main color of the vertices
 
@@ -42,17 +40,15 @@ namespace przurro
 		
 		~Mesh()
 		{
-			triangleIndices.clear();
+			dti.clear();
 
 			tvPositions.clear();
 			tvNormals.clear();
 			tvColors.clear();
-			
-			displayVertices.clear();
 		}
 
 	public:
-		void update(Matrix44f & cameraMatrix, Matrix44f & projectedTransform, vec4 & lightVector, float lightIntensity = 2.f, float ambientalIntensity = 0.7f);
+		void update(f_Buffer & lightIntensities, Rasterizer<Color_Buff> & rasterizer, Vector4f_Buffer & frustrumPlanes);
 		void draw(Rasterizer<Color_Buff> & rasterizer);
 
 	public:
@@ -72,8 +68,15 @@ namespace przurro
 
 	public: // Clipping
 
-		int Mesh::clip_with_viewport_2d(const Point4f * vertices, int * first_index, int * last_index, Point4f * clipped_vertices);
-		int clip_with_line_2d(const Point4f * vertices, int * first_index, int * last_index, Point4f * clipped_vertices, float a, float b, float c);
-		Point4f intersect_rect(float a, float b, float c, const Point4f & point0, const Point4f & point1);
+		int clip_with_viewport_3D(const Point4f * vertices, int * first_index, int * last_index, Point4f_Buffer clipped_vertices, const Vector4f_Buffer & frustrumPlanes);
+		int clip_with_plane_3D(const Point4f * vertices, int * first_index, int * last_index, Point4f_Buffer clipped_vertices, const Vector4f & plane);
+		Point4f intersect_plane(const Vector4f & plane, const Point4f & point0, const Point4f & point1);
+
+	private:
+
+		inline void scale_color(Color * index, float intensity)
+		{
+			index->set((int)((float)color.data.component.r * intensity), (int)((float)color.data.component.g * intensity), (int)((float)color.data.component.b * intensity));
+		}
 	};
 }

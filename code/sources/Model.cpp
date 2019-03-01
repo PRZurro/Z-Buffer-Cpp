@@ -73,27 +73,17 @@ namespace przurro
 		}
 	}
 
-	void Model::update(Camera * activeCamera, Light * inputLight)
+	void Model::update(Camera * activeCamera, Rasterizer<Color_Buff> & rasterizer, Light * inputLight)
 	{
 		//transform global = transform_local * local scale 
+		
+		update_vertex_buffers(activeCamera, inputLight);
+		
+		Vector4f_Buffer cameraFrustrumPlanes = activeCamera->extract_frustrum_planes();
 
-		Matrix44f cameraMatrix = activeCamera->look_at(); // get the camera coordinates
-
-		Vector4f lightV = cameraMatrix * Matrix41f(inputLight->get_direction()); // cache:  calculate the light vector from the camera coordinates
-		vec4 lightglmV = normalize(vec4(lightV[X], lightV[Y], lightV[Z], lightV[W])); 
-
-		cameraMatrix = cameraMatrix * Matrix44f(globalTransform); // cache: get the model camera coordinates
-		Matrix44f projectedTransformation = Matrix44f(activeCamera->get_projection_matrix()) * cameraMatrix; // cache: pre calculate the projected transformation
-
-		if (inputLight)
+		for (auto & mesh : meshes)
 		{
-			for (auto & mesh : meshes)
-				mesh.second->update(cameraMatrix, projectedTransformation, lightglmV, inputLight->get_intensity());
-		}
-		else
-		{
-			for (auto & mesh : meshes)
-				mesh.second->update(cameraMatrix, projectedTransformation, lightglmV);
+			mesh.second->update(vertexIntensities, rasterizer, cameraFrustrumPlanes);
 		}
 			
 	}
@@ -121,5 +111,40 @@ namespace przurro
 
 		for (auto & meshIterator : meshes)
 			meshIterator.second->set_color(defaultColor);
+	}
+
+	void Model::update_vertex_buffers(Camera * activeCamera, Light * inputLight, float ambientalLightI = 0.7f)
+	{
+		tvPositions.resize(ovPositions.size());
+
+		Matrix41f lightVector;
+
+		if (!inputLight)
+			lightVector = Matrix41f(Vector4f({1.f, -1.f, 0.f, 0.f}));
+		else
+			lightVector = Matrix41f(inputLight->get_direction());
+
+		Matrix44f cameraCoordinates = activeCamera->look_at(); // get the camera coordinates
+
+		Vector4f lightV = cameraCoordinates * lightVector; // cache:  calculate the light vector from the camera coordinates
+		vec4 lightglmV = normalize(vec4(lightV[X], lightV[Y], lightV[Z], lightV[W]));
+
+		Matrix44f modelToCameraTransformation = cameraCoordinates * Matrix44f(globalTransform); // cache: get the model camera coordinates
+		Matrix44f modelProjectedTransformation = Matrix44f(activeCamera->get_projection_matrix()) * modelToCameraTransformation; // cache: pre-calculate the projected transformation
+
+		for (size_t i = 0, numberOfIndices = ovPositions.size(); i < numberOfIndices; ++i)
+		{
+			//---------------------------------------Light calculation----------------------------------------------------
+			Vector4f normal = modelToCameraTransformation * Matrix41f(ovNormals[i]); //Calculate the transformed normal vector
+
+			vec4 glmNormal({normal[X], normal[Y], normal[Z], normal[W]});
+			float intensity = std::max(dot(lightglmV, glmNormal), 0.f) + ambientalLightI;
+			vertexIntensities[i] = std::min(intensity, 1.f);
+
+			tvNormals[i] = normal;
+
+			//---------------------------------------Projected vertex coordinates calculation-----------------------------
+			tvPositions[i] = modelProjectedTransformation * Matrix41f(ovPositions[i]); //Calculate the transformed vertex position
+		}
 	}
 }

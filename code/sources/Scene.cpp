@@ -26,7 +26,7 @@ namespace przurro
 	{
 		for(auto & model : models)
 		{
-			model.second->update(activeCamera.get(),&infiniteLight);
+			model.second->update(activeCamera.get(),rasterizer, &infiniteLight);
 		}
 	}
 
@@ -161,7 +161,7 @@ namespace przurro
 
 		if (name == "target")
 		{
-			if (!is_existing_model(value))
+			if (!model_exists(value))
 			{
 				return false;
 			}
@@ -232,7 +232,7 @@ namespace przurro
 
 		return true;
 	}
-	bool Scene::is_existing_model(const String & name)
+	bool Scene::model_exists(const String & name)
 	{
 		auto iterator = models.find(name);
 

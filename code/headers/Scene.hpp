@@ -52,7 +52,7 @@ namespace przurro
 
 	public:
 
-		bool is_existing_model(const String & name);
+		bool model_exists(const String & name);
 		
 	};
 }

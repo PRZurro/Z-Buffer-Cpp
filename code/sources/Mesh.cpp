@@ -8,80 +8,75 @@ namespace przurro
 		ovNormals(normalBuffer), 
 		tvPositions(transformedVertexBuffer),
 		tvNormals(transformedNormalBuffer),
-		tvColors(nVertices / 3),
+		tvColors(nVertices),
 		displayVertices(nVertices),
 		fIndex(meshFIndex),
 		lIndex(fIndex + nVertices - 1),
 		color({0, 0, 0})
 	{}
 
-	void Mesh::update(Matrix44f & cameraMatrix, Matrix44f & projectedTransform, vec4 & lightVector, float lightIntensity, float ambientalIntensity)
+	void Mesh::update(f_Buffer & lightIntensities, Rasterizer<Color_Buff> & rasterizer, Vector4f_Buffer & frustrumPlanes)
 	{
+		Color * vertexColor = tvColors.data();
 		for (size_t index = fIndex; index < lIndex; index += 3)
 		{
-			cacheIndices[X] = index + X; cacheIndices[Y] = index + Y; cacheIndices[Z] = index + Z; cacheIndices[W] = index + W;
-
-			//---------------------------------------Light calculation----------------------------------------------------
-			Vector4f vn0 = cameraMatrix * Matrix41f(ovNormals[triangleIndices[index + X]]); //Calculate the transformed normal vector
-			Vector4f vn1 = cameraMatrix * Matrix41f(ovNormals[triangleIndices[index + Y]]);
-			Vector4f vn2 = cameraMatrix * Matrix41f(ovNormals[triangleIndices[index + Z]]);
-
-			vec4 glmNormal({ vn0[X], vn0[Y], vn0[Z], vn0[W]});
-
-			float intensity = std::max(dot(lightVector, glmNormal), 0.f) + ambientalIntensity;
-			intensity = std::min(intensity, 1.f);
-			Color & tColor = tvColors[index];
-			tColor.set
-			(
-				(int)((float)color.data.component.r * intensity), 
-				(int)((float)color.data.component.g * intensity), 
-				(int)((float)color.data.component.b * intensity)
-			);
-
-			vn0[W] = vn1[W] = vn2[W] = 0.f;
-			tvNormals[index + X] = vn0; tvNormals[index + Y] = vn1; tvNormals[index + Z] = vn2;
-
-			//---------------------------------------Projected vertex coordinates calculation-----------------------------
-			Point4f vp0 = projectedTransform * Matrix41f(ovPositions[triangleIndices[index + X]]); //Calculate the transformed vertex position
-			Point4f vp1 = projectedTransform * Matrix41f(ovPositions[triangleIndices[index + Y]]);
-			Point4f vp2 = projectedTransform * Matrix41f(ovPositions[triangleIndices[index + Z]]);
-
+			//---------------------------------------Triangle vertex colors----------------------------------------------
+		
+			scale_color(vertexColor++, lightIntensities[index + X]);
+			scale_color(vertexColor++, lightIntensities[index + Y]);
+			scale_color(vertexColor++, lightIntensities[index + Z]);
+	
 			//---------------------------------------Clipping-------------------------------------------------------------
+			
+			Point4f_Buffer verticesToClip({ tvPositions[index + X], tvPositions[index + Y], tvPositions[index + Z]});
 
+			clip_with_viewport_3D(tvPositions.data(),)
 
+			for (size_t i = 0; i < verticesToClip.size(); i++)
+			{
+				if (i < 3)
+				{
+
+				}
+				else
+				{
+
+				}
+			}
+
+		}
+
+		displayVertices.resize(tvPositions.size());
+
+		float widthHalf = (float)rasterizer.get_color_buffer().get_width() / 2;
+		float heightHalf = (float)rasterizer.get_color_buffer().get_height() / 2;
+
+		Transform_Matrix3f	viewportTransformation = Translation_Matrix3f(widthHalf, heightHalf, 0.f) * Scale_Matrix3f(widthHalf, heightHalf, 100000000.f);
+
+		for (size_t index = 0, nTriangles = dti.size(); index < nTriangles; ++index)
+		{
+			Point4f & tvp0 = tvPositions[dti[index].v0], & tvp1 = tvPositions[dti[index].v1], & tvp2 = tvPositions[dti[index].v2];
 
 			//---------------------------------------NDC Coordinates------------------------------------------------------
-			float oneByW0 = (1.f / vp0[W]), oneByW1 = (1.f / vp1[W]), oneByW2 = (1.f / vp2[W]);
+			float oneByW0 = (1.f / tvp0[W]), oneByW1 = (1.f / tvp1[W]), oneByW2 = (1.f / tvp2[W]);
 
-			tvPositions[index + X] = Point4f({vp0[X] * oneByW0, vp0[Y] * oneByW0, vp0[Z] * oneByW0, 1.f}); 
-			tvPositions[index + Y] = Point4f({vp1[X] * oneByW1, vp1[Y] * oneByW1, vp1[Z] * oneByW1, 1.f});
-			tvPositions[index + Z] = Point4f({vp2[X] * oneByW2, vp2[Y] * oneByW2, vp2[Z] * oneByW2, 1.f});
+			//Final vertex positions
+			Point4f fvp0({ tvp0[X] * oneByW0, tvp0[Y] * oneByW0, tvp0[Z] * oneByW0, 1.f }),
+					fvp1({ tvp1[X] * oneByW1, tvp1[Y] * oneByW1, tvp1[Z] * oneByW1, 1.f }),
+					fvp2({ tvp2[X] * oneByW2, tvp2[Y] * oneByW2, tvp2[Z] * oneByW2, 1.f });
+
+			//--------------------------------------Viewport Coordinates + Display Vertices Assignation-------------------
+
+			displayVertices[index + X] = Point4i(Matrix44f(viewportTransformation) * Matrix41f(fvp0));
+			displayVertices[index + X] = Point4i(Matrix44f(viewportTransformation) * Matrix41f(fvp1));
+			displayVertices[index + X] = Point4i(Matrix44f(viewportTransformation) * Matrix41f(fvp2));
 		}
 	}
 
 	void Mesh::draw(Rasterizer<Color_Buff> & rasterizer)
 	{
-		/*Se convierten las coordenadas transformadas y proyectadas a coordenadas
-			de recorte (-1 a +1) en coordenadas de pantalla con el origen centrado.
-			La coordenada Z se escala a un valor suficientemente grande dentro del
-			rango de int (que es lo que espera fill_convex_polygon_z_buffer).*/
-
-		float widthHalf = (float)rasterizer.get_color_buffer().get_width() / 2;
-		float heightHalf = (float)rasterizer.get_color_buffer().get_height() / 2;
-
-		Scale_Matrix3f			scaling = Scale_Matrix3f(widthHalf, heightHalf, 100000000.f);
-		Translation_Matrix3f    translation = Translation_Matrix3f(widthHalf, heightHalf, 0.f);
-		Transform_Matrix3f		transformation = translation * scaling;
-
 		// Se borra el frameb�ffer y se dibujan los tri�ngulos:
 
-		for (size_t index = fIndex; index < lIndex; index += 3)
-		{
-			Point4i & d0 = displayVertices[index + X] = Point4i(Matrix44f(transformation) * Matrix41f(tvPositions[index + X]));
-			Point4i & d1 = displayVertices[index + Y] = Point4i(Matrix44f(transformation) * Matrix41f(tvPositions[index + Y]));
-			Point4i & d2 = displayVertices[index + Z] = Point4i(Matrix44f(transformation) * Matrix41f(tvPositions[index + Z]));
-		}
-		
 		rasterizer.clear();
 
 		for (size_t index = fIndex; index < lIndex; index += 3)
@@ -109,7 +104,7 @@ namespace przurro
 		return ((v1[0] - v0[0]) * (v2[1] - v0[1]) - (v2[0] - v0[0]) * (v1[1] - v0[1]) > 0.f);
 	}
 
-	int Mesh::clip_with_viewport_2d(const Point4f * vertices, int * first_index, int * last_index, Point4f * clipped_vertices)
+	int Mesh::clip_with_viewport_3D(const Point4f * vertices, int * first_index, int * last_index, Point4f_Buffer clipped_vertices, const Vector4f_Buffer & frustrumPlanes)
 	{
 		/*Point4f         aux_vertices[20];
 		static const int aux_indices[20] = { 0, 1, 2, 3, 4, 5, 6, 7,};
@@ -150,10 +145,12 @@ namespace przurro
 		return 0;
 	}
 	
-	int Mesh::clip_with_line_2d(const Point4f * vertices, int * first_index, int * last_index, Point4f * clipped_vertices, float a, float b, float c)
+	int Mesh::clip_with_plane_3D(const Point4f * vertices, int * first_index, int * last_index, Point4f_Buffer clipped_vertices, const Vector4f & plane)
 	{
 		Point4f current_vertex;
 		Point4f    next_vertex;
+
+		float a = plane[X], b = plane[Y], c = plane[Z], d = plane[W];
 
 		int clipped_vertex_count = 0;
 
@@ -171,11 +168,11 @@ namespace przurro
 			switch ((current_value << 1) | next_value)
 			{
 			case 1:		// EL PRIMERO FUERA Y EL SEGUNDO DENTRO
-				clipped_vertices[clipped_vertex_count++] = intersect_rect(a, b, c, current_vertex, next_vertex);
+				clipped_vertices[clipped_vertex_count++] = intersect_plane(plane, current_vertex, next_vertex);
 				clipped_vertices[clipped_vertex_count++] = next_vertex;
 				break;
 			case 2:		// EL PRIMERO DENTRO Y EL SEGUNDO FUERA
-				clipped_vertices[clipped_vertex_count++] = intersect_rect(a, b, c, current_vertex, next_vertex);
+				clipped_vertices[clipped_vertex_count++] = intersect_plane(plane, current_vertex, next_vertex);
 				break;
 			case 3:		// LOS DOS DENTRO
 				clipped_vertices[clipped_vertex_count++] = next_vertex;
@@ -186,16 +183,16 @@ namespace przurro
 		return clipped_vertex_count;
 	}
 
-	Point4f Mesh::intersect_rect(float a, float b, float c, const Point4f & point0, const Point4f & point1)
+	Point4f Mesh::intersect_plane(const Vector4f & plane, const Point4f & point0, const Point4f & point1)
 	{
-		/*plane_n = Vector_Normalise(plane_n);
+		//plane_n = Vector_Normalise(plane_n);
 		float plane_d = -Vector_DotProduct(plane_n, plane_p);
 		float ad = Vector_DotProduct(lineStart, plane_n);
 		float bd = Vector_DotProduct(lineEnd, plane_n);
 		float t = (-plane_d - ad) / (bd - ad);
 		vec3d lineStartToEnd = Vector_Sub(lineEnd, lineStart);
 		vec3d lineToIntersect = Vector_Mul(lineStartToEnd, t);
-		return Vector_Add(lineStart, lineToIntersect);*/
+		return Vector_Add(lineStart, lineToIntersect);
 		return Point4f();
 	}
 }
