@@ -32,8 +32,6 @@ namespace przurro
 
 		String name;
 
-		int cacheIndices[4];//Cache array to store the actual indices to this class buffers. It's necessary to add the 4 position because is required in the rasterizer
-		
 	public:
 
 		Mesh(Point4f_Buffer & vertexBuffer, Point4f_Buffer & transformedVertexBuffer, Vector4f_Buffer & normalBuffer, Vector4f_Buffer & transformedNormalBuffer, size_t nVertices, size_t meshFIndex, String & meshName);
@@ -68,8 +66,8 @@ namespace przurro
 
 	public: // Clipping
 
-		int clip_with_viewport_3D(const Point4f * vertices, int * first_index, int * last_index, Point4f_Buffer clipped_vertices, const Vector4f_Buffer & frustrumPlanes);
-		int clip_with_plane_3D(const Point4f * vertices, int * first_index, int * last_index, Point4f_Buffer clipped_vertices, const Vector4f & plane);
+		int clip_with_viewport_3D(Point4f_Buffer & clippedVertices, i_Buffer & clippedIndices, const Vector4f_Buffer & frustrumPlanes);
+		int clip_with_plane_3D(Point4f_Buffer & clippedVertices, i_Buffer & clippedIndices, const Vector4f & plane);
 		Point4f intersect_plane(const Vector4f & plane, const Point4f & point0, const Point4f & point1);
 
 	private:

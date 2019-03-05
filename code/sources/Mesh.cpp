@@ -28,22 +28,12 @@ namespace przurro
 	
 			//---------------------------------------Clipping-------------------------------------------------------------
 			
-			Point4f_Buffer verticesToClip({ tvPositions[index + X], tvPositions[index + Y], tvPositions[index + Z]});
+			Point4f_Buffer clippedVertices({ tvPositions[index + X], tvPositions[index + Y], tvPositions[index + Z]});
+			i_Buffer clippedIndices({(int)index + X, (int)index + Y, (int)index + Z});
 
-			clip_with_viewport_3D(tvPositions.data(),)
+			clip_with_viewport_3D(clippedVertices, clippedIndices, frustrumPlanes);
 
-			for (size_t i = 0; i < verticesToClip.size(); i++)
-			{
-				if (i < 3)
-				{
-
-				}
-				else
-				{
-
-				}
-			}
-
+			Triangulate(clippedIndices, dti);
 		}
 
 		displayVertices.resize(tvPositions.size());
@@ -79,6 +69,7 @@ namespace przurro
 
 		rasterizer.clear();
 
+		int cacheIndices[4];//Cache array to store the actual indices to this class buffers. It's necessary to add the 4 position because is required in the rasterizer
 		for (size_t index = fIndex; index < lIndex; index += 3)
 		{	
 			cacheIndices[X] = index + X; cacheIndices[Y] = index + Y; cacheIndices[Z] = index + Z; cacheIndices[W] = index + W;
@@ -104,12 +95,35 @@ namespace przurro
 		return ((v1[0] - v0[0]) * (v2[1] - v0[1]) - (v2[0] - v0[0]) * (v1[1] - v0[1]) > 0.f);
 	}
 
-	int Mesh::clip_with_viewport_3D(const Point4f * vertices, int * first_index, int * last_index, Point4f_Buffer clipped_vertices, const Vector4f_Buffer & frustrumPlanes)
+	int Mesh::clip_with_viewport_3D(Point4f_Buffer & clippedVertices, i_Buffer & clippedIndices, const Vector4f_Buffer & frustrumPlanes)
 	{
-		/*Point4f         aux_vertices[20];
-		static const int aux_indices[20] = { 0, 1, 2, 3, 4, 5, 6, 7,};
+		int count = 0, verticesClipped = 0;
+		
+		size_t nPlanes = frustrumPlanes.size();
 
-		int count = clip_with_line_2d
+		//Clipping with near and far plane
+		for (size_t i = nPlanes - 2; i < nPlanes; ++i)
+		{
+			verticesClipped = clip_with_plane_3D(clippedVertices, clippedIndices, frustrumPlanes[i]);
+
+			// The triangle is outside of the frustrum
+			if (verticesClipped == 0)
+				return 0;
+
+			count += verticesClipped;
+		}
+
+		verticesClipped = 0;
+
+		//Clipping with left, top, right and bottom planes
+		for (size_t i = 0, lastPlane = nPlanes - 2 ; i < lastPlane; ++i)
+		{
+			count += clip_with_plane_3D(clippedVertices, clippedIndices, frustrumPlanes[i]);
+		}
+
+
+		//Clipping 
+		/*int count = clip_with_plane_3D
 		(
 			vertices,
 			first_index,
@@ -122,16 +136,16 @@ namespace przurro
 
 		if (count < 3) return count;
 
-		count = clip_with_line_2d(aux_vertices, aux_indices, aux_indices + count, clipped_vertices, ? , ? , ? );
+		count = clip_with_plane_3D(aux_vertices, aux_indices, aux_indices + count, clipped_vertices, ? , ? , ? );
 
 		if (count < 3) return count;
 
-		count = clip_with_line_2d
+		count = clip_with_plane_3D
 		(clipped_vertices, aux_indices, aux_indices + count, aux_vertices, ? , ? , ? );
 
 		if (count < 3) return count;
 
-		return clip_with_line_2d
+		return clip_with_plane_3D
 		(
 			aux_vertices,
 			aux_indices,
@@ -142,57 +156,60 @@ namespace przurro
 			?
 		);*/
 
-		return 0;
+		return count;
 	}
 	
-	int Mesh::clip_with_plane_3D(const Point4f * vertices, int * first_index, int * last_index, Point4f_Buffer clipped_vertices, const Vector4f & plane)
+	int Mesh::clip_with_plane_3D(Point4f_Buffer & clippedVertices, i_Buffer & clippedIndices, const Vector4f & plane)
 	{
-		Point4f current_vertex;
-		Point4f    next_vertex;
-
+		int clippedVertexN = 0;
+		Point4f currentVertex, nextVertex;
 		float a = plane[X], b = plane[Y], c = plane[Z], d = plane[W];
-
-		int clipped_vertex_count = 0;
-
-		for (int * index = first_index; index < last_index; )
+		
+		for (size_t i = 0, size = clippedVertices.size(); i < size;)
 		{
-			current_vertex = vertices[*(index++)];
-			next_vertex = vertices[*index];
+			currentVertex = clippedVertices[i++];
+			nextVertex = clippedVertices[i];
+
+			//In which side are on the evaluated vertices?
 
 			int current_value =
-				a * current_vertex[0] + b * current_vertex[1] + c > 0;
+				a * currentVertex[0] + b * currentVertex[1] + c * currentVertex[2] + d > 0;
 
-			int    next_value =
-				a * next_vertex[0] + b * next_vertex[1] + c > 0;
+			int next_value =
+				a * nextVertex[0] + b * nextVertex[1] + +c * nextVertex[2] + d > 0;
 
+			// Depending of the current sides of the evaluated vertices...
 			switch ((current_value << 1) | next_value)
 			{
-			case 1:		// EL PRIMERO FUERA Y EL SEGUNDO DENTRO
-				clipped_vertices[clipped_vertex_count++] = intersect_plane(plane, current_vertex, next_vertex);
-				clipped_vertices[clipped_vertex_count++] = next_vertex;
+			case 1:		// First outside and second inside
+				clippedVertices[clippedVertexN++] = intersect_plane(plane, currentVertex, nextVertex);
+				clippedVertices[clippedVertexN++] = nextVertex;
 				break;
-			case 2:		// EL PRIMERO DENTRO Y EL SEGUNDO FUERA
-				clipped_vertices[clipped_vertex_count++] = intersect_plane(plane, current_vertex, next_vertex);
-				break;
-			case 3:		// LOS DOS DENTRO
-				clipped_vertices[clipped_vertex_count++] = next_vertex;
+			case 2:		// First inside and second outside
+				clippedVertices[clippedVertexN++] = intersect_plane(plane, currentVertex, nextVertex);
 				break;
 			}
 		}
 
-		return clipped_vertex_count;
+		return clippedVertexN;
 	}
 
 	Point4f Mesh::intersect_plane(const Vector4f & plane, const Point4f & point0, const Point4f & point1)
 	{
-		//plane_n = Vector_Normalise(plane_n);
-		float plane_d = -Vector_DotProduct(plane_n, plane_p);
-		float ad = Vector_DotProduct(lineStart, plane_n);
-		float bd = Vector_DotProduct(lineEnd, plane_n);
-		float t = (-plane_d - ad) / (bd - ad);
-		vec3d lineStartToEnd = Vector_Sub(lineEnd, lineStart);
-		vec3d lineToIntersect = Vector_Mul(lineStartToEnd, t);
-		return Vector_Add(lineStart, lineToIntersect);
+		/*Vector3 ba = b - a;
+		float nDotA = Vector3::dotProduct(n, a);
+		float nDotBA = Vector3::dotProduct(n, ba);
+
+		a + (((d - nDotA) / nDotBA) * ba);
+		*/
 		return Point4f();
+	}
+
+	void Triangulate(i_Buffer & indices, TriangleI_Buffer & triangleIndices)
+	{
+		for (size_t v0 = 0, tmpv1 = 1, tmpv2 = 2, size = indices.size(); tmpv2 < size; ++tmpv1, ++tmpv2)
+		{
+			triangleIndices.push_back(Triangle_Index(v0, tmpv1, tmpv2));
+		}
 	}
 }

@@ -36,6 +36,13 @@ namespace przurro
 		size_t v0;
 		size_t v1;
 		size_t v2;
+
+		Triangle_Index(size_t iv0, size_t iv1, size_t iv2)
+		{
+			v0 = iv0;
+			v1 = iv1;
+			v2 = iv2;
+		}
 	};
 
 	class String_Utilities
