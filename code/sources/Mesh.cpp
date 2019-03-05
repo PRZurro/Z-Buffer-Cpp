@@ -156,11 +156,9 @@ namespace przurro
 
 	Point4f Mesh::intersect_plane(const Vector4f & plane, const Point4f & point0, const Point4f & point1)
 	{
-		float b0 = point1[X] - point0[X], b1 = point1[Y]- point0[Y], b2 = point1[Z] - point0[Z];
-		
-		// x = x0 + b0 * t
+		float b0 = point1[X] - point0[X], b1 = point1[Y] - point0[Y], b2 = point1[Z] - point0[Z];
 
-		float	t = -((plane[X] * point0[X]) + (plane[Y] * point0[Y]) + (plane[Z] * point0[Z]) + plane[W]);
+		float	t = - ((plane[X] * point0[X]) + (plane[Y] * point0[Y]) + (plane[Z] * point0[Z]) + plane[W]);
 				t /= (b0 + b1 + b2);
 		
 		Point4f intersectionPoint
@@ -171,13 +169,6 @@ namespace przurro
 				point0[Z] + t * b2
 		} };
 
-
-		/*Vector3 ba = b - a;
-		float nDotA = Vector3::dotProduct(n, a);
-		float nDotBA = Vector3::dotProduct(n, ba);
-
-		a + (((d - nDotA) / nDotBA) * ba);
-		*/
 		return intersectionPoint;
 	}
 
