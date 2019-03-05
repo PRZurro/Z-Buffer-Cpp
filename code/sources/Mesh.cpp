@@ -32,8 +32,7 @@ namespace przurro
 			i_Buffer clippedIndices({(int)index + X, (int)index + Y, (int)index + Z});
 
 			clip_with_viewport_3D(clippedVertices, clippedIndices, frustrumPlanes);
-
-			Triangulate(clippedIndices, dti);
+			triangulate_polygon(clippedIndices, displayTriangleI);
 		}
 
 		displayVertices.resize(tvPositions.size());
@@ -43,9 +42,9 @@ namespace przurro
 
 		Transform_Matrix3f	viewportTransformation = Translation_Matrix3f(widthHalf, heightHalf, 0.f) * Scale_Matrix3f(widthHalf, heightHalf, 100000000.f);
 
-		for (size_t index = 0, nTriangles = dti.size(); index < nTriangles; ++index)
+		for (size_t index = 0, nTriangles = displayTriangleI.size(); index < nTriangles; ++index)
 		{
-			Point4f & tvp0 = tvPositions[dti[index].v0], & tvp1 = tvPositions[dti[index].v1], & tvp2 = tvPositions[dti[index].v2];
+			Point4f & tvp0 = tvPositions[displayTriangleI[index].v0], & tvp1 = tvPositions[displayTriangleI[index].v1], & tvp2 = tvPositions[displayTriangleI[index].v2];
 
 			//---------------------------------------NDC Coordinates------------------------------------------------------
 			float oneByW0 = (1.f / tvp0[W]), oneByW1 = (1.f / tvp1[W]), oneByW2 = (1.f / tvp2[W]);
@@ -70,14 +69,14 @@ namespace przurro
 		rasterizer.clear();
 
 		int cacheIndices[4];//Cache array to store the actual indices to this class buffers. It's necessary to add the 4 position because is required in the rasterizer
-		for (size_t index = fIndex; index < lIndex; index += 3)
-		{	
-			cacheIndices[X] = index + X; cacheIndices[Y] = index + Y; cacheIndices[Z] = index + Z; cacheIndices[W] = index + W;
+		cacheIndices[W] = sizeof(int);
+		for (Triangle_Index triangle : displayTriangleI)
+		{
+			cacheIndices[X] = triangle.v0; cacheIndices[Y] = triangle.v1; cacheIndices[Z] = triangle.v2; 
 
 			if (is_frontface(tvPositions.data(), cacheIndices))
 			{
-				rasterizer.set_color(tvColors[index]); //The color of the polygon is established from the color of its first vertex
-
+				rasterizer.set_color(tvColors[triangle.v0]); //The color of the polygon is established from the color of its first vertex
 				rasterizer.fill_convex_polygon_z_buffer(displayVertices.data(), cacheIndices, cacheIndices + W); //The polygon is filled
 			}
 		}
@@ -95,99 +94,60 @@ namespace przurro
 		return ((v1[0] - v0[0]) * (v2[1] - v0[1]) - (v2[0] - v0[0]) * (v1[1] - v0[1]) > 0.f);
 	}
 
-	int Mesh::clip_with_viewport_3D(Point4f_Buffer & clippedVertices, i_Buffer & clippedIndices, const Vector4f_Buffer & frustrumPlanes)
+	int Mesh::clip_with_viewport_3D(Point4f_Buffer & clippedVertices,  i_Buffer & clippedIndices, const Vector4f_Buffer & frustrumPlanes)
 	{
-		int count = 0, verticesClipped = 0;
-		
-		size_t nPlanes = frustrumPlanes.size();
+		int clippedVerticesN = 0, count = 0;
 
-		//Clipping with near and far plane
-		for (size_t i = nPlanes - 2; i < nPlanes; ++i)
+		Point4f_Buffer outputVertices = clippedVertices, auxVertices{};
+		for (const Vector4f & plane : frustrumPlanes)
 		{
-			verticesClipped = clip_with_plane_3D(clippedVertices, clippedIndices, frustrumPlanes[i]);
+			auxVertices = outputVertices;
+			outputVertices.clear();
 
-			// The triangle is outside of the frustrum
-			if (verticesClipped == 0)
+			clippedVerticesN = clip_with_plane_3D(auxVertices, outputVertices, plane);
+
+			if (clippedVerticesN < 3)
 				return 0;
 
-			count += verticesClipped;
+			count += clippedVerticesN;
 		}
 
-		verticesClipped = 0;
-
-		//Clipping with left, top, right and bottom planes
-		for (size_t i = 0, lastPlane = nPlanes - 2 ; i < lastPlane; ++i)
-		{
-			count += clip_with_plane_3D(clippedVertices, clippedIndices, frustrumPlanes[i]);
-		}
-
-
-		//Clipping 
-		/*int count = clip_with_plane_3D
-		(
-			vertices,
-			first_index,
-			last_index,
-			aux_vertices,
-			-1,
-			0,
-			0
-		);
-
-		if (count < 3) return count;
-
-		count = clip_with_plane_3D(aux_vertices, aux_indices, aux_indices + count, clipped_vertices, ? , ? , ? );
-
-		if (count < 3) return count;
-
-		count = clip_with_plane_3D
-		(clipped_vertices, aux_indices, aux_indices + count, aux_vertices, ? , ? , ? );
-
-		if (count < 3) return count;
-
-		return clip_with_plane_3D
-		(
-			aux_vertices,
-			aux_indices,
-			aux_indices + count,
-			clipped_vertices,
-			? ,
-			? ,
-			?
-		);*/
-
+		clippedVertices = outputVertices;
 		return count;
 	}
 	
-	int Mesh::clip_with_plane_3D(Point4f_Buffer & clippedVertices, i_Buffer & clippedIndices, const Vector4f & plane)
+	int Mesh::clip_with_plane_3D(Point4f_Buffer & currentVertices, Point4f_Buffer & outputVertices, const Vector4f & plane)
 	{
-		int clippedVertexN = 0;
 		Point4f currentVertex, nextVertex;
+
+		int currentValue = 0, nextValue = 0, clippedVertexN = 0;
 		float a = plane[X], b = plane[Y], c = plane[Z], d = plane[W];
-		
-		for (size_t i = 0, size = clippedVertices.size(); i < size;)
+
+		for (size_t i = 0, size = currentVertices.size(); i < size;)
 		{
-			currentVertex = clippedVertices[i++];
-			nextVertex = clippedVertices[i];
+			currentVertex = currentVertices[i++];
+			nextVertex = currentVertices[i];
 
 			//In which side are on the evaluated vertices?
-
-			int current_value =
+			currentValue =
 				a * currentVertex[0] + b * currentVertex[1] + c * currentVertex[2] + d > 0;
+			nextValue =
+				a * nextVertex[0] + b * nextVertex[1] + c * nextVertex[2] + d > 0;
 
-			int next_value =
-				a * nextVertex[0] + b * nextVertex[1] + +c * nextVertex[2] + d > 0;
-
-			// Depending of the current sides of the evaluated vertices...
-			switch ((current_value << 1) | next_value)
+			switch ((currentValue << 1) | nextValue) // Depending of the current sides of the evaluated vertices...
 			{
-			case 1:		// First outside and second inside
-				clippedVertices[clippedVertexN++] = intersect_plane(plane, currentVertex, nextVertex);
-				clippedVertices[clippedVertexN++] = nextVertex;
-				break;
-			case 2:		// First inside and second outside
-				clippedVertices[clippedVertexN++] = intersect_plane(plane, currentVertex, nextVertex);
-				break;
+				case 1:	// First outside and second inside
+					outputVertices.push_back(intersect_plane(plane, currentVertex, nextVertex));
+					outputVertices.push_back(nextVertex);
+					++clippedVertexN;
+					break;
+				case 2:	// First inside and second outside
+					outputVertices.push_back(intersect_plane(plane, currentVertex, nextVertex));
+					++clippedVertexN;
+					break;
+				case 3:	// Both inside
+					outputVertices.push_back(nextVertex);
+					break;
 			}
 		}
 
@@ -196,16 +156,32 @@ namespace przurro
 
 	Point4f Mesh::intersect_plane(const Vector4f & plane, const Point4f & point0, const Point4f & point1)
 	{
+		float b0 = point1[X] - point0[X], b1 = point1[Y]- point0[Y], b2 = point1[Z] - point0[Z];
+		
+		// x = x0 + b0 * t
+
+		float	t = -((plane[X] * point0[X]) + (plane[Y] * point0[Y]) + (plane[Z] * point0[Z]) + plane[W]);
+				t /= (b0 + b1 + b2);
+		
+		Point4f intersectionPoint
+		{ {
+
+				point0[X] + t * b0,
+				point0[Y] + t * b1,
+				point0[Z] + t * b2
+		} };
+
+
 		/*Vector3 ba = b - a;
 		float nDotA = Vector3::dotProduct(n, a);
 		float nDotBA = Vector3::dotProduct(n, ba);
 
 		a + (((d - nDotA) / nDotBA) * ba);
 		*/
-		return Point4f();
+		return intersectionPoint;
 	}
 
-	void Triangulate(i_Buffer & indices, TriangleI_Buffer & triangleIndices)
+	void triangulate_polygon(i_Buffer & indices, TriangleI_Buffer & triangleIndices)
 	{
 		for (size_t v0 = 0, tmpv1 = 1, tmpv2 = 2, size = indices.size(); tmpv2 < size; ++tmpv1, ++tmpv2)
 		{

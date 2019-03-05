@@ -18,7 +18,7 @@ namespace przurro
 		Vector4f_Buffer	&	ovNormals; // original vertices normals, 4th component must be set to '0.f'
 		Vector4f_Buffer	&	tvNormals;
 
-		TriangleI_Buffer	dti; // display triangle indices
+		TriangleI_Buffer	displayTriangleI; // display triangle indices
 		Point4i_Buffer		displayVertices;
 
 		CColor_Buff			tvColors; // transformed vertices colors
@@ -38,7 +38,7 @@ namespace przurro
 		
 		~Mesh()
 		{
-			dti.clear();
+			displayTriangleI.clear();
 
 			tvPositions.clear();
 			tvNormals.clear();
@@ -67,7 +67,7 @@ namespace przurro
 	public: // Clipping
 
 		int clip_with_viewport_3D(Point4f_Buffer & clippedVertices, i_Buffer & clippedIndices, const Vector4f_Buffer & frustrumPlanes);
-		int clip_with_plane_3D(Point4f_Buffer & clippedVertices, i_Buffer & clippedIndices, const Vector4f & plane);
+		int clip_with_plane_3D(Point4f_Buffer & currentVertices, Point4f_Buffer & outputVertices, const Vector4f & plane);
 		Point4f intersect_plane(const Vector4f & plane, const Point4f & point0, const Point4f & point1);
 
 	private:
