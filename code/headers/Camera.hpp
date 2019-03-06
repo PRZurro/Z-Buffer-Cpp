@@ -19,6 +19,8 @@ namespace przurro
 		size_t width;
 		size_t height;
 
+		Vector4f fPlanes[6]; //Planes that compose the frustrum
+
 	public:
 
 		Camera(float nearPlaneD, float farPlaneD, float fovDegrees, size_t inputWidth, size_t inputHeight, Vector3f * target = nullptr);
@@ -60,7 +62,7 @@ namespace przurro
 			return height;
 		}
 
-		Vector4f_Buffer extract_frustrum_planes(bool normalize = false);
+		Vector4f** extract_frustrum_planes(bool normalize = false);
 
 		Vector4f normalizePlane(Vector4f & planeToNormalize)
 		{

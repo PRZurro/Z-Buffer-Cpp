@@ -42,51 +42,52 @@ namespace przurro
 
 		return camToWorld;
 	}
-	Vector4f_Buffer Camera::extract_frustrum_planes(bool normalize)
+	Vector4f** Camera::extract_frustrum_planes(bool normalize)
 	{
 		// As this link refers: https://www.gamedevs.org/uploads/fast-extraction-viewing-frustum-planes-from-world-view-projection-matrix.pdf
 		Matrix44f m = projectionMatrix * look_at(); // World space frustrum
-		Vector4f_Buffer planes(6); //planes
+		Vector4f * firstLast[2];
+		firstLast[0] = fPlanes; firstLast[1] = fPlanes + 5;
 
 		//Left clipping plane
-		planes[0][0] = m[3][0] + m[0][0];
-		planes[0][1] = m[3][2] + m[0][2];
-		planes[0][2] = m[3][2] + m[0][2];
-		planes[0][3] = m[3][3] + m[0][3];
+		fPlanes[0][0] = m[3][0] + m[0][0];
+		fPlanes[0][1] = m[3][2] + m[0][2];
+		fPlanes[0][2] = m[3][2] + m[0][2];
+		fPlanes[0][3] = m[3][3] + m[0][3];
 		// Right clipping plane
-		planes[1][0] = m[3][0] - m[0][0];
-		planes[1][1] = m[3][1] - m[0][1];
-		planes[1][2] = m[3][2] - m[0][2];
-		planes[1][3] = m[3][3] - m[0][3];
+		fPlanes[1][0] = m[3][0] - m[0][0];
+		fPlanes[1][1] = m[3][1] - m[0][1];
+		fPlanes[1][2] = m[3][2] - m[0][2];
+		fPlanes[1][3] = m[3][3] - m[0][3];
 		// Top clipping plane
-		planes[2][0] = m[3][0] - m[1][0];
-		planes[2][1] = m[3][1] - m[1][1];
-		planes[2][2] = m[3][2] - m[1][2];
-		planes[2][3] = m[3][3] - m[1][3];
+		fPlanes[2][0] = m[3][0] - m[1][0];
+		fPlanes[2][1] = m[3][1] - m[1][1];
+		fPlanes[2][2] = m[3][2] - m[1][2];
+		fPlanes[2][3] = m[3][3] - m[1][3];
 		// Bottom clipping plane
-		planes[3][0] = m[3][0] + m[1][0];
-		planes[3][1] = m[3][1] + m[1][1];
-		planes[3][2] = m[3][2] + m[1][2];
-		planes[3][3] = m[3][3] + m[1][3];
+		fPlanes[3][0] = m[3][0] + m[1][0];
+		fPlanes[3][1] = m[3][1] + m[1][1];
+		fPlanes[3][2] = m[3][2] + m[1][2];
+		fPlanes[3][3] = m[3][3] + m[1][3];
 		// Near clipping plane
-		planes[4][0] = m[3][0] + m[2][0];
-		planes[4][1] = m[3][1] + m[2][1];
-		planes[4][2] = m[3][2] + m[2][2];
-		planes[4][3] = m[3][3] + m[2][3];
+		fPlanes[4][0] = m[3][0] + m[2][0];
+		fPlanes[4][1] = m[3][1] + m[2][1];
+		fPlanes[4][2] = m[3][2] + m[2][2];
+		fPlanes[4][3] = m[3][3] + m[2][3];
 		// Far clipping plane
-		planes[5][0] = m[3][0] - m[2][0];
-		planes[5][1] = m[3][1] - m[2][1];
-		planes[5][2] = m[3][2] - m[2][2];
-		planes[5][3] = m[3][3] - m[2][3];
+		fPlanes[5][0] = m[3][0] - m[2][0];
+		fPlanes[5][1] = m[3][1] - m[2][1];
+		fPlanes[5][2] = m[3][2] - m[2][2];
+		fPlanes[5][3] = m[3][3] - m[2][3];
 
 		if (normalize)
 		{
-			for (size_t i = 0; i < planes.size(); ++i)
+			for (size_t i = 0; i < 6; ++i)
 			{
-				planes[i] = normalizePlane(planes[i]);
+				fPlanes[i] = normalizePlane(fPlanes[i]);
 			}
 		}
 
-		return planes;
+		return firstLast;
 	}
 }
