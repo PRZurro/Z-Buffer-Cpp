@@ -89,23 +89,24 @@ namespace przurro
 		const Point4f & v1 = projected_vertices[indices[Y]];
 		const Point4f & v2 = projected_vertices[indices[Z]];
 
-		// Se asumen coordenadas proyectadas y pol�gonos definidos en sentido horario.
+		// Se asumen coordenadas proyectadas y pol�gonos definidos en sentido horario.+
 		// Se comprueba a qu� lado de la l�nea que pasa por v0 y v1 queda el punto v2:
 
 		return ((v1[0] - v0[0]) * (v2[1] - v0[1]) - (v2[0] - v0[0]) * (v1[1] - v0[1]) > 0.f);
 	}
 
-	int Mesh::clip_with_viewport_3D(Point4f * otvFirst, Point4f * otvLast, Point4f * cvFirst, int * ciFirst, const Vector4f_Buffer & fPlanes)
+	// otvFirst and Last: Original Transformed Vertices first and last elements, cvFirst and ciFirst: clipped vertices and indices first elements, fPlanes array of pointers to first and last elements of planes array 
+	int Mesh::clip_with_viewport_3D(Point4f * otvFirst, Point4f * otvLast, Point4f * cvFirst, int * ciFirst, Vector4f ** fPlanes)
 	{
-		int clippedVerticesN = 0, count = 0;
-		Point4f outputVertices[CLIPPEDV_SIZE], auxVertices[CLIPPEDV_SIZE];
+		int auxIndices[CLIPPEDV_SIZE];
+		Point4f auxVertices[CLIPPEDV_SIZE];
 
-		for (const Vector4f & plane : fPlanes)
+		Vector4f * planeI = fPlanes[0], * lastPlane = fPlanes[1];
+		for (planeI; planeI < lastPlane; planeI++)
 		{
-			auxVertices = outputVertices;
 			outputVertices.clear();
 
-			clippedVerticesN = clip_with_plane_3D(auxVertices, outputVertices, plane);
+			int clippedVerticesN = clip_with_plane_3D(auxVertices, outputVertices, *planeI);
 
 			if (clippedVerticesN < 3)
 				return 0;
@@ -113,8 +114,8 @@ namespace przurro
 			count += clippedVerticesN;
 		}
 
-		clippedVertices = outputVertices;
-		return count;
+		// use the last plane and introduce items of aux vertices to output clipped vertices
+		return clip_with_plane_3D();
 	}
 	
 	int Mesh::clip_with_plane_3D(Point4f_Buffer & currentVertices, Point4f_Buffer & outputVertices, const Vector4f & plane)

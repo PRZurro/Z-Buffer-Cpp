@@ -76,4 +76,22 @@ namespace przurro
 			return tempVector;
 		}
 	};
+
+	template<typename T>
+	static void blit(T * aFirst, T * aLast, T * bFirst, T * bLast)
+	{
+		int maxIterations; 
+
+		size_t aItemsN = aLast - aFirst, bItemsN = bLast - bFirst;
+
+		if (aItemsN <= bItemsN)
+			maxIterations = aItemsN;
+		else 
+			maxIterations = bItemsN;
+
+		for (T * elemA = aFirst, *elemB = bFirst; size_t i = 0; i < maxIterations; ++elemA, ++elemB, ++i)
+		{
+			*elemA = *elemB;
+		}
+	}
 }

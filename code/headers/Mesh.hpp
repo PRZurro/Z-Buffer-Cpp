@@ -68,7 +68,7 @@ namespace przurro
 
 	public: // Clipping
 
-		int clip_with_viewport_3D(Point4f * otvFirst, Point4f * otvLast, Point4f * cvFirst, int * ciFirst, const Vector4f_Buffer & fPlanes);
+		int clip_with_viewport_3D(Point4f * otvFirst, Point4f * otvLast, Point4f * cvFirst, int * ciFirst, Vector4f ** fPlanes);
 		int clip_with_plane_3D(Point4f_Buffer & currentVertices, Point4f_Buffer & outputVertices, const Vector4f & plane);
 		Point4f intersect_plane(const Vector4f & plane, const Point4f & point0, const Point4f & point1);
 		void triangulate_polygon(int * firstI, int * lastI, TriangleI_Buffer & triangleIndices);
