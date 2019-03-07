@@ -27,12 +27,12 @@ namespace przurro
 			scale_color(vertexColor++, lightIntensities[index + Z]);
 	
 			//---------------------------------------Clipping-------------------------------------------------------------
-			const size_t capacity = 20;
+			static const size_t capacity = 20;
 			
-			Point4f clippedVertices[CLIPPEDV_SIZE], auxVertices, * firstTVP = tvPositions.data() + index, * lastTVP = firstTVP + Z;
-			int clippedIndices[CLIPPEDV_SIZE], clippedVerticesN = 0;
+			Point4f clippedVertices[capacity], auxVertices[capacity], * firstTVP = tvPositions.data() + index, * lastTVP = firstTVP + Z;
+			int clippedIndices[capacity], clippedVerticesN = 0;
 			
-			clippedVerticesN = clip_with_viewport_3D(firstTVP, lastTVP, clippedVertices, clippedIndices, fPlanes);
+			clippedVerticesN = clip_with_viewport(firstTVP, lastTVP, clippedVertices, clippedIndices, fPlanes);
 			triangulate_polygon(clippedIndices, clippedIndices + clippedVerticesN - 1, displayTriangleI);
 		}
 
@@ -95,40 +95,43 @@ namespace przurro
 		return ((v1[0] - v0[0]) * (v2[1] - v0[1]) - (v2[0] - v0[0]) * (v1[1] - v0[1]) > 0.f);
 	}
 
-	// otvFirst and Last: Original Transformed Vertices first and last elements, cvFirst and ciFirst: clipped vertices and indices first elements, fPlanes array of pointers to first and last elements of planes array 
-	int Mesh::clip_with_viewport_3D(Point4f * otvFirst, Point4f * otvLast, Point4f * cvFirst, int * ciFirst, Vector4f ** fPlanes)
+	// otvFirst and Last: Original Transformed Vertices first and last elements; cvFirst, avFirst and ciFirst: clipped vertices, auxiliar vertices and clipped indices first elements
+	int Mesh::clip_with_viewport(Point4f * firstTriangleVertex, Point4f * clippedVertices, Point4f * auxiliarVertices, int * clippedIndices, const size_t aCapacity, Vector4f_Buffer & fPlanes)
 	{
-		int auxIndices[CLIPPEDV_SIZE];
-		Point4f auxVertices[CLIPPEDV_SIZE];
+		auxiliarVertices[X] = firstTriangleVertex[X], auxiliarVertices[Y] = firstTriangleVertex[Y], auxiliarVertices[Z] = firstTriangleVertex[Z]; 
+		int currVerticesN = 2;
 
-		Vector4f * planeI = fPlanes[0], * lastPlane = fPlanes[1];
-		for (planeI; planeI < lastPlane; planeI++)
+		for (size_t i = 0; i < aCapacity; ++i)
 		{
-			outputVertices.clear();
-
-			int clippedVerticesN = clip_with_plane_3D(auxVertices, outputVertices, *planeI);
-
-			if (clippedVerticesN < 3)
-				return 0;
-
-			count += clippedVerticesN;
+			clippedIndices[i] = i; // {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19}
 		}
 
-		// use the last plane and introduce items of aux vertices to output clipped vertices
-		return clip_with_plane_3D();
+		for(Vector4f & plane : fPlanes)
+		{
+			blit(auxiliarVertices, auxiliarVertices + aCapacity - 1, clippedVertices, clippedVertices + aCapacity);
+
+			int * lastIndex = clippedIndices + currVerticesN;
+
+			currVerticesN = clip_with_plane(auxiliarVertices, clippedVertices, clippedIndices, lastIndex, plane);
+
+			if (currVerticesN < 3)
+				return currVerticesN;
+		}
+
+		return currVerticesN;
 	}
 	
-	int Mesh::clip_with_plane_3D(Point4f_Buffer & currentVertices, Point4f_Buffer & outputVertices, const Vector4f & plane)
+	int Mesh::clip_with_plane(Point4f * vertices, Point4f * outputVertices, int * firstIndex, int * lastIndex, const Vector4f & plane)
 	{
 		Point4f currVertex, nextVertex;
 
 		int currentValue = 0, nextValue = 0, clippedVertexN = 0;
 		float a = plane[X], b = plane[Y], c = plane[Z], d = plane[W];
 
-		for (size_t i = 0, size = currentVertices.size(); i < size;)
+		for (int * i = firstIndex; i < lastIndex; )
 		{
-			currVertex = currentVertices[i++];
-			nextVertex = currentVertices[i];
+			currVertex = vertices[*(i++)];
+			nextVertex = vertices[*(i++)];
 
 			//In which side are on the evaluated vertices?
 			currentValue =
@@ -139,16 +142,16 @@ namespace przurro
 			switch ((currentValue << 1) | nextValue) // Depending of the current sides of the evaluated vertices...
 			{
 				case 1:	// First outside and second inside
-					clipped_vertices[clipped_vertex_count++] =
-						intersect(a, b, c, current_vertex, next_vertex);
-					clipped_vertices[clipped_vertex_count++] = next_vertex;
+					outputVertices[clippedVertexN++] =
+						intersect_plane(plane, currVertex, nextVertex);
+					outputVertices[clippedVertexN++] = nextVertex;
 					break;
 				case 2:	// First inside and second outside
-					clipped_vertices[clipped_vertex_count++] =
-						intersect(a, b, c, current_vertex, next_vertex);
+					outputVertices[clippedVertexN++] =
+						intersect_plane(plane, currVertex, nextVertex);
 					break;
 				case 3:	// Both inside
-					clipped_vertices[clipped_vertex_count++] = next_vertex;
+					outputVertices[clippedVertexN++] = nextVertex;
 					break;
 			}
 		}

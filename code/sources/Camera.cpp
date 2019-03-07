@@ -5,12 +5,14 @@ using namespace glm;
 namespace przurro
 {
 	Camera::Camera(float nearPlaneD, float farPlaneD, float fovDegrees, size_t inputWidth, size_t inputHeight, Vector3f * target)
-		: Scene_Object("camera-undefined"),
-		width(inputWidth), 
-		height(inputHeight), 
-		projectionMatrix(nearPlaneD, farPlaneD, fovDegrees, width* (1.f/height)),
+		: 
+		Scene_Object("camera-undefined"),
+		width(inputWidth),
+		height(inputHeight),
+		projectionMatrix(nearPlaneD, farPlaneD, fovDegrees, width* (1.f / height)),
 		viewTarget(target),
-		defaultViewDirection({0.f, 0.f, 10000.f})
+		defaultViewDirection({ 0.f, 0.f, 10000.f }),
+		fPlanes(6)
 	{}
 
 	Matrix44f Camera::look_at(const Vector3f & at)
@@ -42,12 +44,10 @@ namespace przurro
 
 		return camToWorld;
 	}
-	Vector4f** Camera::extract_frustrum_planes(bool normalize)
+	Vector4f_Buffer & Camera::extract_frustrum_planes(bool normalize)
 	{
 		// As this link refers: https://www.gamedevs.org/uploads/fast-extraction-viewing-frustum-planes-from-world-view-projection-matrix.pdf
 		Matrix44f m = projectionMatrix * look_at(); // World space frustrum
-		Vector4f * firstLast[2];
-		firstLast[0] = fPlanes; firstLast[1] = fPlanes + 5;
 
 		//Left clipping plane
 		fPlanes[0][0] = m[3][0] + m[0][0];
@@ -88,6 +88,6 @@ namespace przurro
 			}
 		}
 
-		return firstLast;
+		return fPlanes;
 	}
 }

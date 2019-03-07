@@ -19,7 +19,7 @@ namespace przurro
 		size_t width;
 		size_t height;
 
-		Vector4f fPlanes[6]; //Planes that compose the frustrum
+		Vector4f_Buffer fPlanes; //Planes that compose the frustrum
 
 	public:
 
@@ -62,7 +62,7 @@ namespace przurro
 			return height;
 		}
 
-		Vector4f** extract_frustrum_planes(bool normalize = false);
+		Vector4f_Buffer & extract_frustrum_planes(bool normalize = false);
 
 		Vector4f normalizePlane(Vector4f & planeToNormalize)
 		{
