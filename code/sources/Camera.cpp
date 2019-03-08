@@ -45,7 +45,7 @@ namespace przurro
 		return camToWorld;
 	}
 
-	void Camera::update_frustrum_planes(bool normalize)
+	void Camera::update_frustum_planes(bool normalize)
 	{
 		// As this document refers: https://www.gamedevs.org/uploads/fast-extraction-viewing-frustum-planes-from-world-view-projection-matrix.pdf
 		Matrix44f m = projectionMatrix * look_at(); // World space frustrum
