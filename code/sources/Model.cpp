@@ -10,7 +10,8 @@
 namespace przurro
 {
 	Model::Model(const String & assetFolderPath, const String & assetName)
-		: Scene_Object(assetName),
+		: 
+		Scene_Object(assetName),
 		defaultColor({0, 0, 0})
 	{
 		Attrib_t					attribs;
@@ -37,7 +38,10 @@ namespace przurro
 		}
 
 		ovPositions.resize(indicesN);
+		tvPositions.resize(indicesN);
 		ovNormals.resize(indicesN);
+		tvNormals.resize(indicesN);
+		vertexIntensities.resize(indicesN);
 
 		size_t verticesProcessedN = 0;
 		for (Shape_t & shape : shapes)
@@ -79,7 +83,7 @@ namespace przurro
 		
 		update_vertex_buffers(activeCamera, inputLight);
 		
-		Vector4f_Buffer cameraFrustrumPlanes = activeCamera->extract_frustrum_planes();
+		Vector4f_Buffer cameraFrustrumPlanes = activeCamera->get_frustrum_planes();
 
 		for (auto & mesh : meshes)
 		{
@@ -113,7 +117,7 @@ namespace przurro
 			meshIterator.second->set_color(defaultColor);
 	}
 
-	void Model::update_vertex_buffers(Camera * activeCamera, Light * inputLight, float ambientalLightI = 0.7f)
+	void Model::update_vertex_buffers(Camera * activeCamera, Light * inputLight, float ambientalLightI)
 	{
 		tvPositions.resize(ovPositions.size());
 

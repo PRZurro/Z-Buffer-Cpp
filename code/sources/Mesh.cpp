@@ -27,13 +27,16 @@ namespace przurro
 			scale_color(vertexColor++, lightIntensities[index + Z]);
 	
 			//---------------------------------------Clipping-------------------------------------------------------------
-			static const size_t capacity = 20;
-			
-			Point4f clippedVertices[capacity], auxVertices[capacity], * firstTVP = tvPositions.data() + index, * lastTVP = firstTVP + Z;
-			int clippedIndices[capacity], clippedVerticesN = 0;
-			
-			clippedVerticesN = clip_with_viewport(firstTVP, lastTVP, clippedVertices, clippedIndices, fPlanes);
-			triangulate_polygon(clippedIndices, clippedIndices + clippedVerticesN - 1, displayTriangleI);
+
+			int cacheIndices[4];//Cache array to store the actual indices to this class buffers. It's necessary to add the 4 position because is required in the rasterizer
+			cacheIndices[X] = index; cacheIndices[Y] =index + Y; cacheIndices[Z] = index + Z;
+
+			if (is_frontface(tvPositions.data(), cacheIndices))
+			{
+				/*int clippedVerticesN = clip_with_viewport(tvPositions.data() + index, fPlanes, tvPositions, displayTriangleI, index);*/
+
+				displayTriangleI.push_back(Triangle_Index(index, index + Y, index + Z));
+			}
 		}
 
 		displayVertices.resize(tvPositions.size());
@@ -70,16 +73,13 @@ namespace przurro
 		rasterizer.clear();
 
 		int cacheIndices[4];//Cache array to store the actual indices to this class buffers. It's necessary to add the 4 position because is required in the rasterizer
-		cacheIndices[W] = sizeof(int);
+
 		for (Triangle_Index triangle : displayTriangleI)
 		{
 			cacheIndices[X] = triangle.v0; cacheIndices[Y] = triangle.v1; cacheIndices[Z] = triangle.v2; 
 
-			if (is_frontface(tvPositions.data(), cacheIndices))
-			{
-				rasterizer.set_color(tvColors[triangle.v0]); //The color of the polygon is established from the color of its first vertex
-				rasterizer.fill_convex_polygon_z_buffer(displayVertices.data(), cacheIndices, cacheIndices + W); //The polygon is filled
-			}
+			rasterizer.set_color(tvColors[triangle.v0]); //The color of the polygon is established from the color of its first vertex
+			rasterizer.fill_convex_polygon_z_buffer(displayVertices.data(), cacheIndices, cacheIndices + W); //The polygon is filled
 		}
 	}
 
@@ -96,27 +96,45 @@ namespace przurro
 	}
 
 	// otvFirst and Last: Original Transformed Vertices first and last elements; cvFirst, avFirst and ciFirst: clipped vertices, auxiliar vertices and clipped indices first elements
-	int Mesh::clip_with_viewport(Point4f * firstTriangleVertex, Point4f * clippedVertices, Point4f * auxiliarVertices, int * clippedIndices, const size_t aCapacity, Vector4f_Buffer & fPlanes)
+	int Mesh::clip_with_viewport(Point4f * vertices, Vector4f_Buffer & fPlanes, Point4f_Buffer & _tvPositions, TriangleI_Buffer & triangles, const size_t index)
 	{
-		auxiliarVertices[X] = firstTriangleVertex[X], auxiliarVertices[Y] = firstTriangleVertex[Y], auxiliarVertices[Z] = firstTriangleVertex[Z]; 
-		int currVerticesN = 2;
+		constexpr size_t capacity = 20;
 
-		for (size_t i = 0; i < aCapacity; ++i)
-		{
+		static Point4f clippedVertices[capacity], auxVertices[capacity];
+		clippedVertices[X] = vertices[X], clippedVertices[Y] = vertices[Y], clippedVertices[Z] = vertices[Z];
+
+		int clippedIndices[capacity], clippedVerticesN = 0;
+		int currVerticesN = 3;
+
+		for (size_t i = 0; i < capacity; ++i)
 			clippedIndices[i] = i; // {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19}
-		}
 
 		for(Vector4f & plane : fPlanes)
 		{
-			blit(auxiliarVertices, auxiliarVertices + aCapacity - 1, clippedVertices, clippedVertices + aCapacity);
+			int lastIndexPos = currVerticesN - 1, * lastIndex = clippedIndices + currVerticesN;
 
-			int * lastIndex = clippedIndices + currVerticesN;
+			copy(clippedVertices, clippedVertices + lastIndexPos, auxVertices, auxVertices + lastIndexPos);
 
-			currVerticesN = clip_with_plane(auxiliarVertices, clippedVertices, clippedIndices, lastIndex, plane);
+			currVerticesN = clip_with_plane(auxVertices, clippedVertices, clippedIndices, lastIndex, plane);
 
 			if (currVerticesN < 3)
 				return currVerticesN;
 		}
+
+		int * currIndex = clippedIndices, *lastIndex = clippedIndices + currVerticesN;
+		{ // pushing/editing clipped vertices to the input transformed vertex positions buffer
+			for (size_t i = index, limit = index + 2; i < limit; ++i, ++currIndex)
+			{
+				tvPositions[i] = clippedVertices[*currIndex];
+				*currIndex = i;
+			}
+			for (currIndex; currIndex < lastIndex; ++currIndex)
+			{
+				tvPositions.push_back(clippedVertices[*currIndex]);
+				*currIndex = tvPositions.size() - 1;
+			}
+		}
+		triangulate_polygon(clippedIndices, clippedIndices + currVerticesN - 1, triangles);
 
 		return currVerticesN;
 	}
@@ -128,10 +146,13 @@ namespace przurro
 		int currentValue = 0, nextValue = 0, clippedVertexN = 0;
 		float a = plane[X], b = plane[Y], c = plane[Z], d = plane[W];
 
-		for (int * i = firstIndex; i < lastIndex; )
+		for (int * index = firstIndex; index < lastIndex;  )
 		{
-			currVertex = vertices[*(i++)];
-			nextVertex = vertices[*(i++)];
+			currVertex = vertices[*(index++)];
+
+			if(index < lastIndex)
+				nextVertex = vertices[*(index)];
+			else nextVertex = vertices[*(firstIndex)];
 
 			//In which side are on the evaluated vertices?
 			currentValue =
@@ -142,13 +163,11 @@ namespace przurro
 			switch ((currentValue << 1) | nextValue) // Depending of the current sides of the evaluated vertices...
 			{
 				case 1:	// First outside and second inside
-					outputVertices[clippedVertexN++] =
-						intersect_plane(plane, currVertex, nextVertex);
+					outputVertices[clippedVertexN++] = intersect_plane(plane, currVertex, nextVertex);
 					outputVertices[clippedVertexN++] = nextVertex;
 					break;
 				case 2:	// First inside and second outside
-					outputVertices[clippedVertexN++] =
-						intersect_plane(plane, currVertex, nextVertex);
+					outputVertices[clippedVertexN++] = intersect_plane(plane, currVertex, nextVertex);
 					break;
 				case 3:	// Both inside
 					outputVertices[clippedVertexN++] = nextVertex;
@@ -166,12 +185,13 @@ namespace przurro
 		float	t = - ((plane[X] * point0[X]) + (plane[Y] * point0[Y]) + (plane[Z] * point0[Z]) + plane[W]);
 				t /= ((plane[X] * b0) + (plane[Y] * b1) + (plane[Z] * b2));
 		
-		return Point4f{ {point0[X] + t * b0, point0[Y] + t * b1, point0[Z] + t * b2} };
+		Point4f temp{ {point0[X] + t * b0, point0[Y] + t * b1, point0[Z] + t * b2} };
+		return temp ;
 	}
 
 	void Mesh::triangulate_polygon(int * firstI, int * lastI,  TriangleI_Buffer & triangleIndices)
 	{
-		for (int * i1 = firstI + Y, int * i2 = firstI + Z; i2 < lastI;)
+		for (int * i1 = firstI + Y, * i2 = firstI + Z; i2 < lastI;)
 		{
 			triangleIndices.push_back(Triangle_Index(*firstI, *(i1++), *(i2++)));
 		}

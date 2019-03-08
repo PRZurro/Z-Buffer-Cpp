@@ -2,16 +2,16 @@
 <scene>
     <models>
         <model path = "../../assets/models/landscape-blender.obj" name = "island-landscape">
-            <position>0.0,0.0,2.0</position>
+            <position>0.0,0.0,10.0</position>
             <rotation>0.0,0.0,0.0</rotation>
             <constant_rotation>0.0,0.0,0.0</constant_rotation>
             <default_color></default_color>
-            <mesh_color mesh_name= "L003">0,0,0,1</mesh_color>
-            <mesh_color mesh_name= "t6_orange">0,0,0,1</mesh_color>
-            <mesh_color mesh_name= "t7_orange001">0,0,0,1</mesh_color>
+            <mesh_color mesh_name= "L003">1,0,0,1</mesh_color>
+            <mesh_color mesh_name= "t6_orange">1,0,0,1</mesh_color>
+            <mesh_color mesh_name= "t7_orange001">20,0,0,1</mesh_color>
             <mesh_color mesh_name= "t2_cyan001">0,0,0,1</mesh_color>
             <mesh_color mesh_name= "cloud2">0,0,0,1</mesh_color>
-            <mesh_color mesh_name= "Mill">0,0,0,1</mesh_color>
+            <mesh_color mesh_name= "Mill">0,255,0,1</mesh_color>
             <mesh_color mesh_name= "cloud1">0,0,0,1</mesh_color>
         </model>
         <!-- <model path = "../../assets/models/propeller-blender.obj" name = "propeller">
@@ -23,7 +23,7 @@
     </models>
     <cameras>
         <camera>
-            <position>0.0,0.5,0.0</position>
+            <position>10.0,20.0,0.0</position>
             <target>island-landscape</target>
         </camera>
     </cameras>

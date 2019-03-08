@@ -44,9 +44,10 @@ namespace przurro
 
 		return camToWorld;
 	}
-	Vector4f_Buffer & Camera::extract_frustrum_planes(bool normalize)
+
+	void Camera::update_frustrum_planes(bool normalize)
 	{
-		// As this link refers: https://www.gamedevs.org/uploads/fast-extraction-viewing-frustum-planes-from-world-view-projection-matrix.pdf
+		// As this document refers: https://www.gamedevs.org/uploads/fast-extraction-viewing-frustum-planes-from-world-view-projection-matrix.pdf
 		Matrix44f m = projectionMatrix * look_at(); // World space frustrum
 
 		//Left clipping plane
@@ -87,7 +88,5 @@ namespace przurro
 				fPlanes[i] = normalizePlane(fPlanes[i]);
 			}
 		}
-
-		return fPlanes;
 	}
 }

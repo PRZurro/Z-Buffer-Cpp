@@ -62,7 +62,15 @@ namespace przurro
 			return height;
 		}
 
-		Vector4f_Buffer & extract_frustrum_planes(bool normalize = false);
+		Vector4f_Buffer & Camera::get_frustrum_planes(bool normalized = false)
+		{
+			update_frustrum_planes(normalized);
+			return fPlanes;
+		}
+
+	private:
+
+		void update_frustrum_planes(bool normalize = false);
 
 		Vector4f normalizePlane(Vector4f & planeToNormalize)
 		{

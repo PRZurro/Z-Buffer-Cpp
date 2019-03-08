@@ -78,7 +78,7 @@ namespace przurro
 	};
 
 	template<typename T>
-	static void blit(T * aFirst, T * aLast, T * bFirst, T * bLast)
+	void copy(T * aFirst, T * aLast, T * bFirst, T * bLast)
 	{
 		int maxIterations; 
 
@@ -89,9 +89,10 @@ namespace przurro
 		else 
 			maxIterations = bItemsN;
 
-		for (T * elemA = aFirst, *elemB = bFirst; size_t i = 0; i < maxIterations; ++elemA, ++elemB, ++i)
+		size_t i = 0;
+		for (T * elemA = aFirst, *elemB = bFirst; i < maxIterations; ++elemA, ++elemB, ++i)
 		{
-			*elemA = *elemB;
+			*elemB = *elemA;
 		}
 	}
 }
