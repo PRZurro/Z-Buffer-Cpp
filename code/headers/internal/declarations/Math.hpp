@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <Point.hpp>
 #include <Translation.hpp>
@@ -31,4 +31,5 @@ namespace przurro
 	using Scale_Matrix3f = toolkit::Scaling3f;
 
 	using Projection_Matrix3f = toolkit::Projection3f;
+
 }

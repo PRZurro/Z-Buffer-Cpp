@@ -13,7 +13,7 @@ namespace przurro
 
 	public:
 
-		Light(): intensity(4.f), direction({1.f, -1.f, 0.f, 0.f}){}
+		Light(): intensity(4.f), direction({1.f, 1.f, 0.f, 0.f}){}
 		Light(float inputIntensity, Vector4f & inputDirection) : intensity(inputIntensity), direction(inputDirection){}
 
 	public:

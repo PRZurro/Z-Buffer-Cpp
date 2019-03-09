@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "Color_Buffer_Rgba8888.hpp"
 
@@ -37,11 +37,27 @@ namespace przurro
 		size_t v1;
 		size_t v2;
 
+		size_t vColor0;
+		size_t vColor1;
+		size_t vColor2;
+
 		Triangle_Index(size_t iv0, size_t iv1, size_t iv2)
+		{
+			set_indices(iv0, iv1, iv2);
+		}
+
+		void set_indices(size_t iv0, size_t iv1, size_t iv2)
 		{
 			v0 = iv0;
 			v1 = iv1;
 			v2 = iv2;
+		}
+
+		void set_indices_to_colors(size_t vC0, size_t vC1, size_t vC2)
+		{
+			vColor0 = vC0;
+			vColor1 = vC1;
+			vColor2 = vC2;
 		}
 	};
 
@@ -89,10 +105,13 @@ namespace przurro
 		else 
 			maxIterations = bItemsN;
 
-		size_t i = 0;
+		int i = 0;
 		for (T * elemA = aFirst, *elemB = bFirst; i < maxIterations; ++elemA, ++elemB, ++i)
 		{
 			*elemB = *elemA;
 		}
 	}
+
+
+
 }

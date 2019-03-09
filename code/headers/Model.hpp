@@ -50,7 +50,7 @@ namespace przurro
 		
 	private:
 
-		void update_vertex_buffers(Camera * activeCamera, Light * inputLight, float ambientalLightI = 0.7f);
+		void update_vertex_buffers(Camera * activeCamera, Light * inputLight, float ambientalLightI = 0.3f);
 
 	public:
 

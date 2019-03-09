@@ -80,5 +80,8 @@
     <ClInclude Include="..\..\code\headers\Light.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\code\headers\internal\Math_Functions.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

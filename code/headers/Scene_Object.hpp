@@ -20,6 +20,7 @@ namespace przurro
 		Transform_Matrix3f * transformParent; // Could be the camera's transform or another model's transform (that will ultimately inherit from the camera's transform)
 
 		Vector3f			position, rotation, constantRotation;
+		Vector3f			gPosition, gScale; // global transformation attributes
 		float				scale;
 
 	public:
@@ -44,6 +45,15 @@ namespace przurro
 
 	public:
 
+		void constant_rotation();
+
+	public: 
+
+		const String get_name() const
+		{
+			return name;
+		}
+
 		Transform_Matrix3f * get_parent() const
 		{
 			return transformParent;
@@ -56,18 +66,15 @@ namespace przurro
 
 		Vector3f & get_reference_to_position()
 		{
-			return position;
+			return gPosition;
 		}
 
-		Transform_Matrix3f get_inverse_transform() const
-		{
-			Transform_Matrix3f inverseMatrix = globalTransform;
-		
-			return inverseMatrix;
-		}
+	public:
+
+		void update_transform();
 
 	private:
 
-		void update_transform();
+		void update_global_attributes();
 	};
 }

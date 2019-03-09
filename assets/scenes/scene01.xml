@@ -1,30 +1,46 @@
 <?xml version="1.0"?>
 <scene>
     <models>
-        <model path = "../../assets/models/landscape-blender.obj" name = "island-landscape">
-            <position>0.0,0.0,10.0</position>
+        <model path = "..\\..\\assets\\models\\ground.obj" name = "ground">
+            <position>0.0,0.0,7.0</position>
             <rotation>0.0,0.0,0.0</rotation>
-            <constant_rotation>0.0,0.0,0.0</constant_rotation>
-            <default_color></default_color>
-            <mesh_color mesh_name= "L003">1,0,0,1</mesh_color>
-            <mesh_color mesh_name= "t6_orange">1,0,0,1</mesh_color>
-            <mesh_color mesh_name= "t7_orange001">20,0,0,1</mesh_color>
-            <mesh_color mesh_name= "t2_cyan001">0,0,0,1</mesh_color>
-            <mesh_color mesh_name= "cloud2">0,0,0,1</mesh_color>
-            <mesh_color mesh_name= "Mill">0,255,0,1</mesh_color>
-            <mesh_color mesh_name= "cloud1">0,0,0,1</mesh_color>
+            <scale>1.0</scale>
+            <constant_rotation>0.0,0.0125,0.0</constant_rotation>
+            <default_color>95,71,47,1</default_color>
         </model>
-        <!-- <model path = "../../assets/models/propeller-blender.obj" name = "propeller">
-            <position>0.0,0.0,0.1 </position>
+        <model path = "..\\..\\assets\\models\\mill.obj" name = "mill">
+            <position>0.0,0.0,7.0</position>
             <rotation>0.0,0.0,0.0</rotation>
+            <scale>1.0</scale>
             <constant_rotation>0.0,0.0,0.0</constant_rotation>
-            <default_color>226,226,226</default_color>
-        </model> -->
+            <default_color>200,200,200,1</default_color>
+        </model>
+        <model path = "..\\..\\assets\\models\\propeller-blender.obj" name = "propeller">
+            <position>0.0,1.0,-0.5 </position>
+            <rotation>0.0,0.0,0.0</rotation>
+            <scale>1.0</scale>
+            <constant_rotation>0.0,0.0,0.2</constant_rotation>
+            <parent>mill</parent>
+            <default_color>0,0,0,1</default_color>
+        </model>
+        <model path = "..\\..\\assets\\models\\sphere-blender.obj" name = "sphere-target">
+            <position>0.0,0.0,7.0</position>
+            <rotation>0.0,0.0,0.0</rotation>
+            <scale>0.05</scale>
+            <constant_rotation>0.0,0.0150,0.0</constant_rotation>
+            <default_color>5,5,5,1</default_color>
+            <!-- <parent>mill</parent> -->
+        </model>
+        
     </models>
     <cameras>
         <camera>
-            <position>10.0,20.0,0.0</position>
-            <target>island-landscape</target>
+            <position>0.0,0.0,0.0</position>
+            <target>sphere-target</target>
+            <!-- <parent>sphere01</parent> -->
+
         </camera>
     </cameras>
 </scene>
+
+       

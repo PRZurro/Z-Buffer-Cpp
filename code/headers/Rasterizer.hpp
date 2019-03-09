@@ -73,7 +73,7 @@
             {
                 for (Color * c = color_buffer.colors (), * end = c + color_buffer.size (); c < end; c++)
                 {
-                    *c = 0;
+					*c = Color({ 0, 183, 242 });
                 }
 
                 for (int * z = z_buffer.data (), * end = z + z_buffer.size (); z != end; z++)

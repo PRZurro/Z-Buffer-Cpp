@@ -1,4 +1,5 @@
 #include "Mesh.hpp"
+#include "Math_Functions.hpp" //Special math functions (like_clip_with_planes) at headers/internal/Math_Functions.hpp
 
 namespace przurro
 {
@@ -9,191 +10,89 @@ namespace przurro
 		tvPositions(transformedVertexBuffer),
 		tvNormals(transformedNormalBuffer),
 		tvColors(nVertices),
-		displayVertices(nVertices),
+		displayVerticesPositions(nVertices),
 		fIndex(meshFIndex),
 		lIndex(fIndex + nVertices - 1),
-		color({0, 0, 0})
+		color({0, 0, 0}),
+		cacheIndices(4)
 	{}
 
 	void Mesh::update(f_Buffer & lightIntensities, Rasterizer<Color_Buff> & rasterizer, Vector4f_Buffer & fPlanes)
 	{
-		Color * vertexColor = tvColors.data();
-		for (size_t index = fIndex; index < lIndex; index += 3)
+		displayTriangleIndices.clear();
+		displayVerticesPositions.clear();
+
+		// VERTEX LIGHT CALCULATION, BACKFACE CULLING, VERTICES CLIPPING WITH FRUSTUM PLANES
 		{
-			//---------------------------------------Triangle vertex colors----------------------------------------------
-		
-			scale_color(vertexColor++, lightIntensities[index + X]);
-			scale_color(vertexColor++, lightIntensities[index + Y]);
-			scale_color(vertexColor++, lightIntensities[index + Z]);
-	
-			//---------------------------------------Clipping-------------------------------------------------------------
-
-			int cacheIndices[4];//Cache array to store the actual indices to this class buffers. It's necessary to add the 4 position because is required in the rasterizer
-			cacheIndices[X] = index; cacheIndices[Y] =index + Y; cacheIndices[Z] = index + Z;
-
-			if (is_frontface(tvPositions.data(), cacheIndices))
+			Color * vertexColor = tvColors.data();
+			for (size_t index = fIndex; index < lIndex; index += 3)
 			{
-				/*int clippedVerticesN = clip_with_viewport(tvPositions.data() + index, fPlanes, tvPositions, displayTriangleI, index);*/
+				// Vertices light calculation
+				scale_color(vertexColor++, lightIntensities[index + X]);
+				scale_color(vertexColor++, lightIntensities[index + Y]);
+				scale_color(vertexColor++, lightIntensities[index + Z]);
 
-				displayTriangleI.push_back(Triangle_Index(index, index + Y, index + Z));
+				//---------------------------------------Back face Clipping-------------------------------------------------------------
+
+				cacheIndices[X] = index; cacheIndices[Y] = index + Y; cacheIndices[Z] = index + Z;
+				if (Math::is_frontface(tvPositions.data(), cacheIndices.data()))
+				{
+					int clippedVerticesN = Math::clip_with_planes(tvPositions.data() + index, fPlanes, tvPositions, displayTriangleIndices, index); // We clip each triangle with the frustum volume
+
+					//displayTriangleI.push_back(Triangle_Index(index, index + Y, index + Z));
+				}
 			}
 		}
-
-		displayVertices.resize(tvPositions.size());
-
-		float widthHalf = (float)rasterizer.get_color_buffer().get_width() / 2;
-		float heightHalf = (float)rasterizer.get_color_buffer().get_height() / 2;
-
-		Transform_Matrix3f	viewportTransformation = Translation_Matrix3f(widthHalf, heightHalf, 0.f) * Scale_Matrix3f(widthHalf, heightHalf, 100000000.f);
-
-		for (size_t index = 0, nTriangles = displayTriangleI.size(); index < nTriangles; ++index)
+	
+		// NDC COORDINATES AND VIEWPORT COORDINATES
 		{
-			Point4f & tvp0 = tvPositions[displayTriangleI[index].v0], & tvp1 = tvPositions[displayTriangleI[index].v1], & tvp2 = tvPositions[displayTriangleI[index].v2];
+			displayVerticesPositions.resize(displayTriangleIndices.size() * 3);
 
-			//---------------------------------------NDC Coordinates------------------------------------------------------
-			float oneByW0 = (1.f / tvp0[W]), oneByW1 = (1.f / tvp1[W]), oneByW2 = (1.f / tvp2[W]);
+			float widthHalf = (float)rasterizer.get_color_buffer().get_width() / 2,
+				heightHalf = (float)rasterizer.get_color_buffer().get_height() / 2;
 
-			//Final vertex positions
-			Point4f fvp0({ tvp0[X] * oneByW0, tvp0[Y] * oneByW0, tvp0[Z] * oneByW0, 1.f }),
+			Transform_Matrix3f	viewportTransformation = Translation_Matrix3f(widthHalf, heightHalf, 0.f) * Scale_Matrix3f(widthHalf, heightHalf, 100000000.f);
+
+			for (size_t index = 0, nTriangles = displayTriangleIndices.size(); index < nTriangles; ++index)
+			{
+				Triangle_Index triangle = displayTriangleIndices[index];
+				Point4f & tvp0 = tvPositions[triangle.v0], &tvp1 = tvPositions[triangle.v1], &tvp2 = tvPositions[triangle.v2];
+
+				//---------------------------------------NDC Coordinates------------------------------------------------------
+				float oneByW0 = (1.f / tvp0[W]), oneByW1 = (1.f / tvp1[W]), oneByW2 = (1.f / tvp2[W]);
+
+				//Final vertex positions
+				Point4f fvp0({ tvp0[X] * oneByW0, tvp0[Y] * oneByW0, tvp0[Z] * oneByW0, 1.f }),
 					fvp1({ tvp1[X] * oneByW1, tvp1[Y] * oneByW1, tvp1[Z] * oneByW1, 1.f }),
 					fvp2({ tvp2[X] * oneByW2, tvp2[Y] * oneByW2, tvp2[Z] * oneByW2, 1.f });
 
-			//--------------------------------------Viewport Coordinates + Display Vertices Assignation-------------------
+				//--------------------------------------Viewport Coordinates + Display Vertices Assignation-------------------
 
-			displayVertices[index + X] = Point4i(Matrix44f(viewportTransformation) * Matrix41f(fvp0));
-			displayVertices[index + Y] = Point4i(Matrix44f(viewportTransformation) * Matrix41f(fvp1));
-			displayVertices[index + Z] = Point4i(Matrix44f(viewportTransformation) * Matrix41f(fvp2));
+				size_t linearIndex = index * 3;
+
+				Matrix41f temp = Matrix44f(viewportTransformation) * Matrix41f(fvp0);
+
+				Point4i & dvp0 = displayVerticesPositions[linearIndex + X] = Point4i(Matrix44f(viewportTransformation) * Matrix41f(fvp0));
+				Point4i & dvp1 = displayVerticesPositions[linearIndex + Y] = Point4i(Matrix44f(viewportTransformation) * Matrix41f(fvp1));
+				Point4i & dvp2 = displayVerticesPositions[linearIndex + Z] = Point4i(Matrix44f(viewportTransformation) * Matrix41f(fvp2));
+
+				displayTriangleIndices[index].set_indices_to_colors(triangle.v0, triangle.v1, triangle.v2);
+				displayTriangleIndices[index].set_indices(linearIndex + X, linearIndex + Y, linearIndex + Z);
+			}
 		}
+		
 	}
 
 	void Mesh::draw(Rasterizer<Color_Buff> & rasterizer)
 	{
-		// Se borra el frameb�ffer y se dibujan los tri�ngulos:
+		//The triangles are drawn
 
-		rasterizer.clear();
-
-		int cacheIndices[4];//Cache array to store the actual indices to this class buffers. It's necessary to add the 4 position because is required in the rasterizer
-
-		for (Triangle_Index triangle : displayTriangleI)
+		for (Triangle_Index triangle : displayTriangleIndices)
 		{
 			cacheIndices[X] = triangle.v0; cacheIndices[Y] = triangle.v1; cacheIndices[Z] = triangle.v2; 
 
-			rasterizer.set_color(tvColors[triangle.v0]); //The color of the polygon is established from the color of its first vertex
-			rasterizer.fill_convex_polygon_z_buffer(displayVertices.data(), cacheIndices, cacheIndices + W); //The polygon is filled
-		}
-	}
-
-	bool Mesh::is_frontface(const Point4f * const projected_vertices, const int * const indices)
-	{
-		const Point4f & v0 = projected_vertices[indices[X]];
-		const Point4f & v1 = projected_vertices[indices[Y]];
-		const Point4f & v2 = projected_vertices[indices[Z]];
-
-		// Se asumen coordenadas proyectadas y pol�gonos definidos en sentido horario.+
-		// Se comprueba a qu� lado de la l�nea que pasa por v0 y v1 queda el punto v2:
-
-		return ((v1[0] - v0[0]) * (v2[1] - v0[1]) - (v2[0] - v0[0]) * (v1[1] - v0[1]) > 0.f);
-	}
-
-	// otvFirst and Last: Original Transformed Vertices first and last elements; cvFirst, avFirst and ciFirst: clipped vertices, auxiliar vertices and clipped indices first elements
-	int Mesh::clip_with_viewport(Point4f * vertices, Vector4f_Buffer & fPlanes, Point4f_Buffer & _tvPositions, TriangleI_Buffer & triangles, const size_t index)
-	{
-		constexpr size_t capacity = 20;
-
-		static Point4f clippedVertices[capacity], auxVertices[capacity];
-		clippedVertices[X] = vertices[X], clippedVertices[Y] = vertices[Y], clippedVertices[Z] = vertices[Z];
-
-		int clippedIndices[capacity], clippedVerticesN = 0;
-		int currVerticesN = 3;
-
-		for (size_t i = 0; i < capacity; ++i)
-			clippedIndices[i] = i; // {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19}
-
-		for(Vector4f & plane : fPlanes)
-		{
-			int lastIndexPos = currVerticesN - 1, * lastIndex = clippedIndices + currVerticesN;
-
-			copy(clippedVertices, clippedVertices + lastIndexPos, auxVertices, auxVertices + lastIndexPos);
-
-			currVerticesN = clip_with_plane(auxVertices, clippedVertices, clippedIndices, lastIndex, plane);
-
-			if (currVerticesN < 3)
-				return currVerticesN;
-		}
-
-		int * currIndex = clippedIndices, *lastIndex = clippedIndices + currVerticesN;
-		{ // pushing/editing clipped vertices to the input transformed vertex positions buffer
-			for (size_t i = index, limit = index + 2; i < limit; ++i, ++currIndex)
-			{
-				tvPositions[i] = clippedVertices[*currIndex];
-				*currIndex = i;
-			}
-			for (currIndex; currIndex < lastIndex; ++currIndex)
-			{
-				tvPositions.push_back(clippedVertices[*currIndex]);
-				*currIndex = tvPositions.size() - 1;
-			}
-		}
-		triangulate_polygon(clippedIndices, clippedIndices + currVerticesN - 1, triangles);
-
-		return currVerticesN;
-	}
-	
-	int Mesh::clip_with_plane(Point4f * vertices, Point4f * outputVertices, int * firstIndex, int * lastIndex, const Vector4f & plane)
-	{
-		Point4f currVertex, nextVertex;
-
-		int currentValue = 0, nextValue = 0, clippedVertexN = 0;
-		float a = plane[X], b = plane[Y], c = plane[Z], d = plane[W];
-
-		for (int * index = firstIndex; index < lastIndex;  )
-		{
-			currVertex = vertices[*(index++)];
-
-			if(index < lastIndex)
-				nextVertex = vertices[*(index)];
-			else nextVertex = vertices[*(firstIndex)];
-
-			//In which side are on the evaluated vertices?
-			currentValue =
-				a * currVertex[0] + b * currVertex[1] + c * currVertex[2] + d > 0;
-			nextValue =
-				a * nextVertex[0] + b * nextVertex[1] + c * nextVertex[2] + d > 0;
-
-			switch ((currentValue << 1) | nextValue) // Depending of the current sides of the evaluated vertices...
-			{
-				case 1:	// First outside and second inside
-					outputVertices[clippedVertexN++] = intersect_plane(plane, currVertex, nextVertex);
-					outputVertices[clippedVertexN++] = nextVertex;
-					break;
-				case 2:	// First inside and second outside
-					outputVertices[clippedVertexN++] = intersect_plane(plane, currVertex, nextVertex);
-					break;
-				case 3:	// Both inside
-					outputVertices[clippedVertexN++] = nextVertex;
-					break;
-			}
-		}
-
-		return clippedVertexN;
-	}
-
-	Point4f Mesh::intersect_plane(const Vector4f & plane, const Point4f & point0, const Point4f & point1)
-	{
-		float b0 = point1[X] - point0[X], b1 = point1[Y] - point0[Y], b2 = point1[Z] - point0[Z];
-
-		float	t = - ((plane[X] * point0[X]) + (plane[Y] * point0[Y]) + (plane[Z] * point0[Z]) + plane[W]);
-				t /= ((plane[X] * b0) + (plane[Y] * b1) + (plane[Z] * b2));
-		
-		Point4f temp{ {point0[X] + t * b0, point0[Y] + t * b1, point0[Z] + t * b2} };
-		return temp ;
-	}
-
-	void Mesh::triangulate_polygon(int * firstI, int * lastI,  TriangleI_Buffer & triangleIndices)
-	{
-		for (int * i1 = firstI + Y, * i2 = firstI + Z; i2 < lastI;)
-		{
-			triangleIndices.push_back(Triangle_Index(*firstI, *(i1++), *(i2++)));
+			rasterizer.set_color(tvColors[triangle.vColor0]); //The color of the polygon is established from the color of its first vertex
+			rasterizer.fill_convex_polygon_z_buffer(displayVerticesPositions.data(), cacheIndices.data(), cacheIndices.data() + W); //The polygon is filled
 		}
 	}
 }

@@ -6,7 +6,7 @@ namespace przurro
 {
 	Camera::Camera(float nearPlaneD, float farPlaneD, float fovDegrees, size_t inputWidth, size_t inputHeight, Vector3f * target)
 		: 
-		Scene_Object("camera-undefined"),
+		Scene_Object("camera01"),
 		width(inputWidth),
 		height(inputHeight),
 		projectionMatrix(nearPlaneD, farPlaneD, fovDegrees, width* (1.f / height)),

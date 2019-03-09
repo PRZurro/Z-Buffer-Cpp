@@ -26,12 +26,14 @@ namespace przurro
 	{
 		for(auto & model : models)
 		{
+			model.second->update_transform();
 			model.second->update(activeCamera.get(),rasterizer, &infiniteLight);
 		}
 	}
 
 	void Scene::draw()
 	{
+		//The rasterizer is cleared
 		rasterizer.clear();
 
 		for (auto & model : models)
@@ -104,7 +106,7 @@ namespace przurro
 
 					models[attribName->value()] = Model_sptr(new Model(attribPath->value(), attribName->value()));
 
-					models[attribName->value()]->set_parent(activeCamera->get_transform());
+					//models[attribName->value()]->set_parent(activeCamera->get_transform());
 
 					XML_Node * modelProperty = model->first_node();
 
@@ -168,6 +170,22 @@ namespace przurro
 			if (camera)
 			{
 				activeCamera->set_target(&models[value]->get_reference_to_position());
+			}
+		}
+		else if (name == "parent")
+		{
+			if (camera)
+			{
+				if (!model_exists(value))
+					return false;
+				
+				activeCamera->set_target(&models[value]->get_reference_to_position());
+			}
+			if (model)
+			{
+				if (!model_exists(value))
+					return false;
+				model->set_parent(models[value]->get_transform());
 			}
 		}
 		else if (name == "position" || name == "rotation" || name == "color" || name == "constant_rotation"|| name == "default_color" || name == "mesh_color")

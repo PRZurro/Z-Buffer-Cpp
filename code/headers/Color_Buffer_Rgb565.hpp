@@ -29,7 +29,7 @@
             {
                 uint16_t value;
 
-                void set (int r, int g, int b)
+                void set_indices (int r, int g, int b)
                 {
                     value = (r >> 3 << 11) | (g >> 2 << 5) | (b >> 3);
                 }
@@ -88,7 +88,7 @@
 
             void set_color (int r, int g, int b)
             {
-                color.set (r, g, b);
+                color.set_indices (r, g, b);
             }
 
             void set_pixel (int x, int y)

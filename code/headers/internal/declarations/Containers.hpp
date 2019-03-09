@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <declarations/Internal.hpp>
 #include <unordered_map>
@@ -21,4 +21,5 @@ namespace przurro
 	using Point4i_Buffer = std::vector <toolkit::Point4i>;
 	using Vector4f_Buffer = std::vector<toolkit::Vector4f>;
 	using TriangleI_Buffer = std::vector<Triangle_Index>;
+
 }

@@ -27,6 +27,7 @@
     <ClInclude Include="..\..\code\headers\internal\Declarations\External_Tools.hpp" />
     <ClInclude Include="..\..\code\headers\internal\Declarations\Internal.hpp" />
     <ClInclude Include="..\..\code\headers\internal\Declarations\Math.hpp" />
+    <ClInclude Include="..\..\code\headers\internal\Math_Functions.hpp" />
     <ClInclude Include="..\..\code\headers\Light.hpp" />
     <ClInclude Include="..\..\code\headers\Mesh.hpp" />
     <ClInclude Include="..\..\code\headers\Model.hpp" />

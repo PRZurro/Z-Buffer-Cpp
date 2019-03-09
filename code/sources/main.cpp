@@ -31,7 +31,7 @@ int main ()
 
 	std::string assetsFolderPath = "..\\..\\assets\\scenes\\scene01.xml";
 
-    Scene scene(assetsFolderPath, window_width, window_height);
+    Scene scene(assetsFolderPath, window_width, window_height,0.400f,1000000000.f,90.0f);
 
     // Initialization:
 

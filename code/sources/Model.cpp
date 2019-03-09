@@ -79,11 +79,9 @@ namespace przurro
 
 	void Model::update(Camera * activeCamera, Rasterizer<Color_Buff> & rasterizer, Light * inputLight)
 	{
-		//transform global = transform_local * local scale 
-		
 		update_vertex_buffers(activeCamera, inputLight);
 		
-		Vector4f_Buffer cameraFrustrumPlanes = activeCamera->get_frustrum_planes();
+		Vector4f_Buffer cameraFrustrumPlanes = activeCamera->get_frustum_planes();
 
 		for (auto & mesh : meshes)
 		{
@@ -111,7 +109,7 @@ namespace przurro
 	}
 	void Model::set_default_color(const Vector4i & colorRGB)
 	{
-		defaultColor.set(colorRGB[X], colorRGB[Y], colorRGB[Z]);
+		defaultColor.set_indices(colorRGB[X], colorRGB[Y], colorRGB[Z]);
 
 		for (auto & meshIterator : meshes)
 			meshIterator.second->set_color(defaultColor);

@@ -41,7 +41,7 @@
                 }
                 data;
 
-                void set (int r, int g, int b)
+                void set_indices (int r, int g, int b)
                 {
                     data.component.r = r;
                     data.component.g = g;
