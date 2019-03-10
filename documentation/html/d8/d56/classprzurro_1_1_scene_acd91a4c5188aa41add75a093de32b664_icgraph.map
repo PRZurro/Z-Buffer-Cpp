@@ -1,0 +1,8 @@
+<map id="przurro::Scene::model_exists" name="przurro::Scene::model_exists">
+<area shape="rect" id="node1" title="Check if there it is a model with the name received." alt="" coords="765,39,916,80"/>
+<area shape="rect" id="node2" href="$d8/d56/classprzurro_1_1_scene.html#a62b094d029473e81e2bcc43d7bc01777" title="Common method to load properties of models and cameras (sometimes is needed a pointer to a model and ..." alt="" coords="579,39,717,80"/>
+<area shape="rect" id="node3" href="$d8/d56/classprzurro_1_1_scene.html#a50cf7c0482f02880a64bfa7c270f61ca" title="load all models (with their properties)" alt="" coords="392,5,531,47"/>
+<area shape="rect" id="node6" href="$d8/d56/classprzurro_1_1_scene.html#aafbe64cd67261b27b15fa3219027455e" title="load all the cameras (with their properties)" alt="" coords="392,71,531,112"/>
+<area shape="rect" id="node4" href="$d8/d56/classprzurro_1_1_scene.html#a06f84762709af4ba3b920b01f2ae6cdf" title="method in charge of parse and load all objects in the xml located in the path received" alt="" coords="205,39,344,80"/>
+<area shape="rect" id="node5" href="$d8/d56/classprzurro_1_1_scene.html#aac84c8cfd0f26b897805f8af37dccd22" title="Construct a new Scene object." alt="" coords="5,46,157,73"/>
+</map>

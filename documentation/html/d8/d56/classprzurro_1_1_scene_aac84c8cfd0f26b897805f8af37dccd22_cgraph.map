@@ -1,0 +1,16 @@
+<map id="przurro::Scene::Scene" name="przurro::Scene::Scene">
+<area shape="rect" id="node1" title="Construct a new Scene object." alt="" coords="5,242,157,269"/>
+<area shape="rect" id="node2" href="$d8/d56/classprzurro_1_1_scene.html#a06f84762709af4ba3b920b01f2ae6cdf" title="method in charge of parse and load all objects in the xml located in the path received" alt="" coords="205,235,344,276"/>
+<area shape="rect" id="node3" href="$d8/d56/classprzurro_1_1_scene.html#a50cf7c0482f02880a64bfa7c270f61ca" title="load all models (with their properties)" alt="" coords="392,201,531,243"/>
+<area shape="rect" id="node14" href="$d8/d56/classprzurro_1_1_scene.html#aafbe64cd67261b27b15fa3219027455e" title="load all the cameras (with their properties)" alt="" coords="392,267,531,308"/>
+<area shape="rect" id="node4" href="$d8/d56/classprzurro_1_1_scene.html#a62b094d029473e81e2bcc43d7bc01777" title="Common method to load properties of models and cameras (sometimes is needed a pointer to a model and ..." alt="" coords="579,235,717,276"/>
+<area shape="rect" id="node5" href="$d8/d56/classprzurro_1_1_scene.html#acd91a4c5188aa41add75a093de32b664" title="Check if there it is a model with the name received." alt="" coords="767,5,918,47"/>
+<area shape="rect" id="node6" href="$d9/d84/classprzurro_1_1_scene___object.html#aad9cc81e105d3321828287d736b01525" title="Set the parent object." alt="" coords="767,71,919,112"/>
+<area shape="rect" id="node7" href="$d9/d84/classprzurro_1_1_scene___object.html#adfb1f8a52324f4618474a89da64b65d6" title="Set the position object." alt="" coords="767,136,919,177"/>
+<area shape="rect" id="node9" href="$d9/d84/classprzurro_1_1_scene___object.html#afda0a69deccf91508a1781418d2c3497" title="Set the rotation object." alt="" coords="767,201,919,243"/>
+<area shape="rect" id="node10" href="$d9/d84/classprzurro_1_1_scene___object.html#acbc820f987203bc0d635b4e1d0d3b3ac" title="Set the constant rotation object." alt="" coords="765,267,920,308"/>
+<area shape="rect" id="node11" href="$d1/d88/classprzurro_1_1_model.html#a378be42503fd1bb19f286616fce4274f" title="Set the default color object." alt="" coords="777,332,908,373"/>
+<area shape="rect" id="node12" href="$d1/d88/classprzurro_1_1_model.html#a1dee0161257ca282bedd2601dc539d43" title="Set the mesh color object." alt="" coords="777,397,908,439"/>
+<area shape="rect" id="node13" href="$d9/d84/classprzurro_1_1_scene___object.html#a76e1fb5b58218b916a45c04101186ac7" title="Set the scale object." alt="" coords="767,463,919,504"/>
+<area shape="rect" id="node8" href="$d9/d84/classprzurro_1_1_scene___object.html#aa995f210f23d6e36477c6745cd3bb097" title="Update the local and global transform by the current local attributes and parent transformation...." alt="" coords="968,201,1120,243"/>
+</map>

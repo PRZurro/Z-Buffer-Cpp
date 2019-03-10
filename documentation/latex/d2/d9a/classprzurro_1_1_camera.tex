@@ -1,0 +1,211 @@
+\hypertarget{classprzurro_1_1_camera}{}\section{przurro\+::Camera Class Reference}
+\label{classprzurro_1_1_camera}\index{przurro::Camera@{przurro::Camera}}
+
+
+Class in charge of store the attributes belonging to the characteristics of a camera, and manage it\textquotesingle{}s changes.  
+
+
+
+
+{\ttfamily \#include $<$Camera.\+hpp$>$}
+
+
+
+Inheritance diagram for przurro\+::Camera\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=194pt]{d7/d19/classprzurro_1_1_camera__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for przurro\+::Camera\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=194pt]{df/da0/classprzurro_1_1_camera__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classprzurro_1_1_camera_a01698f245b2ce8accec92313c7a060f2}\label{classprzurro_1_1_camera_a01698f245b2ce8accec92313c7a060f2}} 
+{\bfseries Camera} (float near\+PlaneD, float far\+PlaneD, float fov\+Degrees, size\+\_\+t input\+Width, size\+\_\+t input\+Height, Vector3f $\ast$target=nullptr)
+\item 
+Matrix44f \mbox{\hyperlink{classprzurro_1_1_camera_aaec8e7f387d2e5f5d06d16a2e814eba4}{look\+\_\+at}} (const Vector3f \&at)
+\begin{DoxyCompactList}\small\item\em Changes the direction where this camera is looking at and returns the proper camera coordinates. \end{DoxyCompactList}\item 
+Matrix44f \mbox{\hyperlink{classprzurro_1_1_camera_adcddf45e2cd4d5cf6badf0a2a615e3dd}{look\+\_\+at}} ()
+\begin{DoxyCompactList}\small\item\em Set a direction to look at and returns the camera coordinates returned. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classprzurro_1_1_camera_ae38799bb62452f5bcf4d9f0f123adeac}{set\+\_\+target}} (Vector3f $\ast$target)
+\begin{DoxyCompactList}\small\item\em Set the target object. \end{DoxyCompactList}\item 
+const Projection\+\_\+\+Matrix3f \& \mbox{\hyperlink{classprzurro_1_1_camera_a9de15db51e07c62b88de013a717add73}{get\+\_\+projection\+\_\+matrix}} () const
+\begin{DoxyCompactList}\small\item\em Get the projection matrix object. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classprzurro_1_1_camera_aeae692f10b2c622a3e61c366ca33b2d6}{get\+\_\+width}} ()
+\begin{DoxyCompactList}\small\item\em Get the width object. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classprzurro_1_1_camera_a53ed7c30a4f622b7c680c4d2bbc117d4}{get\+\_\+height}} ()
+\begin{DoxyCompactList}\small\item\em Get the height object. \end{DoxyCompactList}\item 
+Vector4f\+\_\+\+Buffer \& \mbox{\hyperlink{classprzurro_1_1_camera_a6c95cd160d41adea4b7b706e387a9001}{get\+\_\+frustum\+\_\+planes}} (bool normalized=false)
+\begin{DoxyCompactList}\small\item\em Get the calculated frustum planes. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Class in charge of store the attributes belonging to the characteristics of a camera, and manage it\textquotesingle{}s changes. 
+
+
+
+Definition at line 25 of file Camera.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classprzurro_1_1_camera_a6c95cd160d41adea4b7b706e387a9001}\label{classprzurro_1_1_camera_a6c95cd160d41adea4b7b706e387a9001}} 
+\index{przurro::Camera@{przurro::Camera}!get\_frustum\_planes@{get\_frustum\_planes}}
+\index{get\_frustum\_planes@{get\_frustum\_planes}!przurro::Camera@{przurro::Camera}}
+\subsubsection{\texorpdfstring{get\_frustum\_planes()}{get\_frustum\_planes()}}
+{\footnotesize\ttfamily Vector4f\+\_\+\+Buffer\& przurro\+::\+Camera\+::get\+\_\+frustum\+\_\+planes (\begin{DoxyParamCaption}\item[{bool}]{normalized = {\ttfamily false} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get the calculated frustum planes. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em normalized} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Vector4f\+\_\+\+Buffer\& 
+\end{DoxyReturn}
+
+
+Definition at line 120 of file Camera.\+hpp.
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=336pt]{d2/d9a/classprzurro_1_1_camera_a6c95cd160d41adea4b7b706e387a9001_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classprzurro_1_1_camera_a53ed7c30a4f622b7c680c4d2bbc117d4}\label{classprzurro_1_1_camera_a53ed7c30a4f622b7c680c4d2bbc117d4}} 
+\index{przurro::Camera@{przurro::Camera}!get\_height@{get\_height}}
+\index{get\_height@{get\_height}!przurro::Camera@{przurro::Camera}}
+\subsubsection{\texorpdfstring{get\_height()}{get\_height()}}
+{\footnotesize\ttfamily size\+\_\+t przurro\+::\+Camera\+::get\+\_\+height (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get the height object. 
+
+\begin{DoxyReturn}{Returns}
+size\+\_\+t 
+\end{DoxyReturn}
+
+
+Definition at line 109 of file Camera.\+hpp.
+
+\mbox{\Hypertarget{classprzurro_1_1_camera_a9de15db51e07c62b88de013a717add73}\label{classprzurro_1_1_camera_a9de15db51e07c62b88de013a717add73}} 
+\index{przurro::Camera@{przurro::Camera}!get\_projection\_matrix@{get\_projection\_matrix}}
+\index{get\_projection\_matrix@{get\_projection\_matrix}!przurro::Camera@{przurro::Camera}}
+\subsubsection{\texorpdfstring{get\_projection\_matrix()}{get\_projection\_matrix()}}
+{\footnotesize\ttfamily const Projection\+\_\+\+Matrix3f\& przurro\+::\+Camera\+::get\+\_\+projection\+\_\+matrix (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get the projection matrix object. 
+
+\begin{DoxyReturn}{Returns}
+const Projection\+\_\+\+Matrix3f\& 
+\end{DoxyReturn}
+
+
+Definition at line 89 of file Camera.\+hpp.
+
+\mbox{\Hypertarget{classprzurro_1_1_camera_aeae692f10b2c622a3e61c366ca33b2d6}\label{classprzurro_1_1_camera_aeae692f10b2c622a3e61c366ca33b2d6}} 
+\index{przurro::Camera@{przurro::Camera}!get\_width@{get\_width}}
+\index{get\_width@{get\_width}!przurro::Camera@{przurro::Camera}}
+\subsubsection{\texorpdfstring{get\_width()}{get\_width()}}
+{\footnotesize\ttfamily size\+\_\+t przurro\+::\+Camera\+::get\+\_\+width (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get the width object. 
+
+\begin{DoxyReturn}{Returns}
+size\+\_\+t 
+\end{DoxyReturn}
+
+
+Definition at line 99 of file Camera.\+hpp.
+
+\mbox{\Hypertarget{classprzurro_1_1_camera_aaec8e7f387d2e5f5d06d16a2e814eba4}\label{classprzurro_1_1_camera_aaec8e7f387d2e5f5d06d16a2e814eba4}} 
+\index{przurro::Camera@{przurro::Camera}!look\_at@{look\_at}}
+\index{look\_at@{look\_at}!przurro::Camera@{przurro::Camera}}
+\subsubsection{\texorpdfstring{look\_at()}{look\_at()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily Matrix44f przurro\+::\+Camera\+::look\+\_\+at (\begin{DoxyParamCaption}\item[{const Vector3f \&}]{at }\end{DoxyParamCaption})}
+
+
+
+Changes the direction where this camera is looking at and returns the proper camera coordinates. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em at} & vector to look at \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Matrix44f, camera coordinates transformation 
+\end{DoxyReturn}
+
+
+Definition at line 19 of file Camera.\+cpp.
+
+\mbox{\Hypertarget{classprzurro_1_1_camera_adcddf45e2cd4d5cf6badf0a2a615e3dd}\label{classprzurro_1_1_camera_adcddf45e2cd4d5cf6badf0a2a615e3dd}} 
+\index{przurro::Camera@{przurro::Camera}!look\_at@{look\_at}}
+\index{look\_at@{look\_at}!przurro::Camera@{przurro::Camera}}
+\subsubsection{\texorpdfstring{look\_at()}{look\_at()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily Matrix44f przurro\+::\+Camera\+::look\+\_\+at (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Set a direction to look at and returns the camera coordinates returned. 
+
+If there is not any target, it takes the default view direction
+
+\begin{DoxyReturn}{Returns}
+Matrix44f camera coordinates transformation 
+\end{DoxyReturn}
+
+
+Definition at line 60 of file Camera.\+hpp.
+
+\mbox{\Hypertarget{classprzurro_1_1_camera_ae38799bb62452f5bcf4d9f0f123adeac}\label{classprzurro_1_1_camera_ae38799bb62452f5bcf4d9f0f123adeac}} 
+\index{przurro::Camera@{przurro::Camera}!set\_target@{set\_target}}
+\index{set\_target@{set\_target}!przurro::Camera@{przurro::Camera}}
+\subsubsection{\texorpdfstring{set\_target()}{set\_target()}}
+{\footnotesize\ttfamily void przurro\+::\+Camera\+::set\+\_\+target (\begin{DoxyParamCaption}\item[{Vector3f $\ast$}]{target }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Set the target object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em target} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 77 of file Camera.\+hpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+code/headers/\mbox{\hyperlink{_camera_8hpp}{Camera.\+hpp}}\item 
+code/sources/Camera.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,4 @@
+<map id="przurro::Scene_Object::translate" name="przurro::Scene_Object::translate">
+<area shape="rect" id="node1" title="translate this scene object." alt="" coords="5,5,157,47"/>
+<area shape="rect" id="node2" href="$d9/d84/classprzurro_1_1_scene___object.html#aa995f210f23d6e36477c6745cd3bb097" title="Update the local and global transform by the current local attributes and parent transformation...." alt="" coords="205,5,357,47"/>
+</map>

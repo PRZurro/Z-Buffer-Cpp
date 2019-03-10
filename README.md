@@ -6,4 +6,7 @@ Extract the executables .zip in root folder or build the VS project changing in 
 
 Release build seems not to work with relative paths, sometimes works and much more fluid than the debug version.
 
+Model with several meshes seems not to work.
+
 Copyright © 2019 Pablo Rodríguez Zurro All rights reserved.
+

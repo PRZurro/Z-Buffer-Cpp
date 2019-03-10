@@ -1,0 +1,5 @@
+<map id="przurro::Scene_Object" name="przurro::Scene_Object">
+<area shape="rect" id="node1" title="Class similar to a component in charge of store manage the transformations of an object of a scene." alt="" coords="53,5,205,32"/>
+<area shape="rect" id="node2" href="$d2/d9a/classprzurro_1_1_camera.html" title="Class in charge of store the attributes belonging to the characteristics of a camera,..." alt="" coords="5,80,120,107"/>
+<area shape="rect" id="node3" href="$d1/d88/classprzurro_1_1_model.html" title="Class in charge of store the vertices, normals and normals of it&#39;s meshes and manage their attributes..." alt="" coords="145,80,250,107"/>
+</map>

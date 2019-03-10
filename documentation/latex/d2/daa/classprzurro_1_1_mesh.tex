@@ -1,0 +1,168 @@
+\hypertarget{classprzurro_1_1_mesh}{}\section{przurro\+::Mesh Class Reference}
+\label{classprzurro_1_1_mesh}\index{przurro::Mesh@{przurro::Mesh}}
+
+
+Class in charge of store the indices to it\textquotesingle{}s respective vertices, determine which are visible and prepare it\textquotesingle{}s visible vertices to be drawn by the rasterizer.  
+
+
+
+
+{\ttfamily \#include $<$Mesh.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classprzurro_1_1_mesh_a63f4bc0dada8254f00a1e1d7cdae13a5}{Mesh}} (Point4f\+\_\+\+Buffer \&vertex\+Buffer, Point4f\+\_\+\+Buffer \&transformed\+Vertex\+Buffer, Vector4f\+\_\+\+Buffer \&normal\+Buffer, Vector4f\+\_\+\+Buffer \&transformed\+Normal\+Buffer, size\+\_\+t n\+Vertices, size\+\_\+t mesh\+F\+Index, String \&mesh\+Name)
+\begin{DoxyCompactList}\small\item\em Construct a new \mbox{\hyperlink{classprzurro_1_1_mesh}{Mesh}} object. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classprzurro_1_1_mesh_ab6130f009818dbae0e61d6014e963b01}{$\sim$\+Mesh}} ()
+\begin{DoxyCompactList}\small\item\em Destroy the \mbox{\hyperlink{classprzurro_1_1_mesh}{Mesh}} object, clearing it\textquotesingle{}s buffers. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classprzurro_1_1_mesh_a37e8a0e37c37c140bcc5208a95add6c4}{update}} (f\+\_\+\+Buffer \&light\+Intensities, \mbox{\hyperlink{classprzurro_1_1_rasterizer}{Rasterizer}}$<$ \mbox{\hyperlink{classprzurro_1_1_color___buffer___rgba8888}{Color\+\_\+\+Buff}} $>$ \&rasterizer, Vector4f\+\_\+\+Buffer \&f\+Planes)
+\begin{DoxyCompactList}\small\item\em Update the vertex buffers and prepare it\textquotesingle{}s buffers to be drawn in the rasterizer. There it is calculated the last phases of the rendering pipeline (\mbox{\hyperlink{classprzurro_1_1_light}{Light}} calculation, Culling, Clipping with frustum, N\+DC and Viewport Coordinates) \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classprzurro_1_1_mesh_a15a924f0e1e05969dccea6f8903e2ad0}{draw}} (\mbox{\hyperlink{classprzurro_1_1_rasterizer}{Rasterizer}}$<$ \mbox{\hyperlink{classprzurro_1_1_color___buffer___rgba8888}{Color\+\_\+\+Buff}} $>$ \&rasterizer)
+\item 
+void \mbox{\hyperlink{classprzurro_1_1_mesh_a18662164729447fde86564e53f34f8f9}{set\+\_\+color}} (const Vector4i \&colorV)
+\begin{DoxyCompactList}\small\item\em Set the mesh color. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classprzurro_1_1_mesh_af4fdc058dd872fa968d5bd1c01737605}{set\+\_\+color}} (const \mbox{\hyperlink{structprzurro_1_1_color___buffer___rgba8888_1_1_color}{Color}} \&input\+Color)
+\begin{DoxyCompactList}\small\item\em Set the mesh color. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class in charge of store the indices to it\textquotesingle{}s respective vertices, determine which are visible and prepare it\textquotesingle{}s visible vertices to be drawn by the rasterizer. 
+
+
+
+Definition at line 28 of file Mesh.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classprzurro_1_1_mesh_a63f4bc0dada8254f00a1e1d7cdae13a5}\label{classprzurro_1_1_mesh_a63f4bc0dada8254f00a1e1d7cdae13a5}} 
+\index{przurro::Mesh@{przurro::Mesh}!Mesh@{Mesh}}
+\index{Mesh@{Mesh}!przurro::Mesh@{przurro::Mesh}}
+\subsubsection{\texorpdfstring{Mesh()}{Mesh()}}
+{\footnotesize\ttfamily przurro\+::\+Mesh\+::\+Mesh (\begin{DoxyParamCaption}\item[{Point4f\+\_\+\+Buffer \&}]{vertex\+Buffer,  }\item[{Point4f\+\_\+\+Buffer \&}]{transformed\+Vertex\+Buffer,  }\item[{Vector4f\+\_\+\+Buffer \&}]{normal\+Buffer,  }\item[{Vector4f\+\_\+\+Buffer \&}]{transformed\+Normal\+Buffer,  }\item[{size\+\_\+t}]{n\+Vertices,  }\item[{size\+\_\+t}]{mesh\+F\+Index,  }\item[{String \&}]{mesh\+Name }\end{DoxyParamCaption})}
+
+
+
+Construct a new \mbox{\hyperlink{classprzurro_1_1_mesh}{Mesh}} object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em vertex\+Buffer} & \\
+\hline
+{\em transformed\+Vertex\+Buffer} & \\
+\hline
+{\em normal\+Buffer} & \\
+\hline
+{\em transformed\+Normal\+Buffer} & \\
+\hline
+{\em n\+Vertices} & \\
+\hline
+{\em mesh\+F\+Index} & \\
+\hline
+{\em mesh\+Name} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 6 of file Mesh.\+cpp.
+
+\mbox{\Hypertarget{classprzurro_1_1_mesh_ab6130f009818dbae0e61d6014e963b01}\label{classprzurro_1_1_mesh_ab6130f009818dbae0e61d6014e963b01}} 
+\index{przurro::Mesh@{przurro::Mesh}!````~Mesh@{$\sim$Mesh}}
+\index{````~Mesh@{$\sim$Mesh}!przurro::Mesh@{przurro::Mesh}}
+\subsubsection{\texorpdfstring{$\sim$Mesh()}{~Mesh()}}
+{\footnotesize\ttfamily przurro\+::\+Mesh\+::$\sim$\+Mesh (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Destroy the \mbox{\hyperlink{classprzurro_1_1_mesh}{Mesh}} object, clearing it\textquotesingle{}s buffers. 
+
+
+
+Definition at line 83 of file Mesh.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classprzurro_1_1_mesh_a15a924f0e1e05969dccea6f8903e2ad0}\label{classprzurro_1_1_mesh_a15a924f0e1e05969dccea6f8903e2ad0}} 
+\index{przurro::Mesh@{przurro::Mesh}!draw@{draw}}
+\index{draw@{draw}!przurro::Mesh@{przurro::Mesh}}
+\subsubsection{\texorpdfstring{draw()}{draw()}}
+{\footnotesize\ttfamily void przurro\+::\+Mesh\+::draw (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classprzurro_1_1_rasterizer}{Rasterizer}}$<$ \mbox{\hyperlink{classprzurro_1_1_color___buffer___rgba8888}{Color\+\_\+\+Buff}} $>$ \&}]{rasterizer }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em rasterizer} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 86 of file Mesh.\+cpp.
+
+\mbox{\Hypertarget{classprzurro_1_1_mesh_a18662164729447fde86564e53f34f8f9}\label{classprzurro_1_1_mesh_a18662164729447fde86564e53f34f8f9}} 
+\index{przurro::Mesh@{przurro::Mesh}!set\_color@{set\_color}}
+\index{set\_color@{set\_color}!przurro::Mesh@{przurro::Mesh}}
+\subsubsection{\texorpdfstring{set\_color()}{set\_color()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void przurro\+::\+Mesh\+::set\+\_\+color (\begin{DoxyParamCaption}\item[{const Vector4i \&}]{colorV }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Set the mesh color. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em colorV} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 121 of file Mesh.\+hpp.
+
+\mbox{\Hypertarget{classprzurro_1_1_mesh_af4fdc058dd872fa968d5bd1c01737605}\label{classprzurro_1_1_mesh_af4fdc058dd872fa968d5bd1c01737605}} 
+\index{przurro::Mesh@{przurro::Mesh}!set\_color@{set\_color}}
+\index{set\_color@{set\_color}!przurro::Mesh@{przurro::Mesh}}
+\subsubsection{\texorpdfstring{set\_color()}{set\_color()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void przurro\+::\+Mesh\+::set\+\_\+color (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structprzurro_1_1_color___buffer___rgba8888_1_1_color}{Color}} \&}]{input\+Color }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Set the mesh color. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em input\+Color} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 131 of file Mesh.\+hpp.
+
+\mbox{\Hypertarget{classprzurro_1_1_mesh_a37e8a0e37c37c140bcc5208a95add6c4}\label{classprzurro_1_1_mesh_a37e8a0e37c37c140bcc5208a95add6c4}} 
+\index{przurro::Mesh@{przurro::Mesh}!update@{update}}
+\index{update@{update}!przurro::Mesh@{przurro::Mesh}}
+\subsubsection{\texorpdfstring{update()}{update()}}
+{\footnotesize\ttfamily void przurro\+::\+Mesh\+::update (\begin{DoxyParamCaption}\item[{f\+\_\+\+Buffer \&}]{light\+Intensities,  }\item[{\mbox{\hyperlink{classprzurro_1_1_rasterizer}{Rasterizer}}$<$ \mbox{\hyperlink{classprzurro_1_1_color___buffer___rgba8888}{Color\+\_\+\+Buff}} $>$ \&}]{rasterizer,  }\item[{Vector4f\+\_\+\+Buffer \&}]{f\+Planes }\end{DoxyParamCaption})}
+
+
+
+Update the vertex buffers and prepare it\textquotesingle{}s buffers to be drawn in the rasterizer. There it is calculated the last phases of the rendering pipeline (\mbox{\hyperlink{classprzurro_1_1_light}{Light}} calculation, Culling, Clipping with frustum, N\+DC and Viewport Coordinates) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em light\+Intensities} & \\
+\hline
+{\em rasterizer} & \\
+\hline
+{\em f\+Planes} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 20 of file Mesh.\+cpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+code/headers/\mbox{\hyperlink{_mesh_8hpp}{Mesh.\+hpp}}\item 
+code/sources/Mesh.\+cpp\end{DoxyCompactItemize}

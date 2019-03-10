@@ -1,0 +1,13 @@
+<map id="przurro::Scene::load_cameras" name="przurro::Scene::load_cameras">
+<area shape="rect" id="node1" title="load all the cameras (with their properties)" alt="" coords="5,235,144,276"/>
+<area shape="rect" id="node2" href="$d8/d56/classprzurro_1_1_scene.html#a62b094d029473e81e2bcc43d7bc01777" title="Common method to load properties of models and cameras (sometimes is needed a pointer to a model and ..." alt="" coords="192,235,331,276"/>
+<area shape="rect" id="node3" href="$d8/d56/classprzurro_1_1_scene.html#acd91a4c5188aa41add75a093de32b664" title="Check if there it is a model with the name received." alt="" coords="381,5,531,47"/>
+<area shape="rect" id="node4" href="$d9/d84/classprzurro_1_1_scene___object.html#aad9cc81e105d3321828287d736b01525" title="Set the parent object." alt="" coords="380,71,532,112"/>
+<area shape="rect" id="node5" href="$d9/d84/classprzurro_1_1_scene___object.html#adfb1f8a52324f4618474a89da64b65d6" title="Set the position object." alt="" coords="380,136,532,177"/>
+<area shape="rect" id="node7" href="$d9/d84/classprzurro_1_1_scene___object.html#afda0a69deccf91508a1781418d2c3497" title="Set the rotation object." alt="" coords="380,201,532,243"/>
+<area shape="rect" id="node8" href="$d9/d84/classprzurro_1_1_scene___object.html#acbc820f987203bc0d635b4e1d0d3b3ac" title="Set the constant rotation object." alt="" coords="379,267,533,308"/>
+<area shape="rect" id="node9" href="$d1/d88/classprzurro_1_1_model.html#a378be42503fd1bb19f286616fce4274f" title="Set the default color object." alt="" coords="391,332,521,373"/>
+<area shape="rect" id="node10" href="$d1/d88/classprzurro_1_1_model.html#a1dee0161257ca282bedd2601dc539d43" title="Set the mesh color object." alt="" coords="391,397,521,439"/>
+<area shape="rect" id="node11" href="$d9/d84/classprzurro_1_1_scene___object.html#a76e1fb5b58218b916a45c04101186ac7" title="Set the scale object." alt="" coords="380,463,532,504"/>
+<area shape="rect" id="node6" href="$d9/d84/classprzurro_1_1_scene___object.html#aa995f210f23d6e36477c6745cd3bb097" title="Update the local and global transform by the current local attributes and parent transformation...." alt="" coords="581,201,733,243"/>
+</map>

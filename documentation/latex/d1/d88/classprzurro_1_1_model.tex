@@ -1,0 +1,271 @@
+\hypertarget{classprzurro_1_1_model}{}\section{przurro\+::Model Class Reference}
+\label{classprzurro_1_1_model}\index{przurro::Model@{przurro::Model}}
+
+
+Class in charge of store the vertices, normals and normals of it\textquotesingle{}s meshes and manage their attributes.  
+
+
+
+
+{\ttfamily \#include $<$Model.\+hpp$>$}
+
+
+
+Inheritance diagram for przurro\+::Model\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=194pt]{dd/d3b/classprzurro_1_1_model__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for przurro\+::Model\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=194pt]{dd/d71/classprzurro_1_1_model__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classprzurro_1_1_model_aa25706e59d97214c6e2556f45d19d945}{Model}} (const String \&asset\+Folder\+Path, const String \&asset\+Name)
+\begin{DoxyCompactList}\small\item\em Construct a new \mbox{\hyperlink{classprzurro_1_1_model}{Model}} object. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classprzurro_1_1_model_aa364e361f37b8e534bc3b6a66d4f4e4e}{$\sim$\+Model}} ()
+\begin{DoxyCompactList}\small\item\em Destroy the \mbox{\hyperlink{classprzurro_1_1_model}{Model}} object. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classprzurro_1_1_model_a92c773fb7ab51e62cf25ea0c0691886b}{update}} (\mbox{\hyperlink{classprzurro_1_1_camera}{Camera}} $\ast$active\+Camera, \mbox{\hyperlink{classprzurro_1_1_rasterizer}{Rasterizer}}$<$ \mbox{\hyperlink{classprzurro_1_1_color___buffer___rgba8888}{Color\+\_\+\+Buff}} $>$ \&rasterizer, \mbox{\hyperlink{classprzurro_1_1_light}{Light}} $\ast$input\+Light)
+\begin{DoxyCompactList}\small\item\em Update the model members. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classprzurro_1_1_model_acc2f2e7746c7d3a9cec619d103f3889d}{draw}} (\mbox{\hyperlink{classprzurro_1_1_rasterizer}{Rasterizer}}$<$ \mbox{\hyperlink{classprzurro_1_1_color___buffer___rgba8888}{Color\+\_\+\+Buff}} $>$ \&rasterizer)
+\begin{DoxyCompactList}\small\item\em Draw the model. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classprzurro_1_1_model_a1dee0161257ca282bedd2601dc539d43}{set\+\_\+mesh\+\_\+color}} (String \&mesh\+Name, const Vector4i \&colorV)
+\begin{DoxyCompactList}\small\item\em Set the mesh color object. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classprzurro_1_1_model_a378be42503fd1bb19f286616fce4274f}{set\+\_\+default\+\_\+color}} (const Vector4i \&color\+R\+GB)
+\begin{DoxyCompactList}\small\item\em Set the default color object. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classprzurro_1_1_model_a8dbadcaf39085757731d023247a79ec0}{is\+\_\+ok}} ()
+\begin{DoxyCompactList}\small\item\em return any failures ocurred \end{DoxyCompactList}\item 
+const String \mbox{\hyperlink{classprzurro_1_1_model_acd532e681ed5a48c5e1268419ea74905}{get\+\_\+error}} () const
+\begin{DoxyCompactList}\small\item\em Get the errors occured. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{structprzurro_1_1_color___buffer___rgba8888_1_1_color}{Color}} \mbox{\hyperlink{classprzurro_1_1_model_a180104ec9701e878c0ada77b73356b13}{get\+\_\+default\+\_\+color}} () const
+\begin{DoxyCompactList}\small\item\em Get the default color object. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Class in charge of store the vertices, normals and normals of it\textquotesingle{}s meshes and manage their attributes. 
+
+Definition at line 27 of file Model.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classprzurro_1_1_model_aa25706e59d97214c6e2556f45d19d945}\label{classprzurro_1_1_model_aa25706e59d97214c6e2556f45d19d945}} 
+\index{przurro::Model@{przurro::Model}!Model@{Model}}
+\index{Model@{Model}!przurro::Model@{przurro::Model}}
+\subsubsection{\texorpdfstring{Model()}{Model()}}
+{\footnotesize\ttfamily przurro\+::\+Model\+::\+Model (\begin{DoxyParamCaption}\item[{const String \&}]{asset\+Folder\+Path,  }\item[{const String \&}]{asset\+Name }\end{DoxyParamCaption})}
+
+
+
+Construct a new \mbox{\hyperlink{classprzurro_1_1_model}{Model}} object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em asset\+Folder\+Path} & \\
+\hline
+{\em asset\+Name} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 12 of file Model.\+cpp.
+
+\mbox{\Hypertarget{classprzurro_1_1_model_aa364e361f37b8e534bc3b6a66d4f4e4e}\label{classprzurro_1_1_model_aa364e361f37b8e534bc3b6a66d4f4e4e}} 
+\index{przurro::Model@{przurro::Model}!````~Model@{$\sim$Model}}
+\index{````~Model@{$\sim$Model}!przurro::Model@{przurro::Model}}
+\subsubsection{\texorpdfstring{$\sim$Model()}{~Model()}}
+{\footnotesize\ttfamily przurro\+::\+Model\+::$\sim$\+Model (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Destroy the \mbox{\hyperlink{classprzurro_1_1_model}{Model}} object. 
+
+
+
+Definition at line 60 of file Model.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classprzurro_1_1_model_acc2f2e7746c7d3a9cec619d103f3889d}\label{classprzurro_1_1_model_acc2f2e7746c7d3a9cec619d103f3889d}} 
+\index{przurro::Model@{przurro::Model}!draw@{draw}}
+\index{draw@{draw}!przurro::Model@{przurro::Model}}
+\subsubsection{\texorpdfstring{draw()}{draw()}}
+{\footnotesize\ttfamily void przurro\+::\+Model\+::draw (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classprzurro_1_1_rasterizer}{Rasterizer}}$<$ \mbox{\hyperlink{classprzurro_1_1_color___buffer___rgba8888}{Color\+\_\+\+Buff}} $>$ \&}]{rasterizer }\end{DoxyParamCaption})}
+
+
+
+Draw the model. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rasterizer} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 96 of file Model.\+cpp.
+
+\mbox{\Hypertarget{classprzurro_1_1_model_a180104ec9701e878c0ada77b73356b13}\label{classprzurro_1_1_model_a180104ec9701e878c0ada77b73356b13}} 
+\index{przurro::Model@{przurro::Model}!get\_default\_color@{get\_default\_color}}
+\index{get\_default\_color@{get\_default\_color}!przurro::Model@{przurro::Model}}
+\subsubsection{\texorpdfstring{get\_default\_color()}{get\_default\_color()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{structprzurro_1_1_color___buffer___rgba8888_1_1_color}{Color}} przurro\+::\+Model\+::get\+\_\+default\+\_\+color (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get the default color object. 
+
+\begin{DoxyReturn}{Returns}
+const Color 
+\end{DoxyReturn}
+
+
+Definition at line 146 of file Model.\+hpp.
+
+\mbox{\Hypertarget{classprzurro_1_1_model_acd532e681ed5a48c5e1268419ea74905}\label{classprzurro_1_1_model_acd532e681ed5a48c5e1268419ea74905}} 
+\index{przurro::Model@{przurro::Model}!get\_error@{get\_error}}
+\index{get\_error@{get\_error}!przurro::Model@{przurro::Model}}
+\subsubsection{\texorpdfstring{get\_error()}{get\_error()}}
+{\footnotesize\ttfamily const String przurro\+::\+Model\+::get\+\_\+error (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get the errors occured. 
+
+\begin{DoxyReturn}{Returns}
+const String 
+\end{DoxyReturn}
+
+
+Definition at line 136 of file Model.\+hpp.
+
+\mbox{\Hypertarget{classprzurro_1_1_model_a8dbadcaf39085757731d023247a79ec0}\label{classprzurro_1_1_model_a8dbadcaf39085757731d023247a79ec0}} 
+\index{przurro::Model@{przurro::Model}!is\_ok@{is\_ok}}
+\index{is\_ok@{is\_ok}!przurro::Model@{przurro::Model}}
+\subsubsection{\texorpdfstring{is\_ok()}{is\_ok()}}
+{\footnotesize\ttfamily bool przurro\+::\+Model\+::is\+\_\+ok (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+return any failures ocurred 
+
+\begin{DoxyReturn}{Returns}
+true 
+
+false 
+\end{DoxyReturn}
+
+
+Definition at line 126 of file Model.\+hpp.
+
+\mbox{\Hypertarget{classprzurro_1_1_model_a378be42503fd1bb19f286616fce4274f}\label{classprzurro_1_1_model_a378be42503fd1bb19f286616fce4274f}} 
+\index{przurro::Model@{przurro::Model}!set\_default\_color@{set\_default\_color}}
+\index{set\_default\_color@{set\_default\_color}!przurro::Model@{przurro::Model}}
+\subsubsection{\texorpdfstring{set\_default\_color()}{set\_default\_color()}}
+{\footnotesize\ttfamily void przurro\+::\+Model\+::set\+\_\+default\+\_\+color (\begin{DoxyParamCaption}\item[{const Vector4i \&}]{color\+R\+GB }\end{DoxyParamCaption})}
+
+
+
+Set the default color object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em color\+R\+GB} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 113 of file Model.\+cpp.
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{d1/d88/classprzurro_1_1_model_a378be42503fd1bb19f286616fce4274f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classprzurro_1_1_model_a1dee0161257ca282bedd2601dc539d43}\label{classprzurro_1_1_model_a1dee0161257ca282bedd2601dc539d43}} 
+\index{przurro::Model@{przurro::Model}!set\_mesh\_color@{set\_mesh\_color}}
+\index{set\_mesh\_color@{set\_mesh\_color}!przurro::Model@{przurro::Model}}
+\subsubsection{\texorpdfstring{set\_mesh\_color()}{set\_mesh\_color()}}
+{\footnotesize\ttfamily bool przurro\+::\+Model\+::set\+\_\+mesh\+\_\+color (\begin{DoxyParamCaption}\item[{String \&}]{mesh\+Name,  }\item[{const Vector4i \&}]{colorV }\end{DoxyParamCaption})}
+
+
+
+Set the mesh color object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mesh\+Name} & \\
+\hline
+{\em colorV} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true 
+
+false 
+\end{DoxyReturn}
+
+
+Definition at line 102 of file Model.\+cpp.
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{d1/d88/classprzurro_1_1_model_a1dee0161257ca282bedd2601dc539d43_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classprzurro_1_1_model_a92c773fb7ab51e62cf25ea0c0691886b}\label{classprzurro_1_1_model_a92c773fb7ab51e62cf25ea0c0691886b}} 
+\index{przurro::Model@{przurro::Model}!update@{update}}
+\index{update@{update}!przurro::Model@{przurro::Model}}
+\subsubsection{\texorpdfstring{update()}{update()}}
+{\footnotesize\ttfamily void przurro\+::\+Model\+::update (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classprzurro_1_1_camera}{Camera}} $\ast$}]{active\+Camera,  }\item[{\mbox{\hyperlink{classprzurro_1_1_rasterizer}{Rasterizer}}$<$ \mbox{\hyperlink{classprzurro_1_1_color___buffer___rgba8888}{Color\+\_\+\+Buff}} $>$ \&}]{rasterizer,  }\item[{\mbox{\hyperlink{classprzurro_1_1_light}{Light}} $\ast$}]{input\+Light }\end{DoxyParamCaption})}
+
+
+
+Update the model members. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em active\+Camera} & \\
+\hline
+{\em rasterizer} & \\
+\hline
+{\em input\+Light} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 82 of file Model.\+cpp.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=336pt]{d1/d88/classprzurro_1_1_model_a92c773fb7ab51e62cf25ea0c0691886b_cgraph}
+\end{center}
+\end{figure}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+code/headers/\mbox{\hyperlink{_model_8hpp}{Model.\+hpp}}\item 
+code/sources/Model.\+cpp\end{DoxyCompactItemize}

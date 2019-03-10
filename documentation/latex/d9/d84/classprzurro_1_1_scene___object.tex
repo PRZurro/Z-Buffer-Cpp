@@ -1,0 +1,492 @@
+\hypertarget{classprzurro_1_1_scene___object}{}\section{przurro\+::Scene\+\_\+\+Object Class Reference}
+\label{classprzurro_1_1_scene___object}\index{przurro::Scene\_Object@{przurro::Scene\_Object}}
+
+
+Class similar to a component in charge of store manage the transformations of an object of a scene.  
+
+
+
+
+{\ttfamily \#include $<$Scene\+\_\+\+Object.\+hpp$>$}
+
+
+
+Inheritance diagram for przurro\+::Scene\+\_\+\+Object\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=264pt]{dc/d0b/classprzurro_1_1_scene___object__inherit__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classprzurro_1_1_scene___object_ad67d8974378a4eedea6027cb750eed4d}{Scene\+\_\+\+Object}} (const String \&input\+Name)
+\begin{DoxyCompactList}\small\item\em Construct a new \mbox{\hyperlink{classprzurro_1_1_scene___object}{Scene\+\_\+\+Object}} object. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classprzurro_1_1_scene___object_ac09d33f77a144de396414f36fb11f901}{translate}} (const Vector3f \&translationV)
+\begin{DoxyCompactList}\small\item\em translate this scene object. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classprzurro_1_1_scene___object_adfb1f8a52324f4618474a89da64b65d6}{set\+\_\+position}} (const Vector3f \&positionV)
+\begin{DoxyCompactList}\small\item\em Set the position object. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classprzurro_1_1_scene___object_a417701b484844d3eaeba812c90a2821d}{rotate}} (const Vector3f \&rotationV)
+\begin{DoxyCompactList}\small\item\em rotate this scene object. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classprzurro_1_1_scene___object_afda0a69deccf91508a1781418d2c3497}{set\+\_\+rotation}} (const Vector3f \&rotationV)
+\begin{DoxyCompactList}\small\item\em Set the rotation object. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classprzurro_1_1_scene___object_acbc820f987203bc0d635b4e1d0d3b3ac}{set\+\_\+constant\+\_\+rotation}} (const Vector3f \&rotationV)
+\begin{DoxyCompactList}\small\item\em Set the constant rotation object. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classprzurro_1_1_scene___object_a76e1fb5b58218b916a45c04101186ac7}{set\+\_\+scale}} (const float \&scaleF)
+\begin{DoxyCompactList}\small\item\em Set the scale object. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classprzurro_1_1_scene___object_a1ac09f9b83e81c2baf121960b7581914}{set\+\_\+local\+\_\+transform}} (const Transform\+\_\+\+Matrix3f new\+Transform)
+\begin{DoxyCompactList}\small\item\em Set the local transform object. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classprzurro_1_1_scene___object_a5fddb2cb0c950b5fb5521ccd832776c3}{set\+\_\+transform}} (const Transform\+\_\+\+Matrix3f new\+Transform)
+\begin{DoxyCompactList}\small\item\em Set the transform object. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classprzurro_1_1_scene___object_aad9cc81e105d3321828287d736b01525}{set\+\_\+parent}} (Transform\+\_\+\+Matrix3f \&parent)
+\begin{DoxyCompactList}\small\item\em Set the parent object. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classprzurro_1_1_scene___object_a219f3f9d5543ae2b40d4d623ae61b0ce}{constant\+\_\+rotation}} ()
+\begin{DoxyCompactList}\small\item\em apply the constant rotation to the rotation. (It only calls to update the transform, because is the real the real responsible for this task) \end{DoxyCompactList}\item 
+const String \mbox{\hyperlink{classprzurro_1_1_scene___object_a0814cf5dfa401ec825fc99dc4e38cfa8}{get\+\_\+name}} () const
+\begin{DoxyCompactList}\small\item\em Get the name object. \end{DoxyCompactList}\item 
+Transform\+\_\+\+Matrix3f $\ast$ \mbox{\hyperlink{classprzurro_1_1_scene___object_a49ee712564b1cb5cc21a58286bded165}{get\+\_\+parent}} () const
+\begin{DoxyCompactList}\small\item\em Get the parent object. \end{DoxyCompactList}\item 
+Transform\+\_\+\+Matrix3f \& \mbox{\hyperlink{classprzurro_1_1_scene___object_ab0e3eea8f57f4f8dac0597cebfbf3592}{get\+\_\+transform}} ()
+\begin{DoxyCompactList}\small\item\em Get a reference to this global transform object. \end{DoxyCompactList}\item 
+Vector3f \& \mbox{\hyperlink{classprzurro_1_1_scene___object_abeb836faf2b3cb2a93f082a10e3f684b}{get\+\_\+reference\+\_\+to\+\_\+position}} ()
+\begin{DoxyCompactList}\small\item\em Get the reference to position object. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classprzurro_1_1_scene___object_aa995f210f23d6e36477c6745cd3bb097}{update\+\_\+transform}} ()
+\begin{DoxyCompactList}\small\item\em Update the local and global transform by the current local attributes and parent transformation. Can\textquotesingle{}t extract for the moment the global values. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classprzurro_1_1_scene___object_aaac35f72f6665ffa1ca8c51ea5946532}\label{classprzurro_1_1_scene___object_aaac35f72f6665ffa1ca8c51ea5946532}} 
+String {\bfseries name}
+\item 
+\mbox{\Hypertarget{classprzurro_1_1_scene___object_a0fcf8057aa28fcb2bb3c38567b00dcbc}\label{classprzurro_1_1_scene___object_a0fcf8057aa28fcb2bb3c38567b00dcbc}} 
+Transform\+\_\+\+Matrix3f {\bfseries local\+Transform}
+\item 
+\mbox{\Hypertarget{classprzurro_1_1_scene___object_ac7348f2f4ce4de617dd13ed397f9f5a5}\label{classprzurro_1_1_scene___object_ac7348f2f4ce4de617dd13ed397f9f5a5}} 
+Transform\+\_\+\+Matrix3f {\bfseries global\+Transform}
+\item 
+\mbox{\Hypertarget{classprzurro_1_1_scene___object_a1faaab27bbfd9a2a085909bd9b21df2d}\label{classprzurro_1_1_scene___object_a1faaab27bbfd9a2a085909bd9b21df2d}} 
+Transform\+\_\+\+Matrix3f $\ast$ {\bfseries transform\+Parent}
+\item 
+\mbox{\Hypertarget{classprzurro_1_1_scene___object_ab87ed4d77cc6d0c5bfc514374f732db4}\label{classprzurro_1_1_scene___object_ab87ed4d77cc6d0c5bfc514374f732db4}} 
+Vector3f {\bfseries position}
+\item 
+\mbox{\Hypertarget{classprzurro_1_1_scene___object_a91d82fc80f0f6a90499d243c19c552d3}\label{classprzurro_1_1_scene___object_a91d82fc80f0f6a90499d243c19c552d3}} 
+Vector3f {\bfseries rotation}
+\item 
+\mbox{\Hypertarget{classprzurro_1_1_scene___object_a3a43dd2885156610f464ef719a6ba904}\label{classprzurro_1_1_scene___object_a3a43dd2885156610f464ef719a6ba904}} 
+Vector3f {\bfseries constant\+Rotation}
+\item 
+\mbox{\Hypertarget{classprzurro_1_1_scene___object_abef811a5733b37e0dec439db1104f1c3}\label{classprzurro_1_1_scene___object_abef811a5733b37e0dec439db1104f1c3}} 
+Vector3f {\bfseries g\+Position}
+\item 
+\mbox{\Hypertarget{classprzurro_1_1_scene___object_aaa3cd7bc3fd236d1d57d44268ab688d9}\label{classprzurro_1_1_scene___object_aaa3cd7bc3fd236d1d57d44268ab688d9}} 
+Vector3f {\bfseries g\+Scale}
+\item 
+\mbox{\Hypertarget{classprzurro_1_1_scene___object_a28dd1c1e0f702ca52d8d58c0f4944628}\label{classprzurro_1_1_scene___object_a28dd1c1e0f702ca52d8d58c0f4944628}} 
+float {\bfseries scale}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class similar to a component in charge of store manage the transformations of an object of a scene. 
+
+
+
+Definition at line 24 of file Scene\+\_\+\+Object.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classprzurro_1_1_scene___object_ad67d8974378a4eedea6027cb750eed4d}\label{classprzurro_1_1_scene___object_ad67d8974378a4eedea6027cb750eed4d}} 
+\index{przurro::Scene\_Object@{przurro::Scene\_Object}!Scene\_Object@{Scene\_Object}}
+\index{Scene\_Object@{Scene\_Object}!przurro::Scene\_Object@{przurro::Scene\_Object}}
+\subsubsection{\texorpdfstring{Scene\_Object()}{Scene\_Object()}}
+{\footnotesize\ttfamily przurro\+::\+Scene\+\_\+\+Object\+::\+Scene\+\_\+\+Object (\begin{DoxyParamCaption}\item[{const String \&}]{input\+Name }\end{DoxyParamCaption})}
+
+
+
+Construct a new \mbox{\hyperlink{classprzurro_1_1_scene___object}{Scene\+\_\+\+Object}} object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em input\+Name} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 7 of file Scene\+\_\+\+Object.\+cpp.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classprzurro_1_1_scene___object_a219f3f9d5543ae2b40d4d623ae61b0ce}\label{classprzurro_1_1_scene___object_a219f3f9d5543ae2b40d4d623ae61b0ce}} 
+\index{przurro::Scene\_Object@{przurro::Scene\_Object}!constant\_rotation@{constant\_rotation}}
+\index{constant\_rotation@{constant\_rotation}!przurro::Scene\_Object@{przurro::Scene\_Object}}
+\subsubsection{\texorpdfstring{constant\_rotation()}{constant\_rotation()}}
+{\footnotesize\ttfamily void przurro\+::\+Scene\+\_\+\+Object\+::constant\+\_\+rotation (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+apply the constant rotation to the rotation. (It only calls to update the transform, because is the real the real responsible for this task) 
+
+
+
+Definition at line 39 of file Scene\+\_\+\+Object.\+cpp.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=344pt]{d9/d84/classprzurro_1_1_scene___object_a219f3f9d5543ae2b40d4d623ae61b0ce_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classprzurro_1_1_scene___object_a0814cf5dfa401ec825fc99dc4e38cfa8}\label{classprzurro_1_1_scene___object_a0814cf5dfa401ec825fc99dc4e38cfa8}} 
+\index{przurro::Scene\_Object@{przurro::Scene\_Object}!get\_name@{get\_name}}
+\index{get\_name@{get\_name}!przurro::Scene\_Object@{przurro::Scene\_Object}}
+\subsubsection{\texorpdfstring{get\_name()}{get\_name()}}
+{\footnotesize\ttfamily const String przurro\+::\+Scene\+\_\+\+Object\+::get\+\_\+name (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get the name object. 
+
+\begin{DoxyReturn}{Returns}
+const String 
+\end{DoxyReturn}
+
+
+Definition at line 131 of file Scene\+\_\+\+Object.\+hpp.
+
+\mbox{\Hypertarget{classprzurro_1_1_scene___object_a49ee712564b1cb5cc21a58286bded165}\label{classprzurro_1_1_scene___object_a49ee712564b1cb5cc21a58286bded165}} 
+\index{przurro::Scene\_Object@{przurro::Scene\_Object}!get\_parent@{get\_parent}}
+\index{get\_parent@{get\_parent}!przurro::Scene\_Object@{przurro::Scene\_Object}}
+\subsubsection{\texorpdfstring{get\_parent()}{get\_parent()}}
+{\footnotesize\ttfamily Transform\+\_\+\+Matrix3f$\ast$ przurro\+::\+Scene\+\_\+\+Object\+::get\+\_\+parent (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get the parent object. 
+
+\begin{DoxyReturn}{Returns}
+Transform\+\_\+\+Matrix3f$\ast$ 
+\end{DoxyReturn}
+
+
+Definition at line 141 of file Scene\+\_\+\+Object.\+hpp.
+
+\mbox{\Hypertarget{classprzurro_1_1_scene___object_abeb836faf2b3cb2a93f082a10e3f684b}\label{classprzurro_1_1_scene___object_abeb836faf2b3cb2a93f082a10e3f684b}} 
+\index{przurro::Scene\_Object@{przurro::Scene\_Object}!get\_reference\_to\_position@{get\_reference\_to\_position}}
+\index{get\_reference\_to\_position@{get\_reference\_to\_position}!przurro::Scene\_Object@{przurro::Scene\_Object}}
+\subsubsection{\texorpdfstring{get\_reference\_to\_position()}{get\_reference\_to\_position()}}
+{\footnotesize\ttfamily Vector3f\& przurro\+::\+Scene\+\_\+\+Object\+::get\+\_\+reference\+\_\+to\+\_\+position (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get the reference to position object. 
+
+\begin{DoxyReturn}{Returns}
+Vector3f\& 
+\end{DoxyReturn}
+
+
+Definition at line 161 of file Scene\+\_\+\+Object.\+hpp.
+
+\mbox{\Hypertarget{classprzurro_1_1_scene___object_ab0e3eea8f57f4f8dac0597cebfbf3592}\label{classprzurro_1_1_scene___object_ab0e3eea8f57f4f8dac0597cebfbf3592}} 
+\index{przurro::Scene\_Object@{przurro::Scene\_Object}!get\_transform@{get\_transform}}
+\index{get\_transform@{get\_transform}!przurro::Scene\_Object@{przurro::Scene\_Object}}
+\subsubsection{\texorpdfstring{get\_transform()}{get\_transform()}}
+{\footnotesize\ttfamily Transform\+\_\+\+Matrix3f\& przurro\+::\+Scene\+\_\+\+Object\+::get\+\_\+transform (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get a reference to this global transform object. 
+
+\begin{DoxyReturn}{Returns}
+Transform\+\_\+\+Matrix3f\& 
+\end{DoxyReturn}
+
+
+Definition at line 151 of file Scene\+\_\+\+Object.\+hpp.
+
+\mbox{\Hypertarget{classprzurro_1_1_scene___object_a417701b484844d3eaeba812c90a2821d}\label{classprzurro_1_1_scene___object_a417701b484844d3eaeba812c90a2821d}} 
+\index{przurro::Scene\_Object@{przurro::Scene\_Object}!rotate@{rotate}}
+\index{rotate@{rotate}!przurro::Scene\_Object@{przurro::Scene\_Object}}
+\subsubsection{\texorpdfstring{rotate()}{rotate()}}
+{\footnotesize\ttfamily void przurro\+::\+Scene\+\_\+\+Object\+::rotate (\begin{DoxyParamCaption}\item[{const Vector3f \&}]{rotationV }\end{DoxyParamCaption})}
+
+
+
+rotate this scene object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rotationV} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 32 of file Scene\+\_\+\+Object.\+cpp.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=344pt]{d9/d84/classprzurro_1_1_scene___object_a417701b484844d3eaeba812c90a2821d_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classprzurro_1_1_scene___object_acbc820f987203bc0d635b4e1d0d3b3ac}\label{classprzurro_1_1_scene___object_acbc820f987203bc0d635b4e1d0d3b3ac}} 
+\index{przurro::Scene\_Object@{przurro::Scene\_Object}!set\_constant\_rotation@{set\_constant\_rotation}}
+\index{set\_constant\_rotation@{set\_constant\_rotation}!przurro::Scene\_Object@{przurro::Scene\_Object}}
+\subsubsection{\texorpdfstring{set\_constant\_rotation()}{set\_constant\_rotation()}}
+{\footnotesize\ttfamily void przurro\+::\+Scene\+\_\+\+Object\+::set\+\_\+constant\+\_\+rotation (\begin{DoxyParamCaption}\item[{const Vector3f \&}]{rotationV }\end{DoxyParamCaption})}
+
+
+
+Set the constant rotation object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rotationV} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 51 of file Scene\+\_\+\+Object.\+cpp.
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{d9/d84/classprzurro_1_1_scene___object_acbc820f987203bc0d635b4e1d0d3b3ac_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classprzurro_1_1_scene___object_a1ac09f9b83e81c2baf121960b7581914}\label{classprzurro_1_1_scene___object_a1ac09f9b83e81c2baf121960b7581914}} 
+\index{przurro::Scene\_Object@{przurro::Scene\_Object}!set\_local\_transform@{set\_local\_transform}}
+\index{set\_local\_transform@{set\_local\_transform}!przurro::Scene\_Object@{przurro::Scene\_Object}}
+\subsubsection{\texorpdfstring{set\_local\_transform()}{set\_local\_transform()}}
+{\footnotesize\ttfamily void przurro\+::\+Scene\+\_\+\+Object\+::set\+\_\+local\+\_\+transform (\begin{DoxyParamCaption}\item[{const Transform\+\_\+\+Matrix3f}]{new\+Transform }\end{DoxyParamCaption})}
+
+
+
+Set the local transform object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Transform} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 63 of file Scene\+\_\+\+Object.\+cpp.
+
+\mbox{\Hypertarget{classprzurro_1_1_scene___object_aad9cc81e105d3321828287d736b01525}\label{classprzurro_1_1_scene___object_aad9cc81e105d3321828287d736b01525}} 
+\index{przurro::Scene\_Object@{przurro::Scene\_Object}!set\_parent@{set\_parent}}
+\index{set\_parent@{set\_parent}!przurro::Scene\_Object@{przurro::Scene\_Object}}
+\subsubsection{\texorpdfstring{set\_parent()}{set\_parent()}}
+{\footnotesize\ttfamily void przurro\+::\+Scene\+\_\+\+Object\+::set\+\_\+parent (\begin{DoxyParamCaption}\item[{Transform\+\_\+\+Matrix3f \&}]{parent }\end{DoxyParamCaption})}
+
+
+
+Set the parent object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em parent} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 72 of file Scene\+\_\+\+Object.\+cpp.
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{d9/d84/classprzurro_1_1_scene___object_aad9cc81e105d3321828287d736b01525_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classprzurro_1_1_scene___object_adfb1f8a52324f4618474a89da64b65d6}\label{classprzurro_1_1_scene___object_adfb1f8a52324f4618474a89da64b65d6}} 
+\index{przurro::Scene\_Object@{przurro::Scene\_Object}!set\_position@{set\_position}}
+\index{set\_position@{set\_position}!przurro::Scene\_Object@{przurro::Scene\_Object}}
+\subsubsection{\texorpdfstring{set\_position()}{set\_position()}}
+{\footnotesize\ttfamily void przurro\+::\+Scene\+\_\+\+Object\+::set\+\_\+position (\begin{DoxyParamCaption}\item[{const Vector3f \&}]{positionV }\end{DoxyParamCaption})}
+
+
+
+Set the position object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em positionV} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 25 of file Scene\+\_\+\+Object.\+cpp.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=344pt]{d9/d84/classprzurro_1_1_scene___object_adfb1f8a52324f4618474a89da64b65d6_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{d9/d84/classprzurro_1_1_scene___object_adfb1f8a52324f4618474a89da64b65d6_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classprzurro_1_1_scene___object_afda0a69deccf91508a1781418d2c3497}\label{classprzurro_1_1_scene___object_afda0a69deccf91508a1781418d2c3497}} 
+\index{przurro::Scene\_Object@{przurro::Scene\_Object}!set\_rotation@{set\_rotation}}
+\index{set\_rotation@{set\_rotation}!przurro::Scene\_Object@{przurro::Scene\_Object}}
+\subsubsection{\texorpdfstring{set\_rotation()}{set\_rotation()}}
+{\footnotesize\ttfamily void przurro\+::\+Scene\+\_\+\+Object\+::set\+\_\+rotation (\begin{DoxyParamCaption}\item[{const Vector3f \&}]{rotationV }\end{DoxyParamCaption})}
+
+
+
+Set the rotation object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rotationV} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 44 of file Scene\+\_\+\+Object.\+cpp.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=344pt]{d9/d84/classprzurro_1_1_scene___object_afda0a69deccf91508a1781418d2c3497_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{d9/d84/classprzurro_1_1_scene___object_afda0a69deccf91508a1781418d2c3497_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classprzurro_1_1_scene___object_a76e1fb5b58218b916a45c04101186ac7}\label{classprzurro_1_1_scene___object_a76e1fb5b58218b916a45c04101186ac7}} 
+\index{przurro::Scene\_Object@{przurro::Scene\_Object}!set\_scale@{set\_scale}}
+\index{set\_scale@{set\_scale}!przurro::Scene\_Object@{przurro::Scene\_Object}}
+\subsubsection{\texorpdfstring{set\_scale()}{set\_scale()}}
+{\footnotesize\ttfamily void przurro\+::\+Scene\+\_\+\+Object\+::set\+\_\+scale (\begin{DoxyParamCaption}\item[{const float \&}]{scaleF }\end{DoxyParamCaption})}
+
+
+
+Set the scale object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em scaleF} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 56 of file Scene\+\_\+\+Object.\+cpp.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=344pt]{d9/d84/classprzurro_1_1_scene___object_a76e1fb5b58218b916a45c04101186ac7_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{d9/d84/classprzurro_1_1_scene___object_a76e1fb5b58218b916a45c04101186ac7_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classprzurro_1_1_scene___object_a5fddb2cb0c950b5fb5521ccd832776c3}\label{classprzurro_1_1_scene___object_a5fddb2cb0c950b5fb5521ccd832776c3}} 
+\index{przurro::Scene\_Object@{przurro::Scene\_Object}!set\_transform@{set\_transform}}
+\index{set\_transform@{set\_transform}!przurro::Scene\_Object@{przurro::Scene\_Object}}
+\subsubsection{\texorpdfstring{set\_transform()}{set\_transform()}}
+{\footnotesize\ttfamily void przurro\+::\+Scene\+\_\+\+Object\+::set\+\_\+transform (\begin{DoxyParamCaption}\item[{const Transform\+\_\+\+Matrix3f}]{new\+Transform }\end{DoxyParamCaption})}
+
+
+
+Set the transform object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Transform} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 67 of file Scene\+\_\+\+Object.\+cpp.
+
+\mbox{\Hypertarget{classprzurro_1_1_scene___object_ac09d33f77a144de396414f36fb11f901}\label{classprzurro_1_1_scene___object_ac09d33f77a144de396414f36fb11f901}} 
+\index{przurro::Scene\_Object@{przurro::Scene\_Object}!translate@{translate}}
+\index{translate@{translate}!przurro::Scene\_Object@{przurro::Scene\_Object}}
+\subsubsection{\texorpdfstring{translate()}{translate()}}
+{\footnotesize\ttfamily void przurro\+::\+Scene\+\_\+\+Object\+::translate (\begin{DoxyParamCaption}\item[{const Vector3f \&}]{translationV }\end{DoxyParamCaption})}
+
+
+
+translate this scene object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em translationV} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 18 of file Scene\+\_\+\+Object.\+cpp.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=344pt]{d9/d84/classprzurro_1_1_scene___object_ac09d33f77a144de396414f36fb11f901_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classprzurro_1_1_scene___object_aa995f210f23d6e36477c6745cd3bb097}\label{classprzurro_1_1_scene___object_aa995f210f23d6e36477c6745cd3bb097}} 
+\index{przurro::Scene\_Object@{przurro::Scene\_Object}!update\_transform@{update\_transform}}
+\index{update\_transform@{update\_transform}!przurro::Scene\_Object@{przurro::Scene\_Object}}
+\subsubsection{\texorpdfstring{update\_transform()}{update\_transform()}}
+{\footnotesize\ttfamily void przurro\+::\+Scene\+\_\+\+Object\+::update\+\_\+transform (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Update the local and global transform by the current local attributes and parent transformation. Can\textquotesingle{}t extract for the moment the global values. 
+
+
+
+Definition at line 77 of file Scene\+\_\+\+Object.\+cpp.
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{d9/d84/classprzurro_1_1_scene___object_aa995f210f23d6e36477c6745cd3bb097_icgraph}
+\end{center}
+\end{figure}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+code/headers/\mbox{\hyperlink{_scene___object_8hpp}{Scene\+\_\+\+Object.\+hpp}}\item 
+code/sources/Scene\+\_\+\+Object.\+cpp\end{DoxyCompactItemize}

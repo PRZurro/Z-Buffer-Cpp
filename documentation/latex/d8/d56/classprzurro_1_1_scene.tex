@@ -1,0 +1,328 @@
+\hypertarget{classprzurro_1_1_scene}{}\section{przurro\+::Scene Class Reference}
+\label{classprzurro_1_1_scene}\index{przurro::Scene@{przurro::Scene}}
+
+
+Core of the application. Parse and load xml documents, update it\textquotesingle{}s created models and meshes and manage the rasterizer to render it\textquotesingle{}s members.  
+
+
+
+
+{\ttfamily \#include $<$Scene.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classprzurro_1_1_scene_aac84c8cfd0f26b897805f8af37dccd22}{Scene}} (String \&input\+Assets\+Folder\+Path, size\+\_\+t input\+Width=800, size\+\_\+t input\+Height=600, float near\+PlaneD=.\+4f, float far\+Plane\+D=1000.\+f, float fov\+Degrees=90.\+f)
+\begin{DoxyCompactList}\small\item\em Construct a new \mbox{\hyperlink{classprzurro_1_1_scene}{Scene}} object. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classprzurro_1_1_scene_a3d68ff36908d9cacac34f720f971397b}{$\sim$\+Scene}} ()
+\begin{DoxyCompactList}\small\item\em Destroy the \mbox{\hyperlink{classprzurro_1_1_scene}{Scene}} object (clearing the models buffer) \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classprzurro_1_1_scene_aeead0368cdf439e638de159ea00fce8e}{update}} ()
+\begin{DoxyCompactList}\small\item\em update the scene \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classprzurro_1_1_scene_a8f6186a7e9ee5e998c9d3051291026ed}{draw}} ()
+\begin{DoxyCompactList}\small\item\em draw the scene \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classprzurro_1_1_scene_a06f84762709af4ba3b920b01f2ae6cdf}{load\+\_\+scene}} (String \&xml\+File\+Path)
+\begin{DoxyCompactList}\small\item\em method in charge of parse and load all objects in the xml located in the path received \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classprzurro_1_1_scene_a50cf7c0482f02880a64bfa7c270f61ca}{load\+\_\+models}} (X\+M\+L\+\_\+\+Node $\ast$model\+Node\+Root)
+\begin{DoxyCompactList}\small\item\em load all models (with their properties) \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classprzurro_1_1_scene_aafbe64cd67261b27b15fa3219027455e}{load\+\_\+cameras}} (X\+M\+L\+\_\+\+Node $\ast$camera\+Node)
+\begin{DoxyCompactList}\small\item\em load all the cameras (with their properties) \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classprzurro_1_1_scene_a62b094d029473e81e2bcc43d7bc01777}{load\+\_\+property}} (X\+M\+L\+\_\+\+Node $\ast$attribute, \mbox{\hyperlink{classprzurro_1_1_model}{Model}} $\ast$model=nullptr, \mbox{\hyperlink{classprzurro_1_1_camera}{Camera}} $\ast$camera=nullptr)
+\begin{DoxyCompactList}\small\item\em Common method to load properties of models and cameras (sometimes is needed a pointer to a model and a camera. E.\+g\+: setting the parent of the camera) \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classprzurro_1_1_scene_acd91a4c5188aa41add75a093de32b664}{model\+\_\+exists}} (const String \&name)
+\begin{DoxyCompactList}\small\item\em Check if there it is a model with the name received. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Core of the application. Parse and load xml documents, update it\textquotesingle{}s created models and meshes and manage the rasterizer to render it\textquotesingle{}s members. 
+
+
+
+Definition at line 27 of file Scene.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classprzurro_1_1_scene_aac84c8cfd0f26b897805f8af37dccd22}\label{classprzurro_1_1_scene_aac84c8cfd0f26b897805f8af37dccd22}} 
+\index{przurro::Scene@{przurro::Scene}!Scene@{Scene}}
+\index{Scene@{Scene}!przurro::Scene@{przurro::Scene}}
+\subsubsection{\texorpdfstring{Scene()}{Scene()}}
+{\footnotesize\ttfamily przurro\+::\+Scene\+::\+Scene (\begin{DoxyParamCaption}\item[{String \&}]{input\+Assets\+Folder\+Path,  }\item[{size\+\_\+t}]{input\+Width = {\ttfamily 800},  }\item[{size\+\_\+t}]{input\+Height = {\ttfamily 600},  }\item[{float}]{near\+PlaneD = {\ttfamily .4f},  }\item[{float}]{far\+PlaneD = {\ttfamily 1000.f},  }\item[{float}]{fov\+Degrees = {\ttfamily 90.f} }\end{DoxyParamCaption})}
+
+
+
+Construct a new \mbox{\hyperlink{classprzurro_1_1_scene}{Scene}} object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em input\+Assets\+Folder\+Path} & \\
+\hline
+{\em input\+Width} & \\
+\hline
+{\em input\+Height} & \\
+\hline
+{\em near\+PlaneD} & \\
+\hline
+{\em far\+PlaneD} & \\
+\hline
+{\em fov\+Degrees} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 15 of file Scene.\+cpp.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{d8/d56/classprzurro_1_1_scene_aac84c8cfd0f26b897805f8af37dccd22_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classprzurro_1_1_scene_a3d68ff36908d9cacac34f720f971397b}\label{classprzurro_1_1_scene_a3d68ff36908d9cacac34f720f971397b}} 
+\index{przurro::Scene@{przurro::Scene}!````~Scene@{$\sim$Scene}}
+\index{````~Scene@{$\sim$Scene}!przurro::Scene@{przurro::Scene}}
+\subsubsection{\texorpdfstring{$\sim$Scene()}{~Scene()}}
+{\footnotesize\ttfamily przurro\+::\+Scene\+::$\sim$\+Scene (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Destroy the \mbox{\hyperlink{classprzurro_1_1_scene}{Scene}} object (clearing the models buffer) 
+
+
+
+Definition at line 62 of file Scene.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classprzurro_1_1_scene_a8f6186a7e9ee5e998c9d3051291026ed}\label{classprzurro_1_1_scene_a8f6186a7e9ee5e998c9d3051291026ed}} 
+\index{przurro::Scene@{przurro::Scene}!draw@{draw}}
+\index{draw@{draw}!przurro::Scene@{przurro::Scene}}
+\subsubsection{\texorpdfstring{draw()}{draw()}}
+{\footnotesize\ttfamily void przurro\+::\+Scene\+::draw (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+draw the scene 
+
+
+
+Definition at line 34 of file Scene.\+cpp.
+
+\mbox{\Hypertarget{classprzurro_1_1_scene_aafbe64cd67261b27b15fa3219027455e}\label{classprzurro_1_1_scene_aafbe64cd67261b27b15fa3219027455e}} 
+\index{przurro::Scene@{przurro::Scene}!load\_cameras@{load\_cameras}}
+\index{load\_cameras@{load\_cameras}!przurro::Scene@{przurro::Scene}}
+\subsubsection{\texorpdfstring{load\_cameras()}{load\_cameras()}}
+{\footnotesize\ttfamily bool przurro\+::\+Scene\+::load\+\_\+cameras (\begin{DoxyParamCaption}\item[{X\+M\+L\+\_\+\+Node $\ast$}]{camera\+Node }\end{DoxyParamCaption})}
+
+
+
+load all the cameras (with their properties) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em camera\+Node} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true 
+
+false 
+\end{DoxyReturn}
+
+
+Definition at line 128 of file Scene.\+cpp.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{d8/d56/classprzurro_1_1_scene_aafbe64cd67261b27b15fa3219027455e_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{d8/d56/classprzurro_1_1_scene_aafbe64cd67261b27b15fa3219027455e_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classprzurro_1_1_scene_a50cf7c0482f02880a64bfa7c270f61ca}\label{classprzurro_1_1_scene_a50cf7c0482f02880a64bfa7c270f61ca}} 
+\index{przurro::Scene@{przurro::Scene}!load\_models@{load\_models}}
+\index{load\_models@{load\_models}!przurro::Scene@{przurro::Scene}}
+\subsubsection{\texorpdfstring{load\_models()}{load\_models()}}
+{\footnotesize\ttfamily bool przurro\+::\+Scene\+::load\+\_\+models (\begin{DoxyParamCaption}\item[{X\+M\+L\+\_\+\+Node $\ast$}]{model\+Node\+Root }\end{DoxyParamCaption})}
+
+
+
+load all models (with their properties) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em model\+Node\+Root} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true 
+
+false 
+\end{DoxyReturn}
+
+
+Definition at line 77 of file Scene.\+cpp.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{d8/d56/classprzurro_1_1_scene_a50cf7c0482f02880a64bfa7c270f61ca_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{d8/d56/classprzurro_1_1_scene_a50cf7c0482f02880a64bfa7c270f61ca_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classprzurro_1_1_scene_a62b094d029473e81e2bcc43d7bc01777}\label{classprzurro_1_1_scene_a62b094d029473e81e2bcc43d7bc01777}} 
+\index{przurro::Scene@{przurro::Scene}!load\_property@{load\_property}}
+\index{load\_property@{load\_property}!przurro::Scene@{przurro::Scene}}
+\subsubsection{\texorpdfstring{load\_property()}{load\_property()}}
+{\footnotesize\ttfamily bool przurro\+::\+Scene\+::load\+\_\+property (\begin{DoxyParamCaption}\item[{X\+M\+L\+\_\+\+Node $\ast$}]{attribute,  }\item[{\mbox{\hyperlink{classprzurro_1_1_model}{Model}} $\ast$}]{model = {\ttfamily nullptr},  }\item[{\mbox{\hyperlink{classprzurro_1_1_camera}{Camera}} $\ast$}]{camera = {\ttfamily nullptr} }\end{DoxyParamCaption})}
+
+
+
+Common method to load properties of models and cameras (sometimes is needed a pointer to a model and a camera. E.\+g\+: setting the parent of the camera) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em attribute} & \\
+\hline
+{\em model} & \\
+\hline
+{\em camera} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true 
+
+false 
+\end{DoxyReturn}
+
+
+Definition at line 159 of file Scene.\+cpp.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{d8/d56/classprzurro_1_1_scene_a62b094d029473e81e2bcc43d7bc01777_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{d8/d56/classprzurro_1_1_scene_a62b094d029473e81e2bcc43d7bc01777_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classprzurro_1_1_scene_a06f84762709af4ba3b920b01f2ae6cdf}\label{classprzurro_1_1_scene_a06f84762709af4ba3b920b01f2ae6cdf}} 
+\index{przurro::Scene@{przurro::Scene}!load\_scene@{load\_scene}}
+\index{load\_scene@{load\_scene}!przurro::Scene@{przurro::Scene}}
+\subsubsection{\texorpdfstring{load\_scene()}{load\_scene()}}
+{\footnotesize\ttfamily bool przurro\+::\+Scene\+::load\+\_\+scene (\begin{DoxyParamCaption}\item[{String \&}]{xml\+File\+Path }\end{DoxyParamCaption})}
+
+
+
+method in charge of parse and load all objects in the xml located in the path received 
+
+
+\begin{DoxyParams}{Parameters}
+{\em xml\+File\+Path} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true 
+
+false 
+\end{DoxyReturn}
+
+
+Definition at line 49 of file Scene.\+cpp.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{d8/d56/classprzurro_1_1_scene_a06f84762709af4ba3b920b01f2ae6cdf_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=334pt]{d8/d56/classprzurro_1_1_scene_a06f84762709af4ba3b920b01f2ae6cdf_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classprzurro_1_1_scene_acd91a4c5188aa41add75a093de32b664}\label{classprzurro_1_1_scene_acd91a4c5188aa41add75a093de32b664}} 
+\index{przurro::Scene@{przurro::Scene}!model\_exists@{model\_exists}}
+\index{model\_exists@{model\_exists}!przurro::Scene@{przurro::Scene}}
+\subsubsection{\texorpdfstring{model\_exists()}{model\_exists()}}
+{\footnotesize\ttfamily bool przurro\+::\+Scene\+::model\+\_\+exists (\begin{DoxyParamCaption}\item[{const String \&}]{name }\end{DoxyParamCaption})}
+
+
+
+Check if there it is a model with the name received. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true 
+
+false 
+\end{DoxyReturn}
+
+
+Definition at line 253 of file Scene.\+cpp.
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{d8/d56/classprzurro_1_1_scene_acd91a4c5188aa41add75a093de32b664_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classprzurro_1_1_scene_aeead0368cdf439e638de159ea00fce8e}\label{classprzurro_1_1_scene_aeead0368cdf439e638de159ea00fce8e}} 
+\index{przurro::Scene@{przurro::Scene}!update@{update}}
+\index{update@{update}!przurro::Scene@{przurro::Scene}}
+\subsubsection{\texorpdfstring{update()}{update()}}
+{\footnotesize\ttfamily void przurro\+::\+Scene\+::update (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+update the scene 
+
+
+
+Definition at line 25 of file Scene.\+cpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+code/headers/\mbox{\hyperlink{_scene_8hpp}{Scene.\+hpp}}\item 
+code/sources/Scene.\+cpp\end{DoxyCompactItemize}
