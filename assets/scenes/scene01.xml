@@ -2,21 +2,22 @@
 <scene>
     <models>
         <model path = "..\\..\\assets\\models\\ground.obj" name = "ground">
-            <position>0.0,0.0,7.0</position>
+            <position>0.0,0.0,4.0</position>
             <rotation>0.0,0.0,0.0</rotation>
             <scale>1.0</scale>
             <constant_rotation>0.0,0.0125,0.0</constant_rotation>
             <default_color>95,71,47,1</default_color>
         </model>
         <model path = "..\\..\\assets\\models\\mill.obj" name = "mill">
-            <position>0.0,0.0,7.0</position>
+            <position>0.0,2.0,0.0</position>
             <rotation>0.0,0.0,0.0</rotation>
             <scale>1.0</scale>
             <constant_rotation>0.0,0.0,0.0</constant_rotation>
             <default_color>200,200,200,1</default_color>
+            <parent>ground</parent>
         </model>
         <model path = "..\\..\\assets\\models\\propeller-blender.obj" name = "propeller">
-            <position>0.0,1.0,-0.5 </position>
+            <position>0.0,-0.2,0.0 </position>
             <rotation>0.0,0.0,0.0</rotation>
             <scale>1.0</scale>
             <constant_rotation>0.0,0.0,0.2</constant_rotation>
@@ -24,7 +25,7 @@
             <default_color>0,0,0,1</default_color>
         </model>
         <model path = "..\\..\\assets\\models\\sphere-blender.obj" name = "sphere-target">
-            <position>0.0,0.0,7.0</position>
+            <position>0.0,0.5,4.0</position>
             <rotation>0.0,0.0,0.0</rotation>
             <scale>0.05</scale>
             <constant_rotation>0.0,0.0150,0.0</constant_rotation>
@@ -35,8 +36,8 @@
     </models>
     <cameras>
         <camera>
-            <position>0.0,0.0,0.0</position>
-            <target>sphere-target</target>
+            <position>0.0,4.0,0.0</position>
+            <target>ground</target>
             <!-- <parent>sphere01</parent> -->
 
         </camera>

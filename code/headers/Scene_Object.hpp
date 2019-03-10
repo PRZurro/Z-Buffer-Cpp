@@ -66,7 +66,8 @@ namespace przurro
 
 		Vector3f & get_reference_to_position()
 		{
-			return gPosition;
+			//return gPosition; //Due to not being able to extract the position for the moment, it is necessary to return the initial position.
+			return position;
 		}
 
 	public:

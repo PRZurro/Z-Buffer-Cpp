@@ -95,7 +95,7 @@ namespace przurro
 			globalTransform = parent * globalTransform;
 		}
 
-		update_global_attributes();
+		update_global_attributes(); // Can`t extract the position properly for the moment
 	}
 	void Scene_Object::update_global_attributes()
 	{
