@@ -26,7 +26,6 @@ static const size_t window_height = 600;
 int main ()
 {
     // Create the window and the view that will be shown within the window:
-
     Window window(VideoMode(window_width, window_height), "Z-Buffer", Style::Titlebar | Style::Close, ContextSettings(32));
 
 	std::string assetsFolderPath = "..\\..\\assets\\scenes\\scene01.xml";
@@ -34,7 +33,6 @@ int main ()
     Scene scene(assetsFolderPath, window_width, window_height,0.400f,1000000000.f,90.0f);
 
     // Initialization:
-
     window.setVerticalSyncEnabled (true);
 
     glDisable (GL_BLEND);

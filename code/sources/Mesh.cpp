@@ -86,10 +86,9 @@ namespace przurro
 	void Mesh::draw(Rasterizer<Color_Buff> & rasterizer)
 	{
 		//The triangles are drawn
-
 		for (Triangle_Index triangle : displayTriangleIndices)
 		{
-			cacheIndices[X] = triangle.v0; cacheIndices[Y] = triangle.v1; cacheIndices[Z] = triangle.v2; 
+			cacheIndices[X] = triangle.v0; cacheIndices[Y] = triangle.v1; cacheIndices[Z] = triangle.v2;  //Setting the cache indices to each value of the indices in triangle index
 
 			rasterizer.set_color(tvColors[triangle.vColor0]); //The color of the polygon is established from the color of its first vertex
 			rasterizer.fill_convex_polygon_z_buffer(displayVerticesPositions.data(), cacheIndices.data(), cacheIndices.data() + W); //The polygon is filled

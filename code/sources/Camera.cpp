@@ -32,9 +32,11 @@ namespace przurro
 		camToWorld[0][0] = right.x; 
 		camToWorld[0][1] = right.y;
 		camToWorld[0][2] = right.z;
+
 		camToWorld[1][0] = up.x;
 		camToWorld[1][1] = up.y;
 		camToWorld[1][2] = up.z;
+
 		camToWorld[2][0] = forward.x;
 		camToWorld[2][1] = forward.y;
 		camToWorld[2][2] = forward.z;
@@ -56,26 +58,31 @@ namespace przurro
 		fPlanes[0][1] = m[3][2] + m[0][2];
 		fPlanes[0][2] = m[3][2] + m[0][2];
 		fPlanes[0][3] = m[3][3] + m[0][3];
+
 		// Right clipping plane
 		fPlanes[1][0] = m[3][0] - m[0][0];
 		fPlanes[1][1] = m[3][1] - m[0][1];
 		fPlanes[1][2] = m[3][2] - m[0][2];
 		fPlanes[1][3] = m[3][3] - m[0][3];
+
 		// Top clipping plane
 		fPlanes[2][0] = m[3][0] - m[1][0];
 		fPlanes[2][1] = m[3][1] - m[1][1];
 		fPlanes[2][2] = m[3][2] - m[1][2];
 		fPlanes[2][3] = m[3][3] - m[1][3];
+
 		// Bottom clipping plane
 		fPlanes[3][0] = m[3][0] + m[1][0];
 		fPlanes[3][1] = m[3][1] + m[1][1];
 		fPlanes[3][2] = m[3][2] + m[1][2];
 		fPlanes[3][3] = m[3][3] + m[1][3];
+
 		// Near clipping plane
 		fPlanes[4][0] = m[3][0] + m[2][0];
 		fPlanes[4][1] = m[3][1] + m[2][1];
 		fPlanes[4][2] = m[3][2] + m[2][2];
 		fPlanes[4][3] = m[3][3] + m[2][3];
+
 		// Far clipping plane
 		fPlanes[5][0] = m[3][0] - m[2][0];
 		fPlanes[5][1] = m[3][1] - m[2][1];
