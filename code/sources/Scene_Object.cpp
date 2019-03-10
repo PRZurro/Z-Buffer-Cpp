@@ -76,7 +76,7 @@ namespace przurro
 
 	void Scene_Object::update_transform()
 	{
-		rotation += constantRotation;
+		rotation += constantRotation; //Each time is entered in this method is added to the object rotation the constant rotation vector
 		Scale_Matrix3f scaleMatrix(scale);
 		Translation_Matrix3f positionMatrix(position);
 		Rotation_Matrix3f rotationX, rotationY, rotationZ;
@@ -99,7 +99,7 @@ namespace przurro
 	}
 	void Scene_Object::update_global_attributes()
 	{
-		glm::mat4 transformation; // your transformation matrix.
+		glm::mat4 transformation;
 		glm::vec3 scale;
 		glm::quat rotation;
 		glm::vec3 translation;
@@ -115,12 +115,13 @@ namespace przurro
 			}
 		}
 
+		//Extract all attributes from the transformation matrix
 		glm::decompose(transformation, scale, rotation, translation, skew, perspective);
+
 		for (size_t i = 0; i < 3; i++)
 		{
 			gPosition[i] = translation[i];
 		}
-
 	}
 
 }

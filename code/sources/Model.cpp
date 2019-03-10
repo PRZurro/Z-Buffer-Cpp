@@ -19,7 +19,6 @@ namespace przurro
 		std::vector< Material_t >	materials;
 
 		// Attempt to load an object
-
 		if (!tinyobj::LoadObj(&attribs, &shapes, &materials, &error, assetFolderPath.c_str()) || !error.empty())
 		{
 			return;
@@ -30,19 +29,21 @@ namespace przurro
 		if ((size_t)attribs.vertices.size() == 0) { error = String("There're no vertices in ") + assetFolderPath; return; }
 		if ((size_t)attribs.normals.size() == 0) { error = String("There're no normals in ") + assetFolderPath; return; }
 
-		//Here is loaded the vertex and normal arrays 
+		//Calculate the total number of indices
 		size_t indicesN = 0;
 		for (Shape_t & shape : shapes)
 		{
 			indicesN += (size_t)shape.mesh.indices.size();
 		}
 
+		//Resize each buffer needed to be the same size as the total indices
 		ovPositions.resize(indicesN);
 		tvPositions.resize(indicesN);
 		ovNormals.resize(indicesN);
 		tvNormals.resize(indicesN);
 		vertexIntensities.resize(indicesN);
 
+		//Here is loaded the vertex and normal arrays 
 		size_t verticesProcessedN = 0;
 		for (Shape_t & shape : shapes)
 		{
@@ -73,12 +74,14 @@ namespace przurro
 				});
 			}
 
+			//Adding the mesh to the meshes map
 			meshes[shape.name] = tempMesh;
 		}
 	}
 
 	void Model::update(Camera * activeCamera, Rasterizer<Color_Buff> & rasterizer, Light * inputLight)
 	{
+		//Update the buffers before update the meshes
 		update_vertex_buffers(activeCamera, inputLight);
 		
 		Vector4f_Buffer cameraFrustrumPlanes = activeCamera->get_frustum_planes();
