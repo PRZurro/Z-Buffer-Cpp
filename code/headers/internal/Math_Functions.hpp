@@ -1,9 +1,8 @@
 ﻿#pragma once
 
-#include "declarations/Internal.hpp"
 #include "declarations/Math.hpp"
+#include "declarations/Internal.hpp"
 #include "declarations/Containers.hpp"
-
 
 namespace przurro
 {
@@ -132,6 +131,13 @@ namespace przurro
 			{
 				triangleIndices.push_back(Triangle_Index(*firstI, *(i1++), *(i2++)));
 			}
+		}
+		
+		static Vector4f normalizePlane(Vector4f & planeToNormalize)
+		{
+			vec4 glmVector = normalize(vec4({ planeToNormalize[X], planeToNormalize[Y], planeToNormalize[Z], planeToNormalize[W] }));
+
+			return Vector4f({ glmVector[X],glmVector[Y],glmVector[Z],glmVector[W] });
 		}
 	};
 	

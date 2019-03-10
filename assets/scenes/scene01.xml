@@ -2,44 +2,107 @@
 <scene>
     <models>
         <model path = "..\\..\\assets\\models\\ground.obj" name = "ground">
-            <position>0.0,0.0,4.0</position>
-            <rotation>0.0,0.0,0.0</rotation>
+            <position>0.0,-0.5,3.0</position>
+            <rotation>0.0,188.0,0.0</rotation>
             <scale>1.0</scale>
-            <constant_rotation>0.0,0.0125,0.0</constant_rotation>
+            <constant_rotation>0.0,0.0190,0.0</constant_rotation>
             <default_color>95,71,47,1</default_color>
         </model>
+        
         <model path = "..\\..\\assets\\models\\mill.obj" name = "mill">
-            <position>0.0,2.0,0.0</position>
+            <position>0.0,0.4,0.0</position>
             <rotation>0.0,0.0,0.0</rotation>
             <scale>1.0</scale>
             <constant_rotation>0.0,0.0,0.0</constant_rotation>
-            <default_color>200,200,200,1</default_color>
+            <default_color>225,225,225,1</default_color>
             <parent>ground</parent>
         </model>
         <model path = "..\\..\\assets\\models\\propeller-blender.obj" name = "propeller">
-            <position>0.0,-0.2,0.0 </position>
+            <position>0.0,0.2,-0.1 </position>
             <rotation>0.0,0.0,0.0</rotation>
             <scale>1.0</scale>
             <constant_rotation>0.0,0.0,0.2</constant_rotation>
             <parent>mill</parent>
-            <default_color>0,0,0,1</default_color>
+            <default_color>133,94,66,1</default_color>
         </model>
-        <model path = "..\\..\\assets\\models\\sphere-blender.obj" name = "sphere-target">
-            <position>0.0,0.5,4.0</position>
+        <model path = "..\\..\\assets\\models\\tree-broken.obj" name = "tree-broken">
+            <position>0.5,1.5,-1.2</position>
             <rotation>0.0,0.0,0.0</rotation>
-            <scale>0.05</scale>
-            <constant_rotation>0.0,0.0150,0.0</constant_rotation>
-            <default_color>5,5,5,1</default_color>
-            <!-- <parent>mill</parent> -->
+            <scale>1.0</scale>
+            <constant_rotation>0.0,0.0,0.0</constant_rotation>
+            <default_color>133,94,66,1</default_color>
+            <parent>ground</parent>
         </model>
-        
+        <model path = "..\\..\\assets\\models\\cloud.obj" name = "cloud01">
+            <position>0.0,1.2,0.0</position>
+            <rotation>0.0,0.0,0.0</rotation>
+            <scale>1.0</scale>
+            <constant_rotation>0.0,0.0,0.0</constant_rotation>
+            <default_color>225,225,225,1</default_color>
+            <parent>ground</parent>
+        </model>
+        <model path = "..\\..\\assets\\models\\cloud.obj" name = "cloud02">
+            <position>-1.0,1.0,0.0</position>
+            <rotation>0.0,0.0,0.0</rotation>
+            <scale>0.4</scale>
+            <constant_rotation>0.0,0.0,0.0</constant_rotation>
+            <default_color>225,225,225,1</default_color>
+            <parent>ground</parent>
+        </model>
+        <model path = "..\\..\\assets\\models\\tree-trunk1.obj" name = "tree01">
+            <position>0.5,0.35,-0.3</position>
+            <rotation>0.0,0.0,0.0</rotation>
+            <scale>0.65</scale>
+            <constant_rotation>0.0,0.0,0.0</constant_rotation>
+            <default_color>133,94,66,1</default_color>
+            <parent>ground</parent>
+        </model>
+        <model path = "..\\..\\assets\\models\\tree-leaves1.obj" name = "leaf01-tree01">
+            <position>-0.15,0.25,0.0</position>
+            <rotation>70.0,30.0,20.0</rotation>
+            <scale>1.0</scale>
+            <constant_rotation>0.0,0.0,0.0</constant_rotation>
+            <default_color>230,63,14,1</default_color>
+            <parent>tree01</parent>
+        </model>
+        <model path = "..\\..\\assets\\models\\tree-leaves2.obj" name = "leaf02-tree01">
+            <position>0.05,0.253,-0.25</position>
+            <rotation>200.0,90.0,10.0</rotation>
+            <scale>1.0</scale>
+            <constant_rotation>0.0,0.0,0.0</constant_rotation>
+            <default_color>230,63,14,1</default_color>
+            <parent>tree01</parent>
+        </model>
+        <model path = "..\\..\\assets\\models\\tree-trunk2.obj" name = "tree02">
+            <position>-0.5,0.35,-0.3</position>
+            <rotation>0.0,0.0,0.0</rotation>
+            <scale>0.65</scale>
+            <constant_rotation>0.0,0.0,0.0</constant_rotation>
+            <default_color>133,94,66,1</default_color>
+            <parent>ground</parent>
+        </model>
+        <model path = "..\\..\\assets\\models\\tree-leaves2.obj" name = "leaf01-tree02">
+            <position>-0.10,0.20,0.0</position>
+            <rotation>70.0,30.0,20.0</rotation>
+            <scale>1.0</scale>
+            <constant_rotation>0.0,0.0,0.0</constant_rotation>
+            <default_color>130,212,53,1</default_color>
+            <parent>tree02</parent>
+        </model>
+        <model path = "..\\..\\assets\\models\\tree-leaves1.obj" name = "leaf02-tree02">
+            <position>0.04,0.19,-0.25</position>
+            <rotation>200.0,90.0,10.0</rotation>
+            <scale>1.0</scale>
+            <constant_rotation>0.0,0.0,0.0</constant_rotation>
+            <default_color>130,212,53,1</default_color>
+            <parent>tree02</parent>
+        </model>
     </models>
     <cameras>
         <camera>
-            <position>0.0,4.0,0.0</position>
+            <position>0.0,.0,0.0</position>
             <target>ground</target>
-            <!-- <parent>sphere01</parent> -->
-
+            <!-- i could set a parent to the camera but it will not take effect because can't extract the current transform position -->
         </camera>
     </cameras>
 </scene>

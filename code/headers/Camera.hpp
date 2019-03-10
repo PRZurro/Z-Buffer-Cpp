@@ -71,12 +71,5 @@ namespace przurro
 	private:
 
 		void update_frustum_planes(bool normalize = false);
-
-		Vector4f normalizePlane(Vector4f & planeToNormalize)
-		{
-			vec4 glmVector = normalize(vec4({planeToNormalize[X], planeToNormalize[Y], planeToNormalize[Z], planeToNormalize[W]}));
-
-			return Vector4f({ glmVector[X],glmVector[Y],glmVector[Z],glmVector[W]});
-		}
 	};
 }

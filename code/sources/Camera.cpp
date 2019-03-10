@@ -1,4 +1,5 @@
 #include "Camera.hpp"
+#include "Math_Functions.hpp"
 
 using namespace glm;
 
@@ -85,7 +86,7 @@ namespace przurro
 		{
 			for (size_t i = 0; i < 6; ++i)
 			{
-				fPlanes[i] = normalizePlane(fPlanes[i]);
+				fPlanes[i] = Math::normalizePlane(fPlanes[i]);
 			}
 		}
 	}
